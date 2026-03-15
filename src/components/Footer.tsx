@@ -6,7 +6,7 @@ export default function Footer() {
       <div className="max-w-6xl mx-auto px-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           {/* Brand */}
-          <img src="/topLogo.png" alt="RV Neighbors" className="h-8 w-auto opacity-80" />
+          <img src="/topLogo.png" alt="RV Neighbors" className="h-16 w-auto opacity-80" />
 
           {/* Links */}
           <nav className="flex flex-wrap justify-center gap-6 text-sm">
