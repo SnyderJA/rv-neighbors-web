@@ -19,7 +19,7 @@ export default function Hero() {
       <div className="absolute -top-32 -right-32 w-96 h-96 bg-primary-light/20 rounded-full blur-3xl" />
       <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-accent/10 rounded-full blur-3xl" />
 
-      <div className="relative max-w-6xl mx-auto px-6 pt-28 pb-20 grid lg:grid-cols-2 gap-16 items-center">
+      <div className="relative max-w-6xl mx-auto px-6 pt-[127px] pb-20 grid lg:grid-cols-2 gap-16 items-center">
         {/* Left: copy */}
         <div>
           <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 mb-8">
