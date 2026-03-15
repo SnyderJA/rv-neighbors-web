@@ -17,7 +17,7 @@ export default function Navbar() {
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
         {/* Logo */}
         <a href="#">
-          <img src="/topLogo.png" alt="RV Neighbors" className="h-20 w-auto object-contain" />
+          <img src="/topLogo.png" alt="RV Neighbors" className="object-contain" style={{ width: '250px', height: '125px' }} />
         </a>
 
         {/* Desktop nav */}
