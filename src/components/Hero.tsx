@@ -47,7 +47,7 @@ export default function Hero() {
         <div className="flex justify-center lg:justify-end gap-4 items-end">
           {/* Back phone */}
           <div className="hidden sm:block w-48 mb-0 translate-y-8 rotate-[-6deg]">
-            <PhoneMockup label="Neighbors Map" bgColor="bg-primary-light/40">
+            <PhoneMockup label="Neighbors Map" bgColor="bg-primary-light/40" screenHeight={380}>
               {/* Map placeholder */}
               <div className="w-full h-full bg-gradient-to-b from-primary/20 to-primary-dark/40 flex flex-col items-center justify-center gap-2 p-4">
                 <div className="w-8 h-8 bg-accent/80 rounded-full flex items-center justify-center">
@@ -109,7 +109,7 @@ export default function Hero() {
   )
 }
 
-function PhoneMockup({ children, label, bgColor }: { children: React.ReactNode; label: string; bgColor: string }) {
+function PhoneMockup({ children, label, bgColor, screenHeight = 415 }: { children: React.ReactNode; label: string; bgColor: string; screenHeight?: number }) {
   return (
     <div className="relative">
       {/* Phone shell */}
@@ -117,7 +117,7 @@ function PhoneMockup({ children, label, bgColor }: { children: React.ReactNode; 
         {/* Notch */}
         <div className="absolute top-4 left-1/2 -translate-x-1/2 w-16 h-4 bg-gray-900 rounded-full z-10" />
         {/* Screen */}
-        <div className={`${bgColor} rounded-[2rem] overflow-hidden`} style={{ height: 320 }}>
+        <div className={`${bgColor} rounded-[2rem] overflow-hidden`} style={{ height: screenHeight }}>
           {children}
         </div>
       </div>

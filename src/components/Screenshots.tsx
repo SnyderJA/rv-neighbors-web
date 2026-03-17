@@ -146,7 +146,7 @@ export default function Screenshots() {
               <div className="flex-shrink-0">
                 <div className="relative bg-gray-900 rounded-[3rem] p-2.5 shadow-2xl ring-1 ring-white/10 w-56">
                   <div className="absolute top-4 left-1/2 -translate-x-1/2 w-16 h-4 bg-gray-900 rounded-full z-10" />
-                  <div className="bg-white rounded-[2.5rem] overflow-hidden" style={{ height: 380 }}>
+                  <div className="bg-white rounded-[2.5rem] overflow-hidden" style={{ height: 440 }}>
                     {s.screenContent}
                   </div>
                 </div>
