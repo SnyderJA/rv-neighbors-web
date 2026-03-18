@@ -1,0 +1,1647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RV Neighbors — Design Preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    /* ───────────────────────────────────────────────
+       DESIGN TOKENS
+    ─────────────────────────────────────────────── */
+    :root {
+      /* Primary — deep forest, elevated */
+      --c-primary:       #1E4A2E;
+      --c-primary-mid:   #265C39;
+      --c-primary-light: #3A8A55;
+      --c-primary-xlt:   #EAF4EE;
+
+      /* Accent — amber / golden hour */
+      --c-accent:        #D4874A;
+      --c-accent-light:  #F0A76A;
+      --c-accent-xlt:    #FEF3EA;
+
+      /* Neutrals */
+      --c-bg:            #F6F7F5;
+      --c-surface:       #FFFFFF;
+      --c-surface-2:     #F0F1EE;
+      --c-border:        #E4E6E2;
+
+      /* Text */
+      --c-text-1:        #111B14;
+      --c-text-2:        #4A5550;
+      --c-text-3:        #8A9490;
+
+      /* Status */
+      --c-success:       #2E7D52;
+      --c-error:         #C0392B;
+      --c-warn:          #E07B2A;
+
+      /* Elevation */
+      --shadow-sm:  0 1px 3px rgba(0,0,0,.07), 0 1px 2px rgba(0,0,0,.05);
+      --shadow-md:  0 4px 12px rgba(0,0,0,.08), 0 2px 4px rgba(0,0,0,.04);
+      --shadow-lg:  0 12px 32px rgba(0,0,0,.10), 0 4px 8px rgba(0,0,0,.05);
+      --shadow-xl:  0 20px 48px rgba(0,0,0,.14);
+
+      /* Radius */
+      --r-sm:  8px;
+      --r-md:  14px;
+      --r-lg:  20px;
+      --r-xl:  28px;
+      --r-full: 999px;
+    }
+
+    /* ───────────────────────────────────────────────
+       RESET & BASE
+    ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #1A1E1B;
+      color: var(--c-text-1);
+      min-height: 100vh;
+      padding: 48px 24px;
+    }
+    h1 { color: #fff; font-size: 13px; font-weight: 500; letter-spacing: .08em;
+         text-transform: uppercase; opacity: .5; margin-bottom: 8px; }
+    h2 { color: #fff; font-size: 22px; font-weight: 700; margin-bottom: 40px; }
+
+    /* ───────────────────────────────────────────────
+       LAYOUT
+    ─────────────────────────────────────────────── */
+    .stage {
+      max-width: 1240px;
+      margin: 0 auto;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+    .header .badge {
+      display: inline-block;
+      background: rgba(255,255,255,.08);
+      color: rgba(255,255,255,.6);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: var(--r-full);
+      border: 1px solid rgba(255,255,255,.12);
+      margin-bottom: 16px;
+    }
+    .header h1 {
+      font-size: 36px;
+      font-weight: 800;
+      color: #fff;
+      text-transform: none;
+      letter-spacing: -.02em;
+      opacity: 1;
+      margin-bottom: 8px;
+    }
+    .header p {
+      color: rgba(255,255,255,.45);
+      font-size: 15px;
+    }
+
+    .screens-row {
+      display: flex;
+      gap: 32px;
+      justify-content: center;
+      flex-wrap: wrap;
+      align-items: flex-start;
+    }
+
+    /* ───────────────────────────────────────────────
+       PHONE FRAME
+    ─────────────────────────────────────────────── */
+    .phone {
+      width: 320px;
+      flex-shrink: 0;
+    }
+    .phone-label {
+      color: rgba(255,255,255,.4);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    .phone-frame {
+      background: #0E1210;
+      border-radius: 44px;
+      padding: 14px;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.07),
+        0 32px 80px rgba(0,0,0,.6),
+        inset 0 1px 0 rgba(255,255,255,.06);
+      position: relative;
+    }
+    .phone-notch {
+      position: absolute;
+      top: 22px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 26px;
+      background: #0E1210;
+      border-radius: var(--r-full);
+      z-index: 10;
+    }
+    .phone-screen {
+      background: var(--c-bg);
+      border-radius: 32px;
+      overflow: hidden;
+      height: 640px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ───────────────────────────────────────────────
+       STATUS BAR
+    ─────────────────────────────────────────────── */
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 22px 4px;
+      flex-shrink: 0;
+      z-index: 5;
+    }
+    .status-bar .time {
+      font-size: 13px;
+      font-weight: 700;
+      color: inherit;
+    }
+    .status-bar .icons {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+    .status-bar .icons svg { width: 14px; height: 14px; fill: currentColor; }
+    .status-bar.light { color: var(--c-text-1); }
+    .status-bar.dark  { color: #fff; }
+
+    /* ───────────────────────────────────────────────
+       SCREEN: LOGIN
+    ─────────────────────────────────────────────── */
+    .screen-login {
+      background: linear-gradient(160deg, #0F2419 0%, #1A3A2A 45%, #0D1F14 100%);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .login-bg-shape {
+      position: absolute;
+      width: 280px; height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(58,138,85,.25) 0%, transparent 70%);
+      top: -60px; right: -60px;
+      pointer-events: none;
+    }
+    .login-bg-shape2 {
+      position: absolute;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(212,135,74,.12) 0%, transparent 70%);
+      bottom: 80px; left: -40px;
+      pointer-events: none;
+    }
+    .login-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 8px 24px 0;
+      z-index: 1;
+    }
+    .login-logo-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+    }
+    .login-logo-icon {
+      width: 68px; height: 68px;
+      background: linear-gradient(135deg, var(--c-primary-light), var(--c-primary));
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 24px rgba(58,138,85,.35);
+    }
+    .login-logo-icon svg { width: 36px; height: 36px; fill: #fff; }
+    .login-app-name {
+      font-size: 26px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -.02em;
+    }
+    .login-tagline {
+      font-size: 13px;
+      color: rgba(255,255,255,.45);
+      letter-spacing: .01em;
+    }
+
+    .login-form {
+      padding-bottom: 16px;
+    }
+    .input-group {
+      margin-bottom: 12px;
+    }
+    .input-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.45);
+      margin-bottom: 6px;
+      display: block;
+    }
+    .input-field {
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: var(--r-md);
+      padding: 13px 16px;
+      color: #fff;
+      font-size: 14px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .input-field svg { width: 15px; height: 15px; fill: rgba(255,255,255,.3); flex-shrink: 0; }
+    .input-field .placeholder { color: rgba(255,255,255,.25); font-size: 14px; }
+    .input-field .value { color: rgba(255,255,255,.8); font-size: 14px; }
+    .forgot-link {
+      text-align: right;
+      font-size: 12px;
+      color: var(--c-accent-light);
+      margin-top: -6px;
+      margin-bottom: 18px;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--c-primary-light) 0%, var(--c-primary) 100%);
+      color: #fff;
+      border-radius: var(--r-md);
+      padding: 14px;
+      text-align: center;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: .01em;
+      box-shadow: 0 4px 16px rgba(58,138,85,.35);
+      margin-bottom: 14px;
+    }
+    .divider-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .divider-line { flex: 1; height: 1px; background: rgba(255,255,255,.1); }
+    .divider-text { font-size: 11px; color: rgba(255,255,255,.25); font-weight: 500; }
+    .social-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .btn-social {
+      flex: 1;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: var(--r-md);
+      padding: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255,255,255,.7);
+    }
+    .btn-social svg { width: 16px; height: 16px; }
+    .sign-up-row {
+      text-align: center;
+      font-size: 13px;
+      color: rgba(255,255,255,.35);
+    }
+    .sign-up-row span { color: var(--c-accent-light); font-weight: 600; }
+
+    /* ───────────────────────────────────────────────
+       SCREEN: NEIGHBORS (HOME)
+    ─────────────────────────────────────────────── */
+    .screen-neighbors {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .neighbors-header {
+      background: var(--c-surface);
+      padding: 8px 20px 14px;
+      border-bottom: 1px solid var(--c-border);
+      flex-shrink: 0;
+    }
+    .neighbors-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .screen-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--c-text-1);
+      letter-spacing: -.02em;
+    }
+    .avatar-xs {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--c-primary-light), var(--c-primary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .search-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--c-surface-2);
+      border-radius: var(--r-full);
+      padding: 9px 14px;
+      border: 1px solid var(--c-border);
+      margin-bottom: 12px;
+    }
+    .search-bar svg { width: 14px; height: 14px; fill: var(--c-text-3); flex-shrink: 0; }
+    .search-bar .placeholder { font-size: 13px; color: var(--c-text-3); }
+    .filter-chips {
+      display: flex;
+      gap: 7px;
+      overflow: hidden;
+    }
+    .chip {
+      white-space: nowrap;
+      padding: 5px 12px;
+      border-radius: var(--r-full);
+      font-size: 12px;
+      font-weight: 600;
+      border: 1.5px solid var(--c-border);
+      color: var(--c-text-2);
+      background: var(--c-surface);
+    }
+    .chip.active {
+      background: var(--c-primary);
+      border-color: var(--c-primary);
+      color: #fff;
+    }
+    .neighbors-list {
+      flex: 1;
+      overflow: hidden;
+      padding: 14px 16px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+    .section-title {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      color: var(--c-text-3);
+    }
+    .section-action {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--c-primary-light);
+    }
+    .neighbor-card {
+      background: var(--c-surface);
+      border-radius: var(--r-lg);
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--c-border);
+    }
+    .neighbor-avatar {
+      width: 46px; height: 46px;
+      border-radius: 14px;
+      flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .avatar-img {
+      width: 100%; height: 100%;
+      border-radius: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .online-dot {
+      position: absolute;
+      bottom: 1px; right: 1px;
+      width: 10px; height: 10px;
+      background: #34C759;
+      border-radius: 50%;
+      border: 2px solid var(--c-surface);
+    }
+    .neighbor-info { flex: 1; min-width: 0; }
+    .neighbor-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--c-text-1);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .neighbor-sub {
+      font-size: 12px;
+      color: var(--c-text-3);
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .neighbor-sub span { color: var(--c-accent); font-weight: 600; }
+    .neighbor-actions {
+      display: flex;
+      gap: 6px;
+    }
+    .btn-icon {
+      width: 32px; height: 32px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn-icon.primary { background: var(--c-primary-xlt); }
+    .btn-icon.primary svg { fill: var(--c-primary); width: 14px; height: 14px; }
+    .btn-icon.ghost { background: var(--c-surface-2); }
+    .btn-icon.ghost svg { fill: var(--c-text-2); width: 14px; height: 14px; }
+
+    .map-preview {
+      margin: 0 16px;
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      height: 110px;
+      background: linear-gradient(135deg, #d0e8d4 0%, #b8d9be 100%);
+      position: relative;
+      border: 1px solid var(--c-border);
+      flex-shrink: 0;
+    }
+    .map-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.4) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.4) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+    .map-road-h {
+      position: absolute;
+      left: 0; right: 0;
+      height: 4px;
+      background: rgba(255,255,255,.7);
+      border-radius: 2px;
+    }
+    .map-road-v {
+      position: absolute;
+      top: 0; bottom: 0;
+      width: 4px;
+      background: rgba(255,255,255,.7);
+      border-radius: 2px;
+    }
+    .map-pin {
+      position: absolute;
+      width: 26px; height: 26px;
+      background: var(--c-primary);
+      border-radius: 50% 50% 50% 4px;
+      transform: rotate(-45deg);
+      border: 2.5px solid #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .map-pin::after {
+      content: '';
+      width: 8px; height: 8px;
+      background: #fff;
+      border-radius: 50%;
+      transform: rotate(45deg);
+    }
+    .map-pin.accent { background: var(--c-accent); }
+    .map-pin.me { background: #1A73E8; }
+    .map-label {
+      position: absolute;
+      bottom: 8px; right: 10px;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--c-primary);
+      background: rgba(255,255,255,.9);
+      padding: 3px 8px;
+      border-radius: var(--r-full);
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+
+    /* ───────────────────────────────────────────────
+       SCREEN: PROFILE
+    ─────────────────────────────────────────────── */
+    .screen-profile {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .profile-hero {
+      background: linear-gradient(160deg, var(--c-primary) 0%, #0F2419 100%);
+      padding: 10px 20px 0;
+      flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .profile-hero-shape {
+      position: absolute;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(255,255,255,.06) 0%, transparent 70%);
+      top: -60px; right: -40px;
+      border-radius: 50%;
+    }
+    .profile-hero-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      position: relative;
+      z-index: 1;
+    }
+    .profile-hero-top .screen-title { color: #fff; }
+    .profile-edit-btn {
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: var(--r-full);
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(255,255,255,.85);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .profile-edit-btn svg { width: 12px; height: 12px; fill: rgba(255,255,255,.7); }
+    .profile-avatar-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 14px;
+      position: relative;
+      z-index: 1;
+    }
+    .profile-avatar {
+      width: 72px; height: 72px;
+      border-radius: 22px;
+      border: 3px solid rgba(255,255,255,.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 800;
+      color: #fff;
+      background: linear-gradient(135deg, #3A8A55, #1A4D2E);
+      flex-shrink: 0;
+      margin-bottom: -14px;
+    }
+    .profile-basic { flex: 1; padding-bottom: 16px; }
+    .profile-name {
+      font-size: 18px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -.02em;
+    }
+    .profile-handle {
+      font-size: 12px;
+      color: rgba(255,255,255,.5);
+      margin-top: 2px;
+    }
+    .profile-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: linear-gradient(135deg, var(--c-accent), #C0702A);
+      border-radius: var(--r-full);
+      padding: 3px 10px;
+      font-size: 10px;
+      font-weight: 700;
+      color: #fff;
+      margin-top: 6px;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+    .profile-badge svg { width: 10px; height: 10px; fill: #fff; }
+
+    .profile-stats {
+      display: flex;
+      background: var(--c-surface);
+      margin: 14px 0 0;
+      border-top: 1px solid var(--c-border);
+    }
+    .stat-item {
+      flex: 1;
+      padding: 12px 8px;
+      text-align: center;
+      border-right: 1px solid var(--c-border);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-value {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--c-text-1);
+      letter-spacing: -.02em;
+    }
+    .stat-label {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--c-text-3);
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      margin-top: 1px;
+    }
+
+    .profile-body {
+      flex: 1;
+      overflow: hidden;
+      padding: 14px 16px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .info-card {
+      background: var(--c-surface);
+      border-radius: var(--r-lg);
+      padding: 14px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--c-border);
+    }
+    .info-card-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--c-text-3);
+      margin-bottom: 10px;
+    }
+    .info-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 0;
+      border-bottom: 1px solid var(--c-surface-2);
+    }
+    .info-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .info-icon {
+      width: 30px; height: 30px;
+      border-radius: 9px;
+      background: var(--c-primary-xlt);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .info-icon svg { width: 14px; height: 14px; fill: var(--c-primary); }
+    .info-icon.amber { background: var(--c-accent-xlt); }
+    .info-icon.amber svg { fill: var(--c-accent); }
+    .info-text { flex: 1; }
+    .info-label { font-size: 10px; color: var(--c-text-3); font-weight: 500; }
+    .info-value { font-size: 13px; color: var(--c-text-1); font-weight: 600; }
+
+    .tags-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .tag {
+      padding: 4px 10px;
+      background: var(--c-primary-xlt);
+      color: var(--c-primary);
+      border-radius: var(--r-full);
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .tag.amber {
+      background: var(--c-accent-xlt);
+      color: var(--c-accent);
+    }
+
+    /* ───────────────────────────────────────────────
+       SCREEN: MESSAGES
+    ─────────────────────────────────────────────── */
+    .screen-messages {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .messages-header {
+      background: var(--c-surface);
+      padding: 8px 20px 14px;
+      border-bottom: 1px solid var(--c-border);
+      flex-shrink: 0;
+    }
+    .messages-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .msg-compose-btn {
+      width: 34px; height: 34px;
+      background: var(--c-primary-xlt);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .msg-compose-btn svg { width: 16px; height: 16px; fill: var(--c-primary); }
+    .conv-list {
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .conv-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--c-border);
+      position: relative;
+    }
+    .conv-avatar {
+      width: 44px; height: 44px;
+      border-radius: 14px;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      position: relative;
+    }
+    .conv-info { flex: 1; min-width: 0; }
+    .conv-name-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .conv-name { font-size: 14px; font-weight: 700; color: var(--c-text-1); }
+    .conv-time { font-size: 11px; color: var(--c-text-3); }
+    .conv-preview {
+      font-size: 12px;
+      color: var(--c-text-3);
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .conv-preview.unread { color: var(--c-text-2); font-weight: 500; }
+    .unread-badge {
+      min-width: 18px; height: 18px;
+      background: var(--c-primary);
+      border-radius: var(--r-full);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: #fff;
+      padding: 0 5px;
+      flex-shrink: 0;
+    }
+
+    /* ───────────────────────────────────────────────
+       TAB BAR
+    ─────────────────────────────────────────────── */
+    .tab-bar {
+      background: var(--c-surface);
+      border-top: 1px solid var(--c-border);
+      display: flex;
+      padding: 8px 4px 14px;
+      flex-shrink: 0;
+    }
+    .tab-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 0;
+      cursor: pointer;
+    }
+    .tab-icon-wrap {
+      width: 40px; height: 32px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .tab-item.active .tab-icon-wrap {
+      background: var(--c-primary-xlt);
+    }
+    .tab-icon-wrap svg { width: 20px; height: 20px; }
+    .tab-item .icon-fill { fill: var(--c-text-3); }
+    .tab-item.active .icon-fill { fill: var(--c-primary); }
+    .tab-label {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--c-text-3);
+      letter-spacing: .02em;
+    }
+    .tab-item.active .tab-label { color: var(--c-primary); }
+    .tab-badge {
+      position: relative;
+    }
+    .tab-badge::after {
+      content: '2';
+      position: absolute;
+      top: -3px; right: -3px;
+      width: 14px; height: 14px;
+      background: var(--c-error);
+      border-radius: 50%;
+      font-size: 9px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1.5px solid var(--c-surface);
+    }
+
+    /* ───────────────────────────────────────────────
+       PALETTE SWATCH SECTION
+    ─────────────────────────────────────────────── */
+    .palette-section {
+      max-width: 1240px;
+      margin: 64px auto 0;
+    }
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px;
+    }
+    .swatch {
+      border-radius: var(--r-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+    }
+    .swatch-color {
+      height: 56px;
+    }
+    .swatch-info {
+      background: #1E2320;
+      padding: 8px 10px;
+    }
+    .swatch-name {
+      font-size: 11px;
+      font-weight: 700;
+      color: rgba(255,255,255,.7);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+    .swatch-hex {
+      font-size: 12px;
+      color: rgba(255,255,255,.35);
+      font-family: monospace;
+      margin-top: 2px;
+    }
+
+    /* ───────────────────────────────────────────────
+       TYPE SCALE SECTION
+    ─────────────────────────────────────────────── */
+    .type-section {
+      max-width: 1240px;
+      margin: 56px auto 0;
+    }
+    .type-demo {
+      background: var(--c-surface);
+      border-radius: var(--r-xl);
+      padding: 28px 32px;
+      box-shadow: var(--shadow-lg);
+    }
+    .t-xs  { font-size: 11px; color: var(--c-text-3); font-weight: 500; }
+    .t-sm  { font-size: 13px; color: var(--c-text-2); }
+    .t-base{ font-size: 15px; color: var(--c-text-1); }
+    .t-lg  { font-size: 18px; color: var(--c-text-1); font-weight: 600; }
+    .t-xl  { font-size: 22px; color: var(--c-text-1); font-weight: 700; letter-spacing: -.01em; }
+    .t-2xl { font-size: 28px; color: var(--c-text-1); font-weight: 800; letter-spacing: -.02em; }
+    .type-row {
+      display: flex;
+      align-items: baseline;
+      gap: 20px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--c-border);
+    }
+    .type-row:last-child { border-bottom: none; }
+    .type-meta { width: 90px; font-size: 10px; color: var(--c-text-3); font-family: monospace; flex-shrink: 0; }
+
+    /* ───────────────────────────────────────────────
+       COMPONENTS SECTION
+    ─────────────────────────────────────────────── */
+    .comp-section {
+      max-width: 1240px;
+      margin: 56px auto 0;
+    }
+    .comp-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .comp-card {
+      background: var(--c-surface);
+      border-radius: var(--r-xl);
+      padding: 24px;
+      box-shadow: var(--shadow-lg);
+    }
+    .comp-card h3 {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--c-text-3);
+      margin-bottom: 16px;
+    }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .btn {
+      padding: 10px 18px;
+      border-radius: var(--r-md);
+      font-size: 13px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn svg { width: 14px; height: 14px; fill: currentColor; }
+    .btn-solid-primary { background: var(--c-primary); color: #fff; box-shadow: 0 4px 12px rgba(30,74,46,.3); }
+    .btn-solid-accent  { background: var(--c-accent); color: #fff; box-shadow: 0 4px 12px rgba(212,135,74,.3); }
+    .btn-outline       { border: 1.5px solid var(--c-primary); color: var(--c-primary); background: transparent; }
+    .btn-ghost         { background: var(--c-surface-2); color: var(--c-text-2); }
+    .btn-danger        { background: #FEE9E8; color: var(--c-error); }
+
+    .input-preview {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .input-preview-field {
+      border: 1.5px solid var(--c-border);
+      border-radius: var(--r-md);
+      padding: 11px 14px;
+      font-size: 14px;
+      color: var(--c-text-1);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--c-surface);
+    }
+    .input-preview-field.focused { border-color: var(--c-primary); box-shadow: 0 0 0 3px rgba(30,74,46,.1); }
+    .input-preview-field.error   { border-color: var(--c-error);   box-shadow: 0 0 0 3px rgba(192,57,43,.08); }
+    .input-preview-field svg { width: 15px; height: 15px; fill: var(--c-text-3); }
+    .input-preview-field .val { color: var(--c-text-1); font-size: 14px; }
+    .input-preview-field .ph  { color: var(--c-text-3); font-size: 14px; }
+    .input-error-msg { font-size: 11px; color: var(--c-error); margin-top: -4px; }
+
+    .card-preview {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .mini-card {
+      border-radius: var(--r-md);
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid var(--c-border);
+    }
+    .mini-card.success { background: #EEF8F1; border-color: #B8E0C5; }
+    .mini-card.warn    { background: #FEF5EA; border-color: #F8D9B0; }
+    .mini-card.error   { background: #FEE9E8; border-color: #F5C0BB; }
+    .mini-card.info    { background: #EAF0FE; border-color: #B8CCF5; }
+    .mini-card svg { width: 16px; height: 16px; flex-shrink: 0; }
+    .mini-card.success svg { fill: var(--c-success); }
+    .mini-card.warn    svg { fill: var(--c-warn); }
+    .mini-card.error   svg { fill: var(--c-error); }
+    .mini-card.info    svg { fill: #1A56C4; }
+    .mini-card span { font-size: 12px; font-weight: 600; }
+    .mini-card.success span { color: var(--c-success); }
+    .mini-card.warn    span { color: var(--c-warn); }
+    .mini-card.error   span { color: var(--c-error); }
+    .mini-card.info    span { color: #1A56C4; }
+
+    /* ───────────────────────────────────────────────
+       SECTION HEADINGS
+    ─────────────────────────────────────────────── */
+    .section-heading {
+      margin-bottom: 20px;
+    }
+    .section-heading h2 {
+      font-size: 18px;
+      font-weight: 800;
+      color: rgba(255,255,255,.9);
+      letter-spacing: -.01em;
+      margin-bottom: 4px;
+    }
+    .section-heading p {
+      font-size: 13px;
+      color: rgba(255,255,255,.4);
+    }
+
+    /* ───────────────────────────────────────────────
+       MISC
+    ─────────────────────────────────────────────── */
+    .mt-8  { margin-top: 8px; }
+    .mt-16 { margin-top: 16px; }
+    .mt-56 { margin-top: 56px; }
+  </style>
+</head>
+<body>
+<div class="stage">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="badge">Design Preview — Do not ship</div>
+    <h1>RV Neighbors — Redesign Proposal</h1>
+    <p>Modern, elevated aesthetic while keeping the outdoor community feel</p>
+  </div>
+
+  <!-- ── SCREENS ────────────────────────────── -->
+  <div class="section-heading">
+    <h2>Screen Mockups</h2>
+    <p>Four key screens shown at 320 × 640 px viewport</p>
+  </div>
+
+  <div class="screens-row">
+
+    <!-- LOGIN -->
+    <div class="phone">
+      <div class="phone-label">Login</div>
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="screen-login" style="flex:1;display:flex;flex-direction:column;">
+            <div class="login-bg-shape"></div>
+            <div class="login-bg-shape2"></div>
+            <div class="status-bar dark">
+              <span class="time">9:41</span>
+              <div class="icons">
+                <!-- signal -->
+                <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+                <!-- battery -->
+                <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+              </div>
+            </div>
+            <div class="login-content">
+              <div class="login-logo-area">
+                <div class="login-logo-icon">
+                  <!-- RV / home icon -->
+                  <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                </div>
+                <div class="login-app-name">RV Neighbors</div>
+                <div class="login-tagline">Connect with fellow travelers</div>
+              </div>
+              <div class="login-form">
+                <div class="input-group">
+                  <span class="input-label">Email</span>
+                  <div class="input-field">
+                    <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                    <span class="value">hello@example.com</span>
+                  </div>
+                </div>
+                <div class="input-group">
+                  <span class="input-label">Password</span>
+                  <div class="input-field">
+                    <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                    <span class="value">••••••••</span>
+                  </div>
+                </div>
+                <div class="forgot-link">Forgot password?</div>
+                <div class="btn-primary">Sign In</div>
+                <div class="divider-row">
+                  <div class="divider-line"></div>
+                  <span class="divider-text">or continue with</span>
+                  <div class="divider-line"></div>
+                </div>
+                <div class="social-row">
+                  <div class="btn-social">
+                    <svg viewBox="0 0 24 24" width="16" height="16"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                    Google
+                  </div>
+                  <div class="btn-social">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                    Facebook
+                  </div>
+                </div>
+                <div class="sign-up-row">Don't have an account? <span>Sign up</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NEIGHBORS -->
+    <div class="phone">
+      <div class="phone-label">Neighbors</div>
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="screen-neighbors">
+            <div class="status-bar light" style="background:white;">
+              <span class="time">9:41</span>
+              <div class="icons">
+                <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+              </div>
+            </div>
+            <div class="neighbors-header">
+              <div class="neighbors-top-row">
+                <div class="screen-title">Neighbors</div>
+                <div class="avatar-xs">JR</div>
+              </div>
+              <div class="search-bar">
+                <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                <span class="placeholder">Search by name or location…</span>
+              </div>
+              <div class="filter-chips">
+                <div class="chip active">Nearby</div>
+                <div class="chip">15 mi</div>
+                <div class="chip">30 mi</div>
+                <div class="chip">75 mi</div>
+              </div>
+            </div>
+
+            <!-- Map Preview -->
+            <div class="map-preview" style="margin:12px 16px 0;">
+              <div class="map-grid"></div>
+              <div class="map-road-h" style="top:50%;"></div>
+              <div class="map-road-v" style="left:40%;"></div>
+              <div class="map-road-h" style="top:30%; opacity:.5;"></div>
+              <div class="map-pin" style="top:38px;left:60px;"></div>
+              <div class="map-pin accent" style="top:55px;left:150px;"></div>
+              <div class="map-pin me" style="top:65px;left:100px;"></div>
+              <div class="map-label">Map View →</div>
+            </div>
+
+            <div class="neighbors-list" style="margin-top:12px;">
+              <div class="section-header">
+                <span class="section-title">Within 15 miles · 4 neighbors</span>
+                <span class="section-action">See all</span>
+              </div>
+              <div class="neighbor-card">
+                <div class="neighbor-avatar">
+                  <div class="avatar-img" style="background:linear-gradient(135deg,#3A8A55,#1A4D2E);">M</div>
+                  <div class="online-dot"></div>
+                </div>
+                <div class="neighbor-info">
+                  <div class="neighbor-name">Mike & Susan</div>
+                  <div class="neighbor-sub"><span>2.4 mi</span> · Class A · Fulltime</div>
+                </div>
+                <div class="neighbor-actions">
+                  <div class="btn-icon primary">
+                    <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+                  </div>
+                  <div class="btn-icon ghost">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                  </div>
+                </div>
+              </div>
+              <div class="neighbor-card">
+                <div class="neighbor-avatar">
+                  <div class="avatar-img" style="background:linear-gradient(135deg,#D4874A,#A05C25);">T</div>
+                </div>
+                <div class="neighbor-info">
+                  <div class="neighbor-name">The Rodriguezes</div>
+                  <div class="neighbor-sub"><span>5.1 mi</span> · 5th Wheel · Family</div>
+                </div>
+                <div class="neighbor-actions">
+                  <div class="btn-icon primary">
+                    <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+                  </div>
+                  <div class="btn-icon ghost">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                  </div>
+                </div>
+              </div>
+              <div class="neighbor-card">
+                <div class="neighbor-avatar">
+                  <div class="avatar-img" style="background:linear-gradient(135deg,#4A6FA5,#2C4870);">R</div>
+                </div>
+                <div class="neighbor-info">
+                  <div class="neighbor-name">Renee & Dave</div>
+                  <div class="neighbor-sub"><span>8.9 mi</span> · Travel Trailer</div>
+                </div>
+                <div class="neighbor-actions">
+                  <div class="btn-icon primary">
+                    <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+                  </div>
+                  <div class="btn-icon ghost">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-bar">
+              <div class="tab-item active">
+                <div class="tab-icon-wrap">
+                  <svg class="icon-fill" viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                </div>
+                <span class="tab-label">Neighbors</span>
+              </div>
+              <div class="tab-item">
+                <div class="tab-icon-wrap">
+                  <svg class="icon-fill" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+                </div>
+                <span class="tab-label tab-badge">Messages</span>
+              </div>
+              <div class="tab-item">
+                <div class="tab-icon-wrap">
+                  <svg class="icon-fill" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                </div>
+                <span class="tab-label">Profile</span>
+              </div>
+              <div class="tab-item">
+                <div class="tab-icon-wrap">
+                  <svg class="icon-fill" viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                </div>
+                <span class="tab-label">Family</span>
+              </div>
+              <div class="tab-item">
+                <div class="tab-icon-wrap">
+                  <svg class="icon-fill" viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+                </div>
+                <span class="tab-label">Settings</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROFILE -->
+    <div class="phone">
+      <div class="phone-label">Profile</div>
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="screen-profile">
+            <div class="profile-hero">
+              <div class="profile-hero-shape"></div>
+              <div class="status-bar dark" style="padding-bottom:0;">
+                <span class="time">9:41</span>
+                <div class="icons">
+                  <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+                  <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+                </div>
+              </div>
+              <div class="profile-hero-top">
+                <div class="screen-title">Profile</div>
+                <div class="profile-edit-btn">
+                  <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                  Edit Profile
+                </div>
+              </div>
+              <div class="profile-avatar-row">
+                <div class="profile-avatar">JR</div>
+                <div class="profile-basic">
+                  <div class="profile-name">Jake & Rita</div>
+                  <div class="profile-handle">@jakeandrita · Fulltime</div>
+                  <div class="profile-badge">
+                    <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+                    Premium Member
+                  </div>
+                </div>
+              </div>
+              <div class="profile-stats">
+                <div class="stat-item">
+                  <div class="stat-value">48</div>
+                  <div class="stat-label">Neighbors</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value">127</div>
+                  <div class="stat-label">Check-ins</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value">3.2k</div>
+                  <div class="stat-label">Miles</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="profile-body">
+              <div class="info-card">
+                <div class="info-card-title">RV Info</div>
+                <div class="info-row">
+                  <div class="info-icon"><svg viewBox="0 0 24 24"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg></div>
+                  <div class="info-text">
+                    <div class="info-label">Type</div>
+                    <div class="info-value">Class A Motorhome</div>
+                  </div>
+                </div>
+                <div class="info-row">
+                  <div class="info-icon amber"><svg viewBox="0 0 24 24"><path d="M21 6.5l-4-4-10 10-2 6 6-2z"/></svg></div>
+                  <div class="info-text">
+                    <div class="info-label">Length</div>
+                    <div class="info-value">38 ft</div>
+                  </div>
+                </div>
+                <div class="info-row">
+                  <div class="info-icon"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>
+                  <div class="info-text">
+                    <div class="info-label">Current Location</div>
+                    <div class="info-value">Sedona, AZ</div>
+                  </div>
+                </div>
+              </div>
+              <div class="info-card">
+                <div class="info-card-title">Interests</div>
+                <div class="tags-row">
+                  <div class="tag">Hiking</div>
+                  <div class="tag">Photography</div>
+                  <div class="tag amber">Campfire Cooking</div>
+                  <div class="tag">Fly Fishing</div>
+                  <div class="tag amber">Full-timing</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-bar">
+              <div class="tab-item">
+                <div class="tab-icon-wrap"><svg class="icon-fill" viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></div>
+                <span class="tab-label">Neighbors</span>
+              </div>
+              <div class="tab-item">
+                <div class="tab-icon-wrap"><svg class="icon-fill" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg></div>
+                <span class="tab-label">Messages</span>
+              </div>
+              <div class="tab-item active">
+                <div class="tab-icon-wrap"><svg class="icon-fill" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
+                <span class="tab-label">Profile</span>
+              </div>
+              <div class="tab-item">
+                <div class="tab-icon-wrap"><svg class="icon-fill" viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></div>
+                <span class="tab-label">Family</span>
+              </div>
+              <div class="tab-item">
+                <div class="tab-icon-wrap"><svg class="icon-fill" viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg></div>
+                <span class="tab-label">Settings</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MESSAGES -->
+    <div class="phone">
+      <div class="phone-label">Messages</div>
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="screen-messages">
+            <div class="status-bar light" style="background:white;">
+              <span class="time">9:41</span>
+              <div class="icons">
+                <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+              </div>
+            </div>
+            <div class="messages-header">
+              <div class="messages-top-row">
+                <div class="screen-title">Messages</div>
+                <div class="msg-compose-btn">
+                  <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                </div>
+              </div>
+              <div class="search-bar">
+                <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                <span class="placeholder">Search messages…</span>
+              </div>
+            </div>
+            <div class="conv-list">
+              <div class="conv-item">
+                <div class="conv-avatar" style="background:linear-gradient(135deg,#3A8A55,#1A4D2E);">
+                  M
+                  <div class="online-dot" style="position:absolute;bottom:-1px;right:-1px;width:12px;height:12px;border:2px solid white;background:#34C759;border-radius:50%;"></div>
+                </div>
+                <div class="conv-info">
+                  <div class="conv-name-row">
+                    <span class="conv-name">Mike & Susan</span>
+                    <span class="conv-time">2m ago</span>
+                  </div>
+                  <div class="conv-preview unread">Great meeting you at Oak Creek!</div>
+                </div>
+                <div class="unread-badge">2</div>
+              </div>
+              <div class="conv-item">
+                <div class="conv-avatar" style="background:linear-gradient(135deg,#D4874A,#A05C25);">T</div>
+                <div class="conv-info">
+                  <div class="conv-name-row">
+                    <span class="conv-name">The Rodriguezes</span>
+                    <span class="conv-time">1h</span>
+                  </div>
+                  <div class="conv-preview">We'll be at Flagstaff KOA Thu…</div>
+                </div>
+              </div>
+              <div class="conv-item">
+                <div class="conv-avatar" style="background:linear-gradient(135deg,#4A6FA5,#2C4870);">R</div>
+                <div class="conv-info">
+                  <div class="conv-name-row">
+                    <span class="conv-name">Renee & Dave</span>
+                    <span class="conv-time">3h</span>
+                  </div>
+                  <div class="conv-preview">Thanks for the campfire tips 🔥</div>
+                </div>
+              </div>
+              <div class="conv-item">
+                <div class="conv-avatar" style="background:linear-gradient(135deg,#7B5EA7,#4A3070);">A</div>
+                <div class="conv-info">
+                  <div class="conv-name-row">
+                    <span class="conv-name">Arizona RVers Group</span>
+                    <span class="conv-time">Yesterday</span>
+                  </div>
+                  <div class="conv-preview conv-preview unread">Dave: Anyone heading to…</div>
+                </div>
+                <div class="unread-badge">5</div>
+              </div>
+              <div class="conv-item">
+                <div class="conv-avatar" style="background:linear-gradient(135deg,#C0392B,#922B21);">P</div>
+                <div class="conv-info">
+                  <div class="conv-name-row">
+                    <span class="conv-name">Paul & Nancy</span>
+                    <span class="conv-time">Mon</span>
+                  </div>
+                  <div class="conv-preview">See you on the road!</div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-bar">
+              <div class="tab-item">
+                <div class="tab-icon-wrap"><svg class="icon-fill" viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></div>
+                <span class="tab-label">Neighbors</span>
+              </div>
+              <div class="tab-item active">
+                <div class="tab-icon-wrap"><svg class="icon-fill" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg></div>
+                <span class="tab-label">Messages</span>
+              </div>
+              <div class="tab-item">
+                <div class="tab-icon-wrap"><svg class="icon-fill" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
+                <span class="tab-label">Profile</span>
+              </div>
+              <div class="tab-item">
+                <div class="tab-icon-wrap"><svg class="icon-fill" viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></div>
+                <span class="tab-label">Family</span>
+              </div>
+              <div class="tab-item">
+                <div class="tab-icon-wrap"><svg class="icon-fill" viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg></div>
+                <span class="tab-label">Settings</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /screens-row -->
+
+  <!-- ── COLOR PALETTE ──────────────────────── -->
+  <div class="palette-section mt-56">
+    <div class="section-heading">
+      <h2>Color Tokens</h2>
+      <p>Updated palette — richer forest green, warm amber accent, cleaner neutrals</p>
+    </div>
+    <div class="palette-grid">
+      <div class="swatch"><div class="swatch-color" style="background:#1E4A2E;"></div><div class="swatch-info"><div class="swatch-name">Primary</div><div class="swatch-hex">#1E4A2E</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#3A8A55;"></div><div class="swatch-info"><div class="swatch-name">Primary Light</div><div class="swatch-hex">#3A8A55</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#EAF4EE;"></div><div class="swatch-info"><div class="swatch-name">Primary XLt</div><div class="swatch-hex">#EAF4EE</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#D4874A;"></div><div class="swatch-info"><div class="swatch-name">Accent</div><div class="swatch-hex">#D4874A</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#F0A76A;"></div><div class="swatch-info"><div class="swatch-name">Accent Light</div><div class="swatch-hex">#F0A76A</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#FEF3EA;"></div><div class="swatch-info"><div class="swatch-name">Accent XLt</div><div class="swatch-hex">#FEF3EA</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#F6F7F5;"></div><div class="swatch-info"><div class="swatch-name">Background</div><div class="swatch-hex">#F6F7F5</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#FFFFFF; border: 1px solid #eee;"></div><div class="swatch-info"><div class="swatch-name">Surface</div><div class="swatch-hex">#FFFFFF</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#111B14;"></div><div class="swatch-info"><div class="swatch-name">Text 1</div><div class="swatch-hex">#111B14</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#4A5550;"></div><div class="swatch-info"><div class="swatch-name">Text 2</div><div class="swatch-hex">#4A5550</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#8A9490;"></div><div class="swatch-info"><div class="swatch-name">Text 3</div><div class="swatch-hex">#8A9490</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#E4E6E2;"></div><div class="swatch-info"><div class="swatch-name">Border</div><div class="swatch-hex">#E4E6E2</div></div></div>
+    </div>
+  </div>
+
+  <!-- ── TYPOGRAPHY ─────────────────────────── -->
+  <div class="type-section mt-56">
+    <div class="section-heading">
+      <h2>Type Scale</h2>
+      <p>Inter — single font family, weight + size hierarchy</p>
+    </div>
+    <div class="type-demo">
+      <div class="type-row"><span class="type-meta">28px / 800</span><span class="t-2xl">Screen Title</span></div>
+      <div class="type-row"><span class="type-meta">22px / 700</span><span class="t-xl">Section Heading</span></div>
+      <div class="type-row"><span class="type-meta">18px / 600</span><span class="t-lg">Card Title</span></div>
+      <div class="type-row"><span class="type-meta">15px / 400</span><span class="t-base">Body text for descriptions and longer content that wraps lines.</span></div>
+      <div class="type-row"><span class="type-meta">13px / 400</span><span class="t-sm">Secondary / metadata text</span></div>
+      <div class="type-row"><span class="type-meta">11px / 700 CAPS</span><span class="t-xs" style="text-transform:uppercase;letter-spacing:.08em;font-weight:700;">Label / Eyebrow</span></div>
+    </div>
+  </div>
+
+  <!-- ── COMPONENTS ─────────────────────────── -->
+  <div class="comp-section mt-56" style="padding-bottom:80px;">
+    <div class="section-heading">
+      <h2>Component Tokens</h2>
+      <p>Buttons, inputs, and status cards</p>
+    </div>
+    <div class="comp-grid">
+      <div class="comp-card">
+        <h3>Buttons</h3>
+        <div class="btn-row">
+          <div class="btn btn-solid-primary">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            Primary
+          </div>
+          <div class="btn btn-solid-accent">
+            <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+            Upgrade
+          </div>
+          <div class="btn btn-outline">Outline</div>
+          <div class="btn btn-ghost">Ghost</div>
+          <div class="btn btn-danger">Danger</div>
+        </div>
+      </div>
+      <div class="comp-card">
+        <h3>Text Inputs</h3>
+        <div class="input-preview">
+          <div class="input-preview-field">
+            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            <span class="ph">Email address</span>
+          </div>
+          <div class="input-preview-field focused">
+            <svg viewBox="0 0 24 24" style="fill:var(--c-primary);"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            <span class="val">Jake Rivera</span>
+          </div>
+          <div class="input-preview-field error">
+            <svg viewBox="0 0 24 24" style="fill:var(--c-error);"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2z"/></svg>
+            <span class="ph">Password</span>
+          </div>
+          <div class="input-error-msg">Password must be at least 8 characters</div>
+        </div>
+      </div>
+      <div class="comp-card">
+        <h3>Status / Alert Cards</h3>
+        <div class="card-preview">
+          <div class="mini-card success">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+            <span>Connected successfully</span>
+          </div>
+          <div class="mini-card warn">
+            <svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+            <span>Off The Grid mode is active</span>
+          </div>
+          <div class="mini-card error">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <span>Location permission denied</span>
+          </div>
+          <div class="mini-card info">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+            <span>3 new neighbors in your area</span>
+          </div>
+        </div>
+      </div>
+      <div class="comp-card">
+        <h3>Chips &amp; Tags</h3>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;">
+          <div class="chip active">Nearby</div>
+          <div class="chip">15 mi</div>
+          <div class="chip">30 mi</div>
+          <div class="chip">75 mi</div>
+          <div class="chip">200 mi</div>
+        </div>
+        <div class="tags-row">
+          <div class="tag">Hiking</div>
+          <div class="tag">Photography</div>
+          <div class="tag amber">Full-timing</div>
+          <div class="tag">Fly Fishing</div>
+          <div class="tag amber">Solar Power</div>
+          <div class="tag">Dog Friendly</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /stage -->
+</body>
+</html>
