@@ -17,7 +17,7 @@ export default function Navbar() {
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
         {/* Logo */}
         <a href="#">
-          <img src="/topLogo.png" alt="RV Neighbors" className="h-20 w-auto" />
+          <img src="/topLogo.png" alt="RV Neighbors" className="h-24 w-auto" />
         </a>
 
         {/* Desktop nav */}
