@@ -54,7 +54,7 @@ export default function Hero() {
 
           {/* Front phone */}
           <div className="w-52 rotate-[3deg]">
-            <PhoneMockup label="Nearby RVers" bgColor="bg-white">
+            <PhoneMockup label="Private Messages" bgColor="bg-white">
               <img src="/screenshots/screenshots-messages.png" alt="Nearby RVers" className="w-full h-full object-cover object-top" />
             </PhoneMockup>
           </div>
