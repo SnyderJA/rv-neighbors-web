@@ -48,51 +48,14 @@ export default function Hero() {
           {/* Back phone */}
           <div className="hidden sm:block w-48 mb-0 translate-y-8 rotate-[-6deg]">
             <PhoneMockup label="Neighbors Map" bgColor="bg-primary-light/40" screenHeight={380}>
-              {/* Map placeholder */}
-              <div className="w-full h-full bg-gradient-to-b from-primary/20 to-primary-dark/40 flex flex-col items-center justify-center gap-2 p-4">
-                <div className="w-8 h-8 bg-accent/80 rounded-full flex items-center justify-center">
-                  <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <div className="space-y-1.5 w-full">
-                  {[...Array(3)].map((_, i) => (
-                    <div key={i} className="flex items-center gap-2">
-                      <div className="w-3 h-3 bg-accent/60 rounded-full flex-shrink-0" />
-                      <div className="h-1.5 bg-white/20 rounded flex-1" />
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <img src="/screenshots/screenshots-map.png" alt="Neighbors map" className="w-full h-full object-cover object-top" />
             </PhoneMockup>
           </div>
 
           {/* Front phone */}
           <div className="w-52 rotate-[3deg]">
             <PhoneMockup label="Nearby RVers" bgColor="bg-white">
-              <div className="w-full h-full bg-bg flex flex-col">
-                {/* App header */}
-                <div className="bg-primary px-3 py-2.5">
-                  <p className="text-white text-xs font-semibold">Nearby Neighbors</p>
-                  <p className="text-white/60 text-[9px]">3 RVers within 10 miles</p>
-                </div>
-                {/* Profile cards */}
-                <div className="p-2 space-y-1.5 flex-1">
-                  {[
-                    { name: 'Tom & Lisa', dist: '0.3 mi', color: 'bg-secondary' },
-                    { name: 'The Martins', dist: '1.2 mi', color: 'bg-slate' },
-                    { name: 'Carol H.', dist: '4.7 mi', color: 'bg-accent' },
-                  ].map((u) => (
-                    <div key={u.name} className="flex items-center gap-2 bg-white rounded-lg p-2 shadow-sm">
-                      <div className={`w-6 h-6 ${u.color} rounded-full flex-shrink-0`} />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-[9px] font-semibold text-gray-800 truncate">{u.name}</p>
-                        <p className="text-[8px] text-gray-400">{u.dist} away</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <img src="/screenshots/screenshots-profile.png" alt="Nearby RVers" className="w-full h-full object-cover object-top" />
             </PhoneMockup>
           </div>
         </div>
