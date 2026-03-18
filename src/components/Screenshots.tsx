@@ -6,7 +6,7 @@ const screens = [
     highlights: ['Real-time location updates', 'Adjustable visibility radius', 'One-tap connection requests'],
     side: 'right',
     screenContent: (
-      <img src="/screenshots-map.png" alt="Neighbors Map" className="w-full h-full object-cover object-top" />
+      <img src="/screenshots/screenshots-map.png" alt="RV Neighbors map screen" className="w-full h-full object-cover object-top" />
     ),
   },
   {
@@ -16,7 +16,7 @@ const screens = [
     highlights: ['RV photo & details', 'Interests & travel style', 'Social media handle'],
     side: 'left',
     screenContent: (
-      <img src="/screenshots-profile.png" alt="User Profile" className="w-full h-full object-cover object-top" />
+      <img src="/screenshots/screenshots-profile.png" alt="RV Neighbors profile screen" className="w-full h-full object-cover object-top" />
     ),
   },
   {
@@ -26,7 +26,7 @@ const screens = [
     highlights: ['Direct messaging', 'Connection-based privacy', 'Available on iOS & Android'],
     side: 'right',
     screenContent: (
-      <img src="/screenshots-messages.png" alt="Messages" className="w-full h-full object-cover object-top" />
+      <img src="/screenshots/screenshots-messages.png" alt="RV Neighbors messages screen" className="w-full h-full object-cover object-top" />
     ),
   },
   {
@@ -36,7 +36,7 @@ const screens = [
     highlights: ['Separate radii for friends & strangers', 'Off The Grid mode', 'Automatic or manual check-ins'],
     side: 'left',
     screenContent: (
-      <img src="/screenshots-privacy.png" alt="Privacy Settings" className="w-full h-full object-cover object-top" />
+      <img src="/screenshots/screenshots-privacy.png" alt="RV Neighbors privacy settings screen" className="w-full h-full object-cover object-top" />
     ),
   },
 ]
@@ -65,7 +65,7 @@ export default function Screenshots() {
               <div className="flex-shrink-0">
                 <div className="relative bg-gray-900 rounded-[3rem] p-2.5 shadow-2xl ring-1 ring-white/10 w-56">
                   <div className="absolute top-4 left-1/2 -translate-x-1/2 w-16 h-4 bg-gray-900 rounded-full z-10" />
-                  <div className="bg-white rounded-[2.5rem] overflow-hidden" style={{ height: 380 }}>
+                  <div className="bg-white rounded-[2.5rem] overflow-hidden" style={{ height: 440 }}>
                     {s.screenContent}
                   </div>
                 </div>

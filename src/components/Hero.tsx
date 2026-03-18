@@ -47,15 +47,15 @@ export default function Hero() {
         <div className="flex justify-center lg:justify-end gap-4 items-end">
           {/* Back phone */}
           <div className="hidden sm:block w-48 mb-0 translate-y-8 rotate-[-6deg]">
-            <PhoneMockup label="Neighbors Map" bgColor="bg-white">
-              <img src="/screenshots-map.png" alt="Neighbors Map" className="w-full h-full object-cover object-top" />
+            <PhoneMockup label="Neighbors Map" bgColor="bg-primary-light/40" screenHeight={380}>
+              <img src="/screenshots/screenshots-map.png" alt="Neighbors map" className="w-full h-full object-cover object-top" />
             </PhoneMockup>
           </div>
 
           {/* Front phone */}
           <div className="w-52 rotate-[3deg]">
-            <PhoneMockup label="Messages" bgColor="bg-white">
-              <img src="/screenshots-messages.png" alt="Messages" className="w-full h-full object-cover object-top" />
+            <PhoneMockup label="Private Messages" bgColor="bg-white">
+              <img src="/screenshots/screenshots-messages.png" alt="Private Messages" className="w-full h-full object-cover object-top" />
             </PhoneMockup>
           </div>
         </div>
@@ -72,7 +72,7 @@ export default function Hero() {
   )
 }
 
-function PhoneMockup({ children, label, bgColor }: { children: React.ReactNode; label: string; bgColor: string }) {
+function PhoneMockup({ children, label, bgColor, screenHeight = 415 }: { children: React.ReactNode; label: string; bgColor: string; screenHeight?: number }) {
   return (
     <div className="relative">
       {/* Phone shell */}
@@ -80,7 +80,7 @@ function PhoneMockup({ children, label, bgColor }: { children: React.ReactNode; 
         {/* Notch */}
         <div className="absolute top-4 left-1/2 -translate-x-1/2 w-16 h-4 bg-gray-900 rounded-full z-10" />
         {/* Screen */}
-        <div className={`${bgColor} rounded-[2rem] overflow-hidden`} style={{ height: 320 }}>
+        <div className={`${bgColor} rounded-[2rem] overflow-hidden`} style={{ height: screenHeight }}>
           {children}
         </div>
       </div>
