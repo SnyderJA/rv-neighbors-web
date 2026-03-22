@@ -1,6 +1,7 @@
 {
   "rewrites": [
     { "source": "/design-preview", "destination": "/design-preview.html" },
+    { "source": "/brand-kit", "destination": "/brand-kit.html" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

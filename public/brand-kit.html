@@ -1,0 +1,3437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>RV Neighbors — Brand Kit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Playfair+Display:wght@700;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&display=swap" rel="stylesheet" />
+<style>
+  /* ============================================================
+     CSS CUSTOM PROPERTIES — RV Neighbors Brand Tokens
+  ============================================================ */
+  :root {
+    /* Primary — Deep Forest Green */
+    --color-primary:        #1E4A2E;
+    --color-primary-mid:    #265C39;
+    --color-primary-light:  #3A8A55;
+    --color-primary-xlight: #EAF4EE;
+    --color-primary-dark:   #0F2419;
+
+    /* Accent — Amber / Golden Hour */
+    --color-accent:         #D4874A;
+    --color-accent-light:   #F0A76A;
+    --color-accent-xlight:  #FEF3EA;
+
+    /* Legacy / Supporting */
+    --color-secondary:      #8B6F47;
+    --color-secondary-light:#A68B63;
+    --color-slate:          #4A6FA5;
+    --color-slate-light:    #6B8FC5;
+
+    /* Surfaces */
+    --color-bg:             #F6F7F5;
+    --color-bg-alt:         #F0F1EE;
+    --color-card:           #FFFFFF;
+    --color-surface2:       #F0F1EE;
+
+    /* Text */
+    --color-text:           #111B14;
+    --color-text-secondary: #4A5550;
+    --color-text-light:     #8A9490;
+
+    /* Borders */
+    --color-border:         #E4E6E2;
+    --color-border-light:   #EDEEEB;
+
+    /* Status */
+    --color-success:        #2E7D52;
+    --color-error:          #C0392B;
+    --color-warning:        #E07B2A;
+
+    /* Utility */
+    --color-white:          #FFFFFF;
+    --color-shadow:         rgba(0,0,0,0.08);
+    --color-shadow-dark:    rgba(0,0,0,0.14);
+    --color-overlay:        rgba(0,0,0,0.5);
+
+    /* Gradients */
+    --gradient-auth:   linear-gradient(160deg, #0F2419 0%, #1A3A2A 45%, #0D1F14 100%);
+    --gradient-hero:   linear-gradient(160deg, #0F2419 0%, #1E4A2E 50%, #265C39 100%);
+    --gradient-avatar: linear-gradient(135deg, #265C39, #3A8A55);
+
+    /* Typography */
+    --font-display:  'Playfair Display', Georgia, serif;
+    --font-body:     'DM Sans', system-ui, sans-serif;
+    --font-mono:     'Space Mono', monospace;
+
+    /* Border radius */
+    --radius-sm:    10px;
+    --radius-md:    14px;
+    --radius-lg:    16px;
+    --radius-pill:  20px;
+
+    /* Shadows */
+    --shadow-light:  0 1px 4px rgba(0,0,0,0.08);
+    --shadow-medium: 0 4px 12px rgba(0,0,0,0.10);
+    --shadow-dark:   0 8px 24px rgba(0,0,0,0.14);
+  }
+
+  /* ============================================================
+     RESET & BASE
+  ============================================================ */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; font-size: 16px; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--color-bg);
+    color: var(--color-text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  /* ============================================================
+     SIDEBAR NAV
+  ============================================================ */
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: 220px;
+    height: 100vh;
+    background: var(--color-primary-dark);
+    padding: 32px 0 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    z-index: 100;
+    overflow-y: auto;
+  }
+
+  .sidebar-logo {
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 700;
+    color: #fff;
+    padding: 0 20px 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .sidebar-logo span {
+    font-family: var(--font-body);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    opacity: 0.9;
+  }
+
+  .sidebar-nav {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  .sidebar-section-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    padding: 16px 20px 6px;
+  }
+  .sidebar-link {
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.65);
+    padding: 9px 20px;
+    border-left: 2px solid transparent;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .sidebar-link:hover {
+    color: #fff;
+    background: rgba(255,255,255,0.05);
+    border-left-color: var(--color-accent);
+  }
+
+  /* ============================================================
+     MAIN LAYOUT
+  ============================================================ */
+  .main {
+    margin-left: 220px;
+    min-height: 100vh;
+  }
+
+  /* ============================================================
+     HERO
+  ============================================================ */
+  .hero {
+    background: var(--gradient-hero);
+    padding: 100px 72px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: rgba(58,138,85,0.18);
+    pointer-events: none;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: -60px;
+    width: 260px; height: 260px;
+    border-radius: 50%;
+    background: rgba(212,135,74,0.12);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--color-accent-light);
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(48px, 6vw, 80px);
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.0;
+    letter-spacing: -1px;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-title em {
+    font-style: normal;
+    color: var(--color-accent-light);
+  }
+  .hero-tagline {
+    font-size: 18px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 40px;
+    position: relative;
+    z-index: 1;
+    font-style: italic;
+  }
+  .hero-meta {
+    display: flex;
+    gap: 32px;
+    position: relative;
+    z-index: 1;
+    flex-wrap: wrap;
+  }
+  .hero-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .hero-meta-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+  }
+  .hero-meta-value {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: rgba(255,255,255,0.75);
+  }
+
+  /* ============================================================
+     SECTIONS
+  ============================================================ */
+  .section {
+    padding: 72px;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .section:last-child { border-bottom: none; }
+  .section-alt { background: var(--color-bg-alt); }
+  .section-dark {
+    background: var(--color-primary-dark);
+    color: #fff;
+  }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: 8px;
+  }
+  .section-label-dark {
+    color: var(--color-accent-light);
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--color-text);
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .section-title-white { color: #fff; }
+  .section-desc {
+    font-size: 15px;
+    color: var(--color-text-secondary);
+    max-width: 560px;
+    margin-bottom: 48px;
+    line-height: 1.7;
+  }
+  .section-desc-light { color: rgba(255,255,255,0.55); }
+
+  /* ============================================================
+     COLOR SWATCHES
+  ============================================================ */
+  .color-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+  .color-card {
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-light);
+    border: 1px solid var(--color-border-light);
+    background: var(--color-card);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .color-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-medium);
+  }
+  .color-swatch {
+    height: 88px;
+    position: relative;
+  }
+  .color-info {
+    padding: 12px 14px;
+  }
+  .color-name {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    color: var(--color-text);
+    margin-bottom: 3px;
+  }
+  .color-hex {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--color-text-light);
+  }
+  .color-group-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--color-text-light);
+    margin-bottom: 16px;
+    margin-top: 36px;
+  }
+  .color-group-title:first-of-type { margin-top: 0; }
+
+  /* Gradient swatches */
+  .gradient-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+    margin-top: 8px;
+  }
+  .gradient-card {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-medium);
+  }
+  .gradient-swatch {
+    height: 140px;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    padding: 16px;
+  }
+  .gradient-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.85);
+  }
+  .gradient-stops {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 3px;
+  }
+
+  /* ============================================================
+     TYPOGRAPHY SPECIMENS
+  ============================================================ */
+  .type-specimen {
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 32px 36px;
+    margin-bottom: 16px;
+  }
+  .type-meta {
+    display: flex;
+    gap: 20px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+  .type-meta-tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--color-text-light);
+    background: var(--color-bg-alt);
+    padding: 3px 8px;
+    border-radius: 4px;
+  }
+  .type-scale {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .type-row {
+    display: grid;
+    grid-template-columns: 120px 1fr 200px;
+    align-items: center;
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--color-border-light);
+    gap: 24px;
+  }
+  .type-row:last-child { border-bottom: none; }
+  .type-row:hover { background: var(--color-bg); }
+  .type-row-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--color-text-light);
+    white-space: nowrap;
+  }
+  .type-row-sample { color: var(--color-text); }
+  .type-row-spec {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--color-text-light);
+    text-align: right;
+  }
+
+  /* ============================================================
+     COMPONENTS
+  ============================================================ */
+  .component-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 24px;
+  }
+  .component-card {
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .component-preview {
+    padding: 36px 28px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+    min-height: 140px;
+  }
+  .component-preview-dark {
+    background: var(--gradient-auth);
+  }
+  .component-preview-light {
+    background: var(--color-bg-alt);
+  }
+  .component-meta {
+    padding: 16px 20px;
+    border-top: 1px solid var(--color-border-light);
+  }
+  .component-name {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: 3px;
+  }
+  .component-desc {
+    font-size: 11px;
+    color: var(--color-text-light);
+    line-height: 1.5;
+  }
+
+  /* Actual app components */
+  .btn-primary {
+    background: var(--color-primary);
+    color: #fff;
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 700;
+    padding: 16px 32px;
+    border-radius: var(--radius-md);
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(30,74,46,0.35);
+    transition: opacity 0.2s, transform 0.15s;
+    letter-spacing: 0.1px;
+  }
+  .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+
+  .btn-secondary {
+    background: rgba(255,255,255,0.07);
+    color: rgba(255,255,255,0.85);
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 600;
+    padding: 14px 28px;
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(255,255,255,0.10);
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-secondary:hover { background: rgba(255,255,255,0.12); }
+
+  .btn-accent {
+    background: var(--color-accent);
+    color: #fff;
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 700;
+    padding: 13px 26px;
+    border-radius: var(--radius-md);
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(212,135,74,0.35);
+    transition: opacity 0.2s;
+  }
+  .btn-accent:hover { opacity: 0.88; }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--color-primary);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 11px 22px;
+    border-radius: var(--radius-md);
+    border: 1.5px solid var(--color-primary);
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-outline:hover { background: var(--color-primary-xlight); }
+
+  /* Badges */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    letter-spacing: 0.2px;
+  }
+  .badge-connected { background: var(--color-success); color: #fff; }
+  .badge-pending { background: var(--color-bg-alt); color: var(--color-text-secondary); border: 1px solid var(--color-border); }
+  .badge-accent { background: var(--color-accent); color: #fff; }
+  .badge-primary { background: var(--color-primary); color: #fff; }
+  .badge-premium { background: var(--color-accent-xlight); color: var(--color-accent); border: 1px solid rgba(212,135,74,0.25); }
+  .badge-family { background: var(--color-primary-xlight); color: var(--color-primary); border: 1px solid rgba(30,74,46,0.18); }
+
+  /* Chips */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--color-border);
+    background: var(--color-card);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .chip:hover { border-color: var(--color-primary-light); color: var(--color-primary); }
+  .chip-selected {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #fff;
+  }
+  .chip-accent {
+    background: var(--color-accent-xlight);
+    border-color: rgba(212,135,74,0.3);
+    color: var(--color-accent);
+  }
+
+  /* Input field */
+  .input-field {
+    width: 100%;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+    font-family: var(--font-body);
+    font-size: 15px;
+    color: #fff;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .input-field::placeholder { color: rgba(255,255,255,0.25); }
+  .input-field:focus { border-color: rgba(255,255,255,0.25); }
+
+  .input-light {
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+    font-family: var(--font-body);
+    font-size: 15px;
+    color: var(--color-text);
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+  .input-light:focus { border-color: var(--color-primary-light); box-shadow: 0 0 0 3px var(--color-primary-xlight); }
+
+  .input-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    margin-bottom: 6px;
+    display: block;
+  }
+  .input-label-light { color: rgba(255,255,255,0.45); }
+
+  /* User card */
+  .user-card {
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    box-shadow: var(--shadow-light);
+    max-width: 280px;
+    transition: box-shadow 0.2s;
+  }
+  .user-card:hover { box-shadow: var(--shadow-medium); }
+  .user-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: var(--gradient-avatar);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 800;
+    color: rgba(255,255,255,0.9);
+    flex-shrink: 0;
+  }
+  .user-info { flex: 1; min-width: 0; }
+  .user-name { font-size: 15px; font-weight: 700; color: var(--color-text); }
+  .user-handle { font-size: 12px; color: var(--color-text-light); margin-bottom: 6px; }
+  .user-rv { font-size: 11px; font-weight: 600; color: var(--color-text-secondary); }
+  .user-actions { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+
+  /* Membership cards */
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+    margin-top: 8px;
+  }
+  .pricing-card {
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 28px 24px;
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .pricing-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-dark); }
+  .pricing-card-featured {
+    background: var(--gradient-hero);
+    border-color: transparent;
+    color: #fff;
+  }
+  .pricing-tier {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: 10px;
+  }
+  .pricing-tier-white { color: var(--color-accent-light); }
+  .pricing-price {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--color-text);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .pricing-price-white { color: #fff; }
+  .pricing-period { font-size: 12px; color: var(--color-text-light); margin-bottom: 20px; }
+  .pricing-period-light { color: rgba(255,255,255,0.5); }
+  .pricing-features { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .pricing-feature {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .pricing-feature-white { color: rgba(255,255,255,0.75); }
+  .pricing-feature::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-success);
+    flex-shrink: 0;
+  }
+  .pricing-feature-white::before { background: var(--color-accent-light); }
+  .pricing-featured-badge {
+    position: absolute;
+    top: -10px;
+    right: 18px;
+    background: var(--color-accent);
+    color: #fff;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+  }
+
+  /* Tab bar */
+  .tab-bar {
+    background: #fff;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 10px 16px;
+    display: flex;
+    gap: 4px;
+    box-shadow: 0 -2px 12px rgba(0,0,0,0.06);
+    max-width: 360px;
+  }
+  .tab-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 7px 6px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .tab-item-active { background: var(--color-primary-xlight); }
+  .tab-icon { font-size: 18px; line-height: 1; }
+  .tab-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    color: var(--color-text-light);
+  }
+  .tab-label-active { color: var(--color-primary); }
+
+  /* ============================================================
+     SPACING
+  ============================================================ */
+  .spacing-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: flex-end;
+  }
+  .spacing-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .spacing-block {
+    background: var(--color-primary);
+    border-radius: 3px;
+    opacity: 0.75;
+  }
+  .spacing-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--color-text-light);
+  }
+
+  /* ============================================================
+     BRAND VOICE
+  ============================================================ */
+  .voice-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .voice-card {
+    border-radius: var(--radius-lg);
+    padding: 28px;
+  }
+  .voice-card-do {
+    background: var(--color-primary-xlight);
+    border: 1px solid rgba(30,74,46,0.15);
+  }
+  .voice-card-dont {
+    background: #FEF2F2;
+    border: 1px solid rgba(192,57,43,0.15);
+  }
+  .voice-card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .voice-card-do .voice-card-header { color: var(--color-success); }
+  .voice-card-dont .voice-card-header { color: var(--color-error); }
+  .voice-example {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--color-text);
+    padding: 12px 16px;
+    background: rgba(255,255,255,0.65);
+    border-radius: var(--radius-sm);
+    margin-bottom: 10px;
+    font-style: italic;
+  }
+  .voice-example:last-child { margin-bottom: 0; }
+
+  /* Terminology */
+  .term-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    margin-top: 32px;
+  }
+  .term-card {
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+  }
+  .term-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: 4px;
+  }
+  .term-desc {
+    font-size: 12px;
+    color: var(--color-text-light);
+    line-height: 1.5;
+  }
+
+  /* ============================================================
+     RV TYPES
+  ============================================================ */
+  .rv-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  /* ============================================================
+     ICONOGRAPHY
+  ============================================================ */
+  .icon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 12px;
+  }
+  .icon-item {
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 18px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+    transition: border-color 0.2s;
+  }
+  .icon-item:hover { border-color: var(--color-primary-light); }
+  .icon-glyph { font-size: 22px; line-height: 1; }
+  .icon-name { font-size: 10px; color: var(--color-text-light); font-weight: 500; }
+
+  /* ============================================================
+     FOOTER
+  ============================================================ */
+  .footer {
+    padding: 48px 72px;
+    background: var(--color-primary-dark);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .footer-left {
+    font-size: 13px;
+    color: rgba(255,255,255,0.45);
+  }
+  .footer-left strong { color: rgba(255,255,255,0.75); font-weight: 600; }
+  .footer-right {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.5px;
+  }
+
+  /* ============================================================
+     UTILITIES
+  ============================================================ */
+  .divider {
+    height: 1px;
+    background: var(--color-border);
+    margin: 40px 0;
+  }
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+  .three-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+  }
+  .flex-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .mono {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--color-text-light);
+    background: var(--color-bg-alt);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  /* ============================================================
+     ANIMATIONS
+  ============================================================ */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero-eyebrow { animation: fadeUp 0.5s ease both; }
+  .hero-title   { animation: fadeUp 0.6s 0.1s ease both; }
+  .hero-tagline { animation: fadeUp 0.6s 0.2s ease both; }
+  .hero-meta    { animation: fadeUp 0.6s 0.35s ease both; }
+
+  /* ============================================================
+     PHONE FRAMES & SCREEN MOCKUPS
+  ============================================================ */
+  .screens-intro {
+    max-width: 660px;
+    margin-bottom: 56px;
+  }
+  .screens-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 48px 36px;
+    align-items: start;
+  }
+  .screen-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  .screen-label-row {
+    text-align: center;
+  }
+  .screen-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: 3px;
+  }
+  .screen-route {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--color-text-light);
+  }
+
+  /* iPhone-style frame */
+  .phone-frame {
+    width: 290px;
+    background: #1A1A1A;
+    border-radius: 44px;
+    padding: 14px;
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.08), 0 24px 48px rgba(0,0,0,0.35), 0 8px 16px rgba(0,0,0,0.2);
+    position: relative;
+    flex-shrink: 0;
+  }
+  .phone-notch {
+    position: absolute;
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90px;
+    height: 26px;
+    background: #1A1A1A;
+    border-radius: 0 0 18px 18px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .phone-notch-camera {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #2A2A2A;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+  .phone-notch-pill {
+    width: 50px;
+    height: 5px;
+    border-radius: 3px;
+    background: #2A2A2A;
+  }
+  .phone-screen {
+    background: #fff;
+    border-radius: 32px;
+    overflow: hidden;
+    height: 580px;
+    overflow-y: hidden;
+    position: relative;
+  }
+  .phone-status-bar {
+    height: 40px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 0 20px 8px;
+    flex-shrink: 0;
+  }
+  .phone-status-time {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+  .phone-status-icons {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    font-size: 10px;
+  }
+
+  /* ── LOGIN SCREEN ── */
+  .s-login {
+    background: linear-gradient(160deg, #0F2419 0%, #1A3A2A 45%, #0D1F14 100%);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  .s-login-glow-tr {
+    position: absolute;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(58,138,85,0.18);
+    top: -60px; right: -60px;
+  }
+  .s-login-glow-bl {
+    position: absolute;
+    width: 150px; height: 150px;
+    border-radius: 50%;
+    background: rgba(212,135,74,0.10);
+    bottom: 80px; left: -40px;
+  }
+  .s-login-scroll {
+    flex: 1;
+    overflow: hidden;
+    padding: 8px 20px 16px;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .s-login-logo-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 0 16px;
+  }
+  .s-login-logo-mark {
+    width: 56px; height: 56px;
+    border-radius: 16px;
+    background: #3A8A55;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 800;
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(58,138,85,0.4);
+  }
+  .s-login-app-name {
+    font-size: 20px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.5px;
+  }
+  .s-login-tagline {
+    font-size: 11px;
+    color: rgba(255,255,255,0.45);
+  }
+  .s-welcome {
+    font-size: 20px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.5px;
+    margin-bottom: 14px;
+  }
+  .s-input-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 4px;
+  }
+  .s-input-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 12px;
+    padding: 11px 12px;
+    margin-bottom: 10px;
+  }
+  .s-input-icon {
+    font-size: 12px;
+    color: rgba(255,255,255,0.35);
+    flex-shrink: 0;
+  }
+  .s-input-text {
+    font-size: 12px;
+    color: rgba(255,255,255,0.25);
+  }
+  .s-forgot {
+    text-align: right;
+    font-size: 10px;
+    color: #F0A76A;
+    font-weight: 500;
+    margin-bottom: 14px;
+    margin-top: -4px;
+  }
+  .s-btn-primary {
+    background: #3A8A55;
+    border-radius: 12px;
+    padding: 13px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 14px;
+    box-shadow: 0 4px 12px rgba(58,138,85,0.35);
+  }
+  .s-divider {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .s-divider-line {
+    flex: 1;
+    height: 1px;
+    background: rgba(255,255,255,0.10);
+  }
+  .s-divider-text {
+    font-size: 9px;
+    color: rgba(255,255,255,0.25);
+  }
+  .s-social-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .s-social-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px;
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 10px;
+    background: rgba(255,255,255,0.07);
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.70);
+  }
+  .s-google-g { font-size: 12px; font-weight: 700; color: #DB4437; }
+  .s-facebook-f { font-size: 12px; font-weight: 700; color: #1877F2; }
+  .s-signup-link {
+    text-align: center;
+    font-size: 11px;
+    color: rgba(255,255,255,0.35);
+    margin-top: 10px;
+  }
+  .s-signup-link b { color: #F0A76A; }
+
+  /* ── NEIGHBORS SCREEN ── */
+  .s-neighbors {
+    background: #F6F7F5;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .s-nav-header {
+    background: #fff;
+    border-bottom: 1px solid #EDEEEB;
+    padding: 12px 12px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .s-nav-header-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: #111B14;
+    letter-spacing: -0.4px;
+    padding: 0 2px;
+  }
+  .s-action-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .s-discover-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    background: #1E4A2E;
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(30,74,46,0.25);
+  }
+  .s-toggle-group {
+    display: flex;
+    background: #F0F1EE;
+    border: 1px solid #E4E6E2;
+    border-radius: 10px;
+    padding: 2px;
+    gap: 0;
+  }
+  .s-toggle-opt {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #4A5550;
+  }
+  .s-toggle-opt.active {
+    background: #fff;
+    color: #1E4A2E;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.10);
+  }
+  .s-radius-row {
+    display: flex;
+    gap: 5px;
+    overflow: hidden;
+    flex-wrap: nowrap;
+  }
+  .s-radius-chip {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    padding: 4px 8px;
+    border-radius: 20px;
+    background: #F0F1EE;
+    border: 1px solid #E4E6E2;
+    font-size: 10px;
+    font-weight: 600;
+    color: #4A5550;
+    white-space: nowrap;
+  }
+  .s-radius-chip.active {
+    background: #1E4A2E;
+    border-color: #1E4A2E;
+    color: #fff;
+  }
+  .s-list-scroll {
+    flex: 1;
+    overflow: hidden;
+    padding: 10px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .s-list-header {
+    padding: 0 12px 8px;
+  }
+  .s-list-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: #111B14;
+    letter-spacing: -0.4px;
+  }
+  .s-list-sub {
+    font-size: 11px;
+    color: #4A5550;
+    margin-top: 2px;
+  }
+  .s-user-card {
+    background: #fff;
+    margin: 3px 8px;
+    border-radius: 14px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    border: 1px solid #EDEEEB;
+  }
+  .s-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #265C39, #3A8A55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 800;
+    color: rgba(255,255,255,0.9);
+    flex-shrink: 0;
+  }
+  .s-avatar-accent { background: linear-gradient(135deg, #D4874A, #F0A76A); }
+  .s-avatar-slate  { background: linear-gradient(135deg, #4A6FA5, #6B8FC5); }
+  .s-avatar-secondary { background: linear-gradient(135deg, #8B6F47, #A68B63); }
+  .s-user-info { flex: 1; min-width: 0; }
+  .s-user-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: #111B14;
+    margin-bottom: 1px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .s-user-meta {
+    font-size: 10px;
+    color: #8A9490;
+    margin-bottom: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .s-user-badges {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+  .s-badge {
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 20px;
+  }
+  .s-badge-connected { background: #2E7D52; color: #fff; }
+  .s-badge-pending   { background: #F0F1EE; color: #4A5550; border: 1px solid #E4E6E2; }
+  .s-badge-connect   { background: #1E4A2E; color: #fff; }
+
+  /* ── MESSAGES SCREEN ── */
+  .s-messages {
+    background: #F6F7F5;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .s-msg-header {
+    background: #fff;
+    border-bottom: 1px solid #EDEEEB;
+    padding: 12px 14px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .s-msg-title {
+    font-size: 17px;
+    font-weight: 800;
+    color: #111B14;
+    letter-spacing: -0.4px;
+  }
+  .s-msg-tab-wrap {
+    padding: 10px 12px 6px;
+    background: #F6F7F5;
+    flex-shrink: 0;
+  }
+  .s-msg-tabs {
+    display: flex;
+    background: #F0F1EE;
+    border: 1px solid #E4E6E2;
+    border-radius: 10px;
+    padding: 2px;
+  }
+  .s-msg-tab {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 8px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #4A5550;
+  }
+  .s-msg-tab.active {
+    background: #1E4A2E;
+    color: #fff;
+    box-shadow: 0 2px 4px rgba(30,74,46,0.25);
+  }
+  .s-msg-unread-banner {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 12px 6px;
+    padding: 8px 12px;
+    background: #EAF4EE;
+    border-radius: 10px;
+    flex-shrink: 0;
+  }
+  .s-msg-banner-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #1E4A2E;
+    flex-shrink: 0;
+  }
+  .s-msg-banner-text {
+    font-size: 11px;
+    font-weight: 600;
+    color: #1E4A2E;
+  }
+  .s-conv-list { flex: 1; overflow: hidden; }
+  .s-conv-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: #fff;
+    border-bottom: 1px solid #F0F1EE;
+  }
+  .s-conv-avatar {
+    width: 42px; height: 42px;
+    border-radius: 21px;
+    background: linear-gradient(135deg, #265C39, #3A8A55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 800;
+    color: rgba(255,255,255,0.9);
+    flex-shrink: 0;
+  }
+  .s-conv-avatar-group {
+    background: #3A8A55;
+    font-size: 13px;
+  }
+  .s-conv-content { flex: 1; min-width: 0; }
+  .s-conv-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2px;
+  }
+  .s-conv-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #111B14;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 8px;
+  }
+  .s-conv-name.unread { font-weight: 700; }
+  .s-conv-time {
+    font-size: 10px;
+    color: #8A9490;
+    flex-shrink: 0;
+  }
+  .s-conv-time.unread { color: #1E4A2E; font-weight: 600; }
+  .s-conv-bottom { display: flex; align-items: center; gap: 6px; }
+  .s-conv-preview {
+    font-size: 11px;
+    color: #8A9490;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .s-conv-preview.unread { color: #4A5550; font-weight: 500; }
+  .s-conv-unread-badge {
+    background: #1E4A2E;
+    min-width: 18px; height: 18px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    font-size: 9px;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .s-fab {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    width: 48px; height: 48px;
+    border-radius: 24px;
+    background: #1E4A2E;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(30,74,46,0.45);
+    z-index: 10;
+  }
+  .s-fab-badge {
+    position: absolute;
+    top: -2px; right: -2px;
+    background: #D4874A;
+    width: 16px; height: 16px;
+    border-radius: 8px;
+    border: 2px solid #fff;
+    font-size: 8px;
+    font-weight: 800;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ── PROFILE SCREEN ── */
+  .s-profile {
+    background: #F6F7F5;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .s-profile-header {
+    background: #F6F7F5;
+    border-bottom: 1px solid #E4E6E2;
+    padding: 12px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .s-profile-header-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #111B14;
+  }
+  .s-edit-btn {
+    width: 32px; height: 32px;
+    border-radius: 16px;
+    background: #1E4A2E;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: #fff;
+  }
+  .s-profile-scroll { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
+  .s-profile-hero {
+    background: linear-gradient(160deg, #0F2419 0%, #1E4A2E 50%, #265C39 100%);
+    padding: 16px;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .s-profile-hero-orb {
+    position: absolute;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+    top: -50px; right: -50px;
+  }
+  .s-profile-hero-content {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    position: relative;
+    z-index: 1;
+  }
+  .s-profile-avatar-box {
+    width: 70px; height: 70px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #265C39, #3A8A55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    font-weight: 800;
+    color: rgba(255,255,255,0.9);
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+  .s-profile-hero-info { flex: 1; padding-top: 4px; }
+  .s-profile-hero-name {
+    font-size: 18px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.5px;
+    margin-bottom: 3px;
+  }
+  .s-profile-hero-handle {
+    font-size: 11px;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 7px;
+  }
+  .s-profile-member-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: #D4874A;
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-size: 9px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.4px;
+  }
+  .s-profile-hero-bio {
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.6;
+    margin-top: 10px;
+    position: relative;
+    z-index: 1;
+  }
+  .s-checkin-btn {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin: 10px;
+    background: #1E4A2E;
+    border-radius: 12px;
+    padding: 12px 14px;
+    box-shadow: 0 4px 10px rgba(30,74,46,0.3);
+    flex-shrink: 0;
+  }
+  .s-checkin-text {
+    flex: 1;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .s-checkin-last {
+    font-size: 10px;
+    color: rgba(255,255,255,0.65);
+  }
+  .s-section-block {
+    padding: 0 10px;
+    margin-top: 10px;
+    flex-shrink: 0;
+  }
+  .s-section-label-sm {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #4A5550;
+    margin-bottom: 6px;
+  }
+  .s-info-card {
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  }
+  .s-info-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-bottom: 1px solid #EDEEEB;
+  }
+  .s-info-row:last-child { border-bottom: none; }
+  .s-info-icon-box {
+    width: 30px; height: 30px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+  .s-info-label { font-size: 10px; color: #4A5550; }
+  .s-info-value { font-size: 12px; font-weight: 600; color: #111B14; }
+  .s-chip-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    padding: 10px 12px;
+  }
+  .s-chip-sm {
+    font-size: 10px;
+    font-weight: 500;
+    padding: 4px 9px;
+    border-radius: 20px;
+    background: #EAF4EE;
+    color: #1E4A2E;
+    border: 1px solid rgba(30,74,46,0.12);
+  }
+
+  /* ── SETTINGS SCREEN ── */
+  .s-settings {
+    background: #F6F7F5;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .s-settings-header {
+    background: #F6F7F5;
+    border-bottom: 1px solid #E4E6E2;
+    padding: 12px 14px;
+    flex-shrink: 0;
+  }
+  .s-settings-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #111B14;
+  }
+  .s-settings-scroll {
+    flex: 1;
+    overflow: hidden;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .s-profile-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    flex-shrink: 0;
+  }
+  .s-profile-card-avatar {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #265C39, #3A8A55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 800;
+    color: rgba(255,255,255,0.9);
+    flex-shrink: 0;
+  }
+  .s-profile-card-info { flex: 1; min-width: 0; }
+  .s-profile-card-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: #111B14;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .s-profile-card-email {
+    font-size: 10px;
+    color: #8A9490;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .s-plan-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    background: #FEF3EA;
+    border: 1px solid rgba(212,135,74,0.2);
+    font-size: 9px;
+    font-weight: 700;
+    color: #D4874A;
+    flex-shrink: 0;
+  }
+  .s-settings-section {
+    flex-shrink: 0;
+  }
+  .s-settings-section-header {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 6px;
+    padding-left: 2px;
+  }
+  .s-settings-icon-box {
+    width: 22px; height: 22px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+  }
+  .s-settings-section-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: #111B14;
+  }
+  .s-settings-card {
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+  .s-toggle-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-bottom: 1px solid #EDEEEB;
+  }
+  .s-toggle-row:last-child { border-bottom: none; }
+  .s-toggle-info { flex: 1; }
+  .s-toggle-label { font-size: 12px; font-weight: 600; color: #111B14; }
+  .s-toggle-sub   { font-size: 9px; color: #8A9490; margin-top: 1px; }
+  .s-toggle-switch {
+    width: 36px; height: 20px;
+    border-radius: 10px;
+    background: #3A8A55;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .s-toggle-switch::after {
+    content: '';
+    position: absolute;
+    top: 2px; right: 2px;
+    width: 16px; height: 16px;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
+  .s-toggle-switch.off {
+    background: #E4E6E2;
+  }
+  .s-toggle-switch.off::after { right: auto; left: 2px; }
+  .s-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-bottom: 1px solid #EDEEEB;
+  }
+  .s-menu-item:last-child { border-bottom: none; }
+  .s-menu-icon-box {
+    width: 26px; height: 26px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+  .s-menu-text {
+    flex: 1;
+    font-size: 12px;
+    font-weight: 500;
+    color: #111B14;
+  }
+  .s-menu-chevron { font-size: 10px; color: #8A9490; }
+  .s-signout-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 11px;
+    border-radius: 12px;
+    border: 1px solid rgba(192,57,43,0.2);
+    background: rgba(192,57,43,0.05);
+    font-size: 12px;
+    font-weight: 600;
+    color: #C0392B;
+    flex-shrink: 0;
+  }
+  .s-version { font-size: 10px; color: #8A9490; text-align: center; flex-shrink: 0; }
+
+  /* Bottom tab bar shared */
+  .s-tab-bar {
+    background: #fff;
+    border-top: 1px solid #E4E6E2;
+    display: flex;
+    padding: 6px 4px 10px;
+    flex-shrink: 0;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  .s-tab-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 5px 4px;
+    border-radius: 9px;
+  }
+  .s-tab-item.active { background: #EAF4EE; }
+  .s-tab-icon { font-size: 17px; line-height: 1; }
+  .s-tab-text {
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    color: #8A9490;
+  }
+  .s-tab-text.active { color: #1E4A2E; }
+
+  /* ============================================================
+     RESPONSIVE
+  ============================================================ */
+  @media (max-width: 900px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; }
+    .hero, .section { padding: 48px 28px; }
+    .hero { padding: 64px 28px 48px; }
+    .two-col, .three-col, .voice-grid { grid-template-columns: 1fr; }
+    .footer { padding: 36px 28px; flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     SIDEBAR
+============================================================ -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    RV Neighbors
+    <span>Brand Kit</span>
+  </div>
+  <div class="sidebar-nav">
+    <div class="sidebar-section-label">Identity</div>
+    <a class="sidebar-link" href="#overview">Overview</a>
+    <a class="sidebar-link" href="#colors">Colors</a>
+    <a class="sidebar-link" href="#typography">Typography</a>
+
+    <div class="sidebar-section-label">Components</div>
+    <a class="sidebar-link" href="#buttons">Buttons</a>
+    <a class="sidebar-link" href="#badges">Badges &amp; Chips</a>
+    <a class="sidebar-link" href="#cards">Cards &amp; Inputs</a>
+    <a class="sidebar-link" href="#navigation">Navigation</a>
+
+    <div class="sidebar-section-label">System</div>
+    <a class="sidebar-link" href="#spacing">Spacing &amp; Radius</a>
+    <a class="sidebar-link" href="#iconography">Iconography</a>
+
+    <div class="sidebar-section-label">Brand</div>
+    <a class="sidebar-link" href="#voice">Brand Voice</a>
+    <a class="sidebar-link" href="#membership">Membership</a>
+    <a class="sidebar-link" href="#vocabulary">RV Vocabulary</a>
+
+    <div class="sidebar-section-label">Screens</div>
+    <a class="sidebar-link" href="#screens">Screen Mockups</a>
+    <a class="sidebar-link" href="#screen-login">↳ Login</a>
+    <a class="sidebar-link" href="#screen-neighbors">↳ Neighbors</a>
+    <a class="sidebar-link" href="#screen-messages">↳ Messages</a>
+    <a class="sidebar-link" href="#screen-profile">↳ Profile</a>
+    <a class="sidebar-link" href="#screen-settings">↳ Settings</a>
+  </div>
+</nav>
+
+<!-- ============================================================
+     MAIN CONTENT
+============================================================ -->
+<main class="main">
+
+  <!-- HERO -->
+  <section class="hero">
+    <p class="hero-eyebrow">Brand Kit — 2025 Edition</p>
+    <h1 class="hero-title">RV <em>Neighbors</em></h1>
+    <p class="hero-tagline">"Connect with fellow travelers"</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Bundle ID</span>
+        <span class="hero-meta-value">app.rvneighbors.mod</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Version</span>
+        <span class="hero-meta-value">1.0.0</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Platform</span>
+        <span class="hero-meta-value">iOS · Android</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Deep Link Scheme</span>
+        <span class="hero-meta-value">rv-neighbors://</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- OVERVIEW -->
+  <section class="section" id="overview">
+    <p class="section-label">01 — Overview</p>
+    <h2 class="section-title">Who We Are</h2>
+    <p class="section-desc">RV Neighbors is a community platform for the RV lifestyle — connecting travelers parked near each other, enabling families to travel together, and building a network of fellow road-dwellers. The brand is warm, outdoorsy, and grounded: deep forest greens meet golden amber, like a campfire at dusk under the pines.</p>
+
+    <div class="three-col">
+      <div style="background:var(--color-primary-xlight); border:1px solid rgba(30,74,46,0.12); border-radius:var(--radius-lg); padding:24px;">
+        <div style="font-size:24px; margin-bottom:12px;">🌲</div>
+        <div style="font-size:13px; font-weight:700; color:var(--color-primary); margin-bottom:6px; text-transform:uppercase; letter-spacing:0.5px;">Nature-Rooted</div>
+        <div style="font-size:13px; color:var(--color-text-secondary); line-height:1.6;">Forest greens and earth tones ground the palette in the outdoors. Every color choice should evoke open land and fresh air.</div>
+      </div>
+      <div style="background:var(--color-accent-xlight); border:1px solid rgba(212,135,74,0.15); border-radius:var(--radius-lg); padding:24px;">
+        <div style="font-size:24px; margin-bottom:12px;">🔥</div>
+        <div style="font-size:13px; font-weight:700; color:var(--color-accent); margin-bottom:6px; text-transform:uppercase; letter-spacing:0.5px;">Warm &amp; Welcoming</div>
+        <div style="font-size:13px; color:var(--color-text-secondary); line-height:1.6;">Amber accents bring the warmth of a campfire — approachable, human, and community-first in every interaction.</div>
+      </div>
+      <div style="background:#EEF3F9; border:1px solid rgba(74,111,165,0.15); border-radius:var(--radius-lg); padding:24px;">
+        <div style="font-size:24px; margin-bottom:12px;">🚐</div>
+        <div style="font-size:13px; font-weight:700; color:var(--color-slate); margin-bottom:6px; text-transform:uppercase; letter-spacing:0.5px;">On the Road</div>
+        <div style="font-size:13px; color:var(--color-text-secondary); line-height:1.6;">Language and metaphor borrow from RV culture. We speak the language of travelers — casual, direct, and always moving forward.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COLORS -->
+  <section class="section section-alt" id="colors">
+    <p class="section-label">02 — Colors</p>
+    <h2 class="section-title">Color Palette</h2>
+    <p class="section-desc">All colors are defined as design tokens. Use the primary green family for core actions, structure, and identity. The amber accent is reserved for highlights, calls-to-action, and premium elements.</p>
+
+    <p class="color-group-title">Primary — Deep Forest Green</p>
+    <div class="color-grid">
+      <div class="color-card">
+        <div class="color-swatch" style="background:#0F2419;"></div>
+        <div class="color-info"><div class="color-name">Primary Dark</div><div class="color-hex">#0F2419</div></div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:#1E4A2E;"></div>
+        <div class="color-info"><div class="color-name">Primary</div><div class="color-hex">#1E4A2E</div></div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:#265C39;"></div>
+        <div class="color-info"><div class="color-name">Primary Mid</div><div class="color-hex">#265C39</div></div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:#3A8A55;"></div>
+        <div class="color-info"><div class="color-name">Primary Light</div><div class="color-hex">#3A8A55</div></div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:#EAF4EE; border-bottom:1px solid #E4E6E2;"></div>
+        <div class="color-info"><div class="color-name">Primary X-Light</div><div class="color-hex">#EAF4EE</div></div>
+      </div>
+    </div>
+
+    <p class="color-group-title">Accent — Amber / Golden Hour</p>
+    <div class="color-grid">
+      <div class="color-card">
+        <div class="color-swatch" style="background:#D4874A;"></div>
+        <div class="color-info"><div class="color-name">Accent</div><div class="color-hex">#D4874A</div></div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:#F0A76A;"></div>
+        <div class="color-info"><div class="color-name">Accent Light</div><div class="color-hex">#F0A76A</div></div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:#FEF3EA; border-bottom:1px solid #E4E6E2;"></div>
+        <div class="color-info"><div class="color-name">Accent X-Light</div><div class="color-hex">#FEF3EA</div></div>
+      </div>
+    </div>
+
+    <p class="color-group-title">Supporting — Legacy &amp; Extended</p>
+    <div class="color-grid">
+      <div class="color-card">
+        <div class="color-swatch" style="background:#8B6F47;"></div>
+        <div class="color-info"><div class="color-name">Secondary</div><div class="color-hex">#8B6F47</div></div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:#A68B63;"></div>
+        <div class="color-info"><div class="color-name">Secondary Light</div><div class="color-hex">#A68B63</div></div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:#4A6FA5;"></div>
+        <div class="color-info"><div class="color-name">Slate</div><div class="color-hex">#4A6FA5</div></div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:#6B8FC5;"></div>
+        <div class="color-info"><div class="color-name">Slate Light</div><div class="color-hex">#6B8FC5</div></div>
+      </div>
+    </div>
+
+    <p class="color-group-title">Surfaces &amp; Text</p>
+    <div class="color-grid">
+      <div class="color-card">
+        <div class="color-swatch" style="background:#F6F7F5; border-bottom:1px solid #E4E6E2;"></div>
+        <div class="color-info"><div class="color-name">Background</div><div class="color-hex">#F6F7F5</div></div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:#F0F1EE; border-bottom:1px solid #E4E6E2;"></div>
+        <div class="color-info"><div class="color-name">Background Alt</div><div class="color-hex">#F0F1EE</div></div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:#FFFFFF; border-bottom:1px solid #E4E6E2;"></div>
+        <div class="color-info"><div class="color-name">Card / Surface</div><div class="color-hex">#FFFFFF</div></div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:#111B14;"></div>
+        <div class="color-info"><div class="color-name">Text</div><div class="color-hex">#111B14</div></div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:#4A5550;"></div>
+        <div class="color-info"><div class="color-name">Text Secondary</div><div class="color-hex">#4A5550</div></div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:#8A9490;"></div>
+        <div class="color-info"><div class="color-name">Text Light</div><div class="color-hex">#8A9490</div></div>
+      </div>
+    </div>
+
+    <p class="color-group-title">Status Colors</p>
+    <div class="color-grid">
+      <div class="color-card">
+        <div class="color-swatch" style="background:#2E7D52;"></div>
+        <div class="color-info"><div class="color-name">Success</div><div class="color-hex">#2E7D52</div></div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:#C0392B;"></div>
+        <div class="color-info"><div class="color-name">Error</div><div class="color-hex">#C0392B</div></div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:#E07B2A;"></div>
+        <div class="color-info"><div class="color-name">Warning</div><div class="color-hex">#E07B2A</div></div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <p class="section-label">Gradients</p>
+    <div class="gradient-grid">
+      <div class="gradient-card">
+        <div class="gradient-swatch" style="background:linear-gradient(160deg,#0F2419 0%,#1A3A2A 45%,#0D1F14 100%);">
+          <div>
+            <div class="gradient-label">Auth / Dark Background</div>
+            <div class="gradient-stops">#0F2419 → #1A3A2A → #0D1F14</div>
+          </div>
+        </div>
+      </div>
+      <div class="gradient-card">
+        <div class="gradient-swatch" style="background:linear-gradient(160deg,#0F2419 0%,#1E4A2E 50%,#265C39 100%);">
+          <div>
+            <div class="gradient-label">Profile Hero</div>
+            <div class="gradient-stops">#0F2419 → #1E4A2E → #265C39</div>
+          </div>
+        </div>
+      </div>
+      <div class="gradient-card">
+        <div class="gradient-swatch" style="background:linear-gradient(135deg,#265C39,#3A8A55);">
+          <div>
+            <div class="gradient-label">Avatar Placeholder</div>
+            <div class="gradient-stops">#265C39 → #3A8A55</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TYPOGRAPHY -->
+  <section class="section" id="typography">
+    <p class="section-label">03 — Typography</p>
+    <h2 class="section-title">Type System</h2>
+    <p class="section-desc">Two fonts carry the brand voice. <strong>DM Sans</strong> handles all UI copy — clean, modern, and readable at any weight. <strong>Playfair Display</strong> appears in editorial and marketing contexts. <strong>Space Mono</strong> is reserved for technical data: hex codes, bundle IDs, version numbers.</p>
+
+    <div class="type-specimen">
+      <div style="font-family:var(--font-display); font-size:48px; font-weight:900; color:var(--color-text); letter-spacing:-1px; line-height:1.1;">RV Neighbors</div>
+      <div class="type-meta">
+        <span class="mono">Playfair Display</span>
+        <span class="mono">48px / 900</span>
+        <span class="mono">letter-spacing: -1px</span>
+        <span class="mono">Marketing / Hero use</span>
+      </div>
+    </div>
+
+    <div class="type-specimen">
+      <div style="font-family:var(--font-body); font-size:26px; font-weight:800; color:var(--color-text); letter-spacing:-0.5px;">Connect with fellow travelers</div>
+      <div class="type-meta">
+        <span class="mono">DM Sans</span>
+        <span class="mono">26px / 800</span>
+        <span class="mono">letter-spacing: -0.5px</span>
+        <span class="mono">Screen headings</span>
+      </div>
+    </div>
+
+    <div class="type-specimen">
+      <div style="font-family:var(--font-body); font-size:15px; font-weight:400; color:var(--color-text-secondary); line-height:1.7; max-width:480px;">You're parked at Yosemite Valley Campground. 4 neighbors are nearby. Tap to see who's around and start connecting with fellow travelers in your area.</div>
+      <div class="type-meta">
+        <span class="mono">DM Sans</span>
+        <span class="mono">15px / 400</span>
+        <span class="mono">line-height: 1.7</span>
+        <span class="mono">Body copy</span>
+      </div>
+    </div>
+
+    <div class="type-specimen">
+      <div style="font-family:var(--font-mono); font-size:12px; color:var(--color-text-light);">app.rvneighbors.mod · v1.0.0 · #1E4A2E</div>
+      <div class="type-meta">
+        <span class="mono">Space Mono</span>
+        <span class="mono">12px / 400</span>
+        <span class="mono">Technical / data labels</span>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="type-scale">
+      <div class="type-row">
+        <span class="type-row-label">Price Display</span>
+        <span class="type-row-sample" style="font-size:28px; font-weight:700; font-family:var(--font-display);">$9.99</span>
+        <span class="type-row-spec">28px · 700 · Playfair</span>
+      </div>
+      <div class="type-row">
+        <span class="type-row-label">Hero Name</span>
+        <span class="type-row-sample" style="font-size:22px; font-weight:800;">Alex Mercer</span>
+        <span class="type-row-spec">22px · 800 · DM Sans</span>
+      </div>
+      <div class="type-row">
+        <span class="type-row-label">Screen Title</span>
+        <span class="type-row-sample" style="font-size:20px; font-weight:700;">My Neighbors</span>
+        <span class="type-row-spec">20px · 700</span>
+      </div>
+      <div class="type-row">
+        <span class="type-row-label">Button Text</span>
+        <span class="type-row-sample" style="font-size:16px; font-weight:700;">Sign In</span>
+        <span class="type-row-spec">16px · 700</span>
+      </div>
+      <div class="type-row">
+        <span class="type-row-label">Card Value</span>
+        <span class="type-row-sample" style="font-size:15px; font-weight:600;">Fifth Wheel · 32ft</span>
+        <span class="type-row-spec">15px · 600</span>
+      </div>
+      <div class="type-row">
+        <span class="type-row-label">Body</span>
+        <span class="type-row-sample" style="font-size:14px; font-weight:400;">Connect with nearby RV travelers</span>
+        <span class="type-row-spec">14px · 400</span>
+      </div>
+      <div class="type-row">
+        <span class="type-row-label">Meta / Handle</span>
+        <span class="type-row-sample" style="font-size:13px; color:var(--color-text-light);">@alex_rv · 0.4 mi away</span>
+        <span class="type-row-spec">13px · 400</span>
+      </div>
+      <div class="type-row">
+        <span class="type-row-label">Badge Text</span>
+        <span class="type-row-sample" style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.3px;">CONNECTED</span>
+        <span class="type-row-spec">11px · 700 · uppercase</span>
+      </div>
+      <div class="type-row">
+        <span class="type-row-label">Section Label</span>
+        <span class="type-row-sample" style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--color-text-secondary);">RV INFO</span>
+        <span class="type-row-spec">11px · 700 · ls 1px · caps</span>
+      </div>
+      <div class="type-row">
+        <span class="type-row-label">Tab Label</span>
+        <span class="type-row-sample" style="font-size:10px; font-weight:600; letter-spacing:0.2px;">Neighbors</span>
+        <span class="type-row-spec">10px · 600 · ls 0.2px</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- BUTTONS -->
+  <section class="section section-alt" id="buttons">
+    <p class="section-label">04 — Components</p>
+    <h2 class="section-title">Buttons</h2>
+    <p class="section-desc">Four button variants cover every interaction context. Use Primary for the single most important action per screen. Use Accent for premium/upgrade flows. Never place two Primary buttons side-by-side.</p>
+
+    <div class="component-grid">
+      <div class="component-card">
+        <div class="component-preview component-preview-light">
+          <button class="btn-primary">Sign In</button>
+          <button class="btn-primary">Check In Here</button>
+        </div>
+        <div class="component-meta">
+          <div class="component-name">Primary Button</div>
+          <div class="component-desc">bg #1E4A2E · radius 14px · padding 16px V · shadow elevation 6 · font 16/700</div>
+        </div>
+      </div>
+
+      <div class="component-card">
+        <div class="component-preview component-preview-dark">
+          <button class="btn-secondary">Continue with Google</button>
+          <button class="btn-secondary">Continue with Facebook</button>
+        </div>
+        <div class="component-meta">
+          <div class="component-name">Secondary / Social Button</div>
+          <div class="component-desc">bg rgba(255,255,255,0.07) · border rgba(255,255,255,0.10) · for dark background contexts</div>
+        </div>
+      </div>
+
+      <div class="component-card">
+        <div class="component-preview component-preview-light">
+          <button class="btn-accent">Upgrade to Premium</button>
+          <button class="btn-accent">Accept</button>
+        </div>
+        <div class="component-meta">
+          <div class="component-name">Accent Button</div>
+          <div class="component-desc">bg #D4874A · shadow rgba(212,135,74,0.35) · premium actions and Accept confirmations</div>
+        </div>
+      </div>
+
+      <div class="component-card">
+        <div class="component-preview component-preview-light">
+          <button class="btn-outline">View Connections</button>
+          <button class="btn-outline">Edit Profile</button>
+        </div>
+        <div class="component-meta">
+          <div class="component-name">Outline Button</div>
+          <div class="component-desc">transparent bg · 1.5px border #1E4A2E · hover fills with Primary X-Light · secondary actions</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BADGES & CHIPS -->
+  <section class="section" id="badges">
+    <h2 class="section-title">Badges &amp; Chips</h2>
+    <p class="section-desc">Badges communicate status at a glance. Chips are interactive filter/select elements. Both use the 20px pill radius. Never use more than 2 badges on a single card.</p>
+
+    <div class="component-grid">
+      <div class="component-card">
+        <div class="component-preview component-preview-light" style="gap:8px;">
+          <span class="badge badge-connected">● Connected</span>
+          <span class="badge badge-pending">⌛ Pending</span>
+          <span class="badge badge-accent">✓ Accept</span>
+          <span class="badge badge-primary">+ Connect</span>
+          <span class="badge badge-premium">★ Premium</span>
+          <span class="badge badge-family">👨‍👩‍👧 Family</span>
+        </div>
+        <div class="component-meta">
+          <div class="component-name">Status Badges</div>
+          <div class="component-desc">11px · 700 · pill radius · inline-flex with icon gap 4px</div>
+        </div>
+      </div>
+
+      <div class="component-card">
+        <div class="component-preview component-preview-light" style="gap:8px; flex-wrap:wrap;">
+          <span class="chip">Hiking</span>
+          <span class="chip chip-selected">Fishing</span>
+          <span class="chip">Photography</span>
+          <span class="chip chip-selected">Kayaking</span>
+          <span class="chip">Cooking</span>
+          <span class="chip chip-accent">National Parks</span>
+        </div>
+        <div class="component-meta">
+          <div class="component-name">Interest Chips</div>
+          <div class="component-desc">13px · 500 · pill radius · border default; primary bg when selected</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CARDS & INPUTS -->
+  <section class="section section-alt" id="cards">
+    <h2 class="section-title">Cards &amp; Inputs</h2>
+
+    <div class="component-grid" style="margin-bottom:40px;">
+      <div class="component-card">
+        <div class="component-preview component-preview-light">
+          <div class="user-card">
+            <div class="user-avatar">A</div>
+            <div class="user-info">
+              <div class="user-name">Alex Mercer</div>
+              <div class="user-handle">@alex_rv · 0.4 mi</div>
+              <div class="user-rv">Class A Motorhome · 38ft</div>
+              <div class="user-actions">
+                <span class="badge badge-connected">● Connected</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="component-meta">
+          <div class="component-name">User Card</div>
+          <div class="component-desc">white bg · 14-16px radius · shadow-light · 52px avatar with gradient fill · avatar radius 14px</div>
+        </div>
+      </div>
+
+      <div class="component-card">
+        <div class="component-preview component-preview-light">
+          <div class="user-card" style="max-width:260px;">
+            <div class="user-avatar" style="background:linear-gradient(135deg,#D4874A,#F0A76A);">S</div>
+            <div class="user-info">
+              <div class="user-name">Sarah &amp; Jake</div>
+              <div class="user-handle">Family Account</div>
+              <div class="user-rv">Fifth Wheel · 42ft</div>
+              <div class="user-actions">
+                <span class="badge badge-family">👨‍👩‍👧 Family</span>
+                <span class="badge badge-premium">★ Premium</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="component-meta">
+          <div class="component-name">Family Card Variant</div>
+          <div class="component-desc">Amber avatar gradient for family accounts. Multiple badges stacked horizontally.</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="font-size:18px; font-weight:700; color:var(--color-text); margin-bottom:24px; letter-spacing:-0.3px;">Input Fields</h3>
+    <div class="two-col">
+      <div>
+        <p style="font-size:12px; font-weight:700; color:var(--color-text-secondary); letter-spacing:1px; text-transform:uppercase; margin-bottom:16px;">Light Context</p>
+        <div style="display:flex; flex-direction:column; gap:16px;">
+          <div>
+            <label class="input-label">Your Name</label>
+            <input class="input-light" type="text" placeholder="e.g. Alex Mercer" />
+          </div>
+          <div>
+            <label class="input-label">RV Type</label>
+            <input class="input-light" type="text" placeholder="e.g. Class A Motorhome" />
+          </div>
+        </div>
+      </div>
+      <div style="background:var(--gradient-auth); border-radius:var(--radius-lg); padding:28px;">
+        <p style="font-size:12px; font-weight:700; color:rgba(255,255,255,0.4); letter-spacing:1px; text-transform:uppercase; margin-bottom:16px;">Dark Context (Auth Screens)</p>
+        <div style="display:flex; flex-direction:column; gap:16px;">
+          <div>
+            <label class="input-label input-label-light">Email Address</label>
+            <input class="input-field" type="email" placeholder="hello@example.com" />
+          </div>
+          <div>
+            <label class="input-label input-label-light">Password</label>
+            <input class="input-field" type="password" placeholder="••••••••" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NAVIGATION -->
+  <section class="section" id="navigation">
+    <h2 class="section-title">Navigation</h2>
+    <p class="section-desc">The bottom tab bar is the primary navigation anchor. Five sections cover the app's core pillars. The active tab gets an icon wrapper with Primary X-Light background and Primary-colored label.</p>
+
+    <div style="display:flex; justify-content:center; margin:32px 0;">
+      <div class="tab-bar">
+        <div class="tab-item tab-item-active">
+          <span class="tab-icon">🗺️</span>
+          <span class="tab-label tab-label-active">Neighbors</span>
+        </div>
+        <div class="tab-item">
+          <span class="tab-icon">👤</span>
+          <span class="tab-label">Profile</span>
+        </div>
+        <div class="tab-item">
+          <span class="tab-icon">💬</span>
+          <span class="tab-label">Messages</span>
+        </div>
+        <div class="tab-item">
+          <span class="tab-icon">👨‍👩‍👧</span>
+          <span class="tab-label">Family</span>
+        </div>
+        <div class="tab-item">
+          <span class="tab-icon">⚙️</span>
+          <span class="tab-label">Settings</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:var(--color-card); border:1px solid var(--color-border); border-radius:var(--radius-lg); overflow:hidden; margin-top:16px;">
+      <div style="display:grid; grid-template-columns:80px 1fr 1fr 1fr; font-size:11px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; color:var(--color-text-light); padding:12px 20px; background:var(--color-bg-alt); border-bottom:1px solid var(--color-border);">
+        <span>Tab</span><span>Icon (Lucide)</span><span>Route</span><span>Label</span>
+      </div>
+      <div style="display:grid; grid-template-columns:80px 1fr 1fr 1fr; font-size:13px; color:var(--color-text-secondary); padding:12px 20px; border-bottom:1px solid var(--color-border-light); align-items:center;">
+        <span style="font-size:18px;">🗺️</span><span><code style="font-size:11px;">MapPin</code></span><span><span class="mono">(neighbors)/index</span></span><span style="font-weight:600; color:var(--color-primary);">Neighbors</span>
+      </div>
+      <div style="display:grid; grid-template-columns:80px 1fr 1fr 1fr; font-size:13px; color:var(--color-text-secondary); padding:12px 20px; border-bottom:1px solid var(--color-border-light); align-items:center;">
+        <span style="font-size:18px;">👤</span><span><code style="font-size:11px;">User</code></span><span><span class="mono">(profile)/index</span></span><span>Profile</span>
+      </div>
+      <div style="display:grid; grid-template-columns:80px 1fr 1fr 1fr; font-size:13px; color:var(--color-text-secondary); padding:12px 20px; border-bottom:1px solid var(--color-border-light); align-items:center;">
+        <span style="font-size:18px;">💬</span><span><code style="font-size:11px;">MessageCircle</code></span><span><span class="mono">(messages)/index</span></span><span>Messages</span>
+      </div>
+      <div style="display:grid; grid-template-columns:80px 1fr 1fr 1fr; font-size:13px; color:var(--color-text-secondary); padding:12px 20px; border-bottom:1px solid var(--color-border-light); align-items:center;">
+        <span style="font-size:18px;">👨‍👩‍👧</span><span><code style="font-size:11px;">Users</code></span><span><span class="mono">(family)/index</span></span><span>Family</span>
+      </div>
+      <div style="display:grid; grid-template-columns:80px 1fr 1fr 1fr; font-size:13px; color:var(--color-text-secondary); padding:12px 20px; align-items:center;">
+        <span style="font-size:18px;">⚙️</span><span><code style="font-size:11px;">Settings2</code></span><span><span class="mono">(settings)/index</span></span><span>Settings</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SPACING & RADIUS -->
+  <section class="section section-alt" id="spacing">
+    <p class="section-label">05 — System</p>
+    <h2 class="section-title">Spacing Scale</h2>
+    <p class="section-desc">All spacing values are multiples of 4 with a few key exceptions. Stick to these tokens — do not invent new values.</p>
+
+    <div class="spacing-grid" style="margin-bottom:48px;">
+      <div class="spacing-item"><div class="spacing-block" style="width:4px;height:4px;"></div><span class="spacing-label">4</span></div>
+      <div class="spacing-item"><div class="spacing-block" style="width:5px;height:5px;"></div><span class="spacing-label">5</span></div>
+      <div class="spacing-item"><div class="spacing-block" style="width:6px;height:6px;"></div><span class="spacing-label">6</span></div>
+      <div class="spacing-item"><div class="spacing-block" style="width:8px;height:8px;"></div><span class="spacing-label">8</span></div>
+      <div class="spacing-item"><div class="spacing-block" style="width:10px;height:10px;"></div><span class="spacing-label">10</span></div>
+      <div class="spacing-item"><div class="spacing-block" style="width:12px;height:12px;"></div><span class="spacing-label">12</span></div>
+      <div class="spacing-item"><div class="spacing-block" style="width:14px;height:14px;"></div><span class="spacing-label">14</span></div>
+      <div class="spacing-item"><div class="spacing-block" style="width:16px;height:16px;"></div><span class="spacing-label">16</span></div>
+      <div class="spacing-item"><div class="spacing-block" style="width:20px;height:20px;"></div><span class="spacing-label">20</span></div>
+      <div class="spacing-item"><div class="spacing-block" style="width:24px;height:24px;"></div><span class="spacing-label">24</span></div>
+      <div class="spacing-item"><div class="spacing-block" style="width:28px;height:28px;"></div><span class="spacing-label">28</span></div>
+      <div class="spacing-item"><div class="spacing-block" style="width:32px;height:32px;"></div><span class="spacing-label">32</span></div>
+      <div class="spacing-item"><div class="spacing-block" style="width:36px;height:36px;"></div><span class="spacing-label">36</span></div>
+      <div class="spacing-item"><div class="spacing-block" style="width:44px;height:44px;"></div><span class="spacing-label">44</span></div>
+      <div class="spacing-item"><div class="spacing-block" style="width:48px;height:48px;"></div><span class="spacing-label">48</span></div>
+      <div class="spacing-item"><div class="spacing-block" style="width:72px;height:72px;"></div><span class="spacing-label">72</span></div>
+      <div class="spacing-item"><div class="spacing-block" style="width:84px;height:84px;"></div><span class="spacing-label">84</span></div>
+    </div>
+
+    <h3 style="font-size:18px; font-weight:700; color:var(--color-text); margin-bottom:24px; letter-spacing:-0.3px;">Border Radius Scale</h3>
+    <div class="flex-wrap">
+      <div style="text-align:center;">
+        <div style="width:60px; height:60px; background:var(--color-primary); border-radius:10px; margin:0 auto 8px;"></div>
+        <div class="spacing-label">10px</div>
+        <div style="font-size:10px; color:var(--color-text-light); margin-top:2px;">Buttons (sm)</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="width:60px; height:60px; background:var(--color-primary); border-radius:14px; margin:0 auto 8px;"></div>
+        <div class="spacing-label">14px</div>
+        <div style="font-size:10px; color:var(--color-text-light); margin-top:2px;">Inputs, Buttons</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="width:60px; height:60px; background:var(--color-primary); border-radius:16px; margin:0 auto 8px;"></div>
+        <div class="spacing-label">16px</div>
+        <div style="font-size:10px; color:var(--color-text-light); margin-top:2px;">Cards</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="width:60px; height:20px; background:var(--color-accent); border-radius:20px; margin:20px auto 8px;"></div>
+        <div class="spacing-label">20px</div>
+        <div style="font-size:10px; color:var(--color-text-light); margin-top:2px;">Badges, Chips</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <h3 style="font-size:18px; font-weight:700; color:var(--color-text); margin-bottom:20px; letter-spacing:-0.3px;">Shadow Scale</h3>
+    <div class="three-col">
+      <div style="background:var(--color-card); border-radius:var(--radius-lg); padding:24px; box-shadow:0 1px 4px rgba(0,0,0,0.08); text-align:center;">
+        <div style="font-size:12px; font-weight:700; color:var(--color-text); margin-bottom:4px;">Light</div>
+        <div style="font-family:var(--font-mono); font-size:10px; color:var(--color-text-light);">0 1px 4px rgba(0,0,0,0.08)</div>
+        <div style="font-size:11px; color:var(--color-text-light); margin-top:6px;">Cards, list items</div>
+      </div>
+      <div style="background:var(--color-card); border-radius:var(--radius-lg); padding:24px; box-shadow:0 4px 12px rgba(0,0,0,0.10); text-align:center;">
+        <div style="font-size:12px; font-weight:700; color:var(--color-text); margin-bottom:4px;">Medium</div>
+        <div style="font-family:var(--font-mono); font-size:10px; color:var(--color-text-light);">0 4px 12px rgba(0,0,0,0.10)</div>
+        <div style="font-size:11px; color:var(--color-text-light); margin-top:6px;">Hovered cards, modals</div>
+      </div>
+      <div style="background:var(--color-card); border-radius:var(--radius-lg); padding:24px; box-shadow:0 8px 24px rgba(0,0,0,0.14); text-align:center;">
+        <div style="font-size:12px; font-weight:700; color:var(--color-text); margin-bottom:4px;">Dark</div>
+        <div style="font-family:var(--font-mono); font-size:10px; color:var(--color-text-light);">0 8px 24px rgba(0,0,0,0.14)</div>
+        <div style="font-size:11px; color:var(--color-text-light); margin-top:6px;">Floating elements, CTAs</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ICONOGRAPHY -->
+  <section class="section" id="iconography">
+    <h2 class="section-title">Iconography</h2>
+    <p class="section-desc">All icons come from the <strong>Lucide</strong> library (<span class="mono">lucide-react-native</span>). Icons are sized 14–24px depending on context. Navigation icons: 22px. Card icons: 14–16px. Always pair an icon with a label when used in primary navigation.</p>
+
+    <div class="icon-grid">
+      <div class="icon-item"><span class="icon-glyph">📍</span><span class="icon-name">MapPin<br/>Neighbors</span></div>
+      <div class="icon-item"><span class="icon-glyph">👤</span><span class="icon-name">User<br/>Profile</span></div>
+      <div class="icon-item"><span class="icon-glyph">💬</span><span class="icon-name">MessageCircle<br/>Messages</span></div>
+      <div class="icon-item"><span class="icon-glyph">👨‍👩‍👧</span><span class="icon-name">Users<br/>Family</span></div>
+      <div class="icon-item"><span class="icon-glyph">⚙️</span><span class="icon-name">Settings2<br/>Settings</span></div>
+      <div class="icon-item"><span class="icon-glyph">✏️</span><span class="icon-name">Edit2<br/>Edit</span></div>
+      <div class="icon-item"><span class="icon-glyph">🔔</span><span class="icon-name">Bell<br/>Notifications</span></div>
+      <div class="icon-item"><span class="icon-glyph">🔒</span><span class="icon-name">Lock<br/>Privacy</span></div>
+      <div class="icon-item"><span class="icon-glyph">❓</span><span class="icon-name">HelpCircle<br/>Help</span></div>
+      <div class="icon-item"><span class="icon-glyph">⭐</span><span class="icon-name">Star<br/>Premium</span></div>
+      <div class="icon-item"><span class="icon-glyph">📏</span><span class="icon-name">Ruler<br/>RV Length</span></div>
+      <div class="icon-item"><span class="icon-glyph">📅</span><span class="icon-name">Calendar<br/>Year</span></div>
+      <div class="icon-item"><span class="icon-glyph">📶</span><span class="icon-name">Radio<br/>Radius</span></div>
+      <div class="icon-item"><span class="icon-glyph">🔗</span><span class="icon-name">Link<br/>Connect</span></div>
+      <div class="icon-item"><span class="icon-glyph">🚐</span><span class="icon-name">Truck<br/>RV Type</span></div>
+      <div class="icon-item"><span class="icon-glyph">➕</span><span class="icon-name">Plus<br/>Add / New</span></div>
+      <div class="icon-item"><span class="icon-glyph">✕</span><span class="icon-name">X<br/>Close / Remove</span></div>
+      <div class="icon-item"><span class="icon-glyph">→</span><span class="icon-name">ChevronRight<br/>Navigate</span></div>
+    </div>
+  </section>
+
+  <!-- BRAND VOICE -->
+  <section class="section section-alt" id="voice">
+    <p class="section-label">06 — Brand</p>
+    <h2 class="section-title">Brand Voice</h2>
+    <p class="section-desc">RV Neighbors sounds like a knowledgeable fellow traveler — not a tech company. Casual, warm, direct. Use travel metaphors naturally. Write like you're talking to someone at the next campsite, not someone reading a manual.</p>
+
+    <div class="voice-grid">
+      <div class="voice-card voice-card-do">
+        <div class="voice-card-header">
+          <span>✓</span> Do — Write like this
+        </div>
+        <div class="voice-example">"You're all set! Let's get rolling and find your neighbors."</div>
+        <div class="voice-example">"4 fellow travelers are parked nearby. Tap to connect."</div>
+        <div class="voice-example">"Check in here to let neighbors know you've arrived."</div>
+        <div class="voice-example">"Looks like you took a wrong turn 🙃 — let's head back."</div>
+        <div class="voice-example">"Invite your family and hit the road together."</div>
+      </div>
+      <div class="voice-card voice-card-dont">
+        <div class="voice-card-header">
+          <span>✕</span> Don't — Avoid this
+        </div>
+        <div class="voice-example">"User registration has been completed successfully."</div>
+        <div class="voice-example">"There are 4 users within the geolocation radius."</div>
+        <div class="voice-example">"Please confirm your current GPS coordinates."</div>
+        <div class="voice-example">"An error has occurred. Please retry the operation."</div>
+        <div class="voice-example">"Utilize the family feature to add additional members."</div>
+      </div>
+    </div>
+
+    <div class="term-grid">
+      <div class="term-card">
+        <div class="term-title">Neighbor</div>
+        <div class="term-desc">Always use instead of "user", "member", or "contact" for connected people nearby.</div>
+      </div>
+      <div class="term-card">
+        <div class="term-title">Check In</div>
+        <div class="term-desc">The act of registering your current campground location. Two words, verb form.</div>
+      </div>
+      <div class="term-card">
+        <div class="term-title">On the Road</div>
+        <div class="term-desc">Universal metaphor for the RV lifestyle. Use to describe active/traveling status.</div>
+      </div>
+      <div class="term-card">
+        <div class="term-title">Connect</div>
+        <div class="term-desc">Sending a connection request. Always "Connect" not "Add", "Follow", or "Friend".</div>
+      </div>
+      <div class="term-card">
+        <div class="term-title">Fellow Traveler</div>
+        <div class="term-desc">Preferred descriptor for other app users, especially in onboarding and marketing.</div>
+      </div>
+      <div class="term-card">
+        <div class="term-title">Family</div>
+        <div class="term-desc">The sub-account system. "Family Members" not "Sub-users" or "Child accounts".</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MEMBERSHIP -->
+  <section class="section" id="membership">
+    <h2 class="section-title">Membership Tiers</h2>
+    <p class="section-desc">Three tiers serve different traveler needs. Position Premium as the default recommendation. Family Premium unlocks the full multi-member experience.</p>
+
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="pricing-tier">Free</div>
+        <div class="pricing-price">$0</div>
+        <div class="pricing-period">forever free · 1 member</div>
+        <ul class="pricing-features">
+          <li class="pricing-feature">See nearby neighbors</li>
+          <li class="pricing-feature">Connect with up to 8 neighbors</li>
+          <li class="pricing-feature">Basic messaging</li>
+          <li class="pricing-feature">Standard discovery radius</li>
+        </ul>
+      </div>
+
+      <div class="pricing-card pricing-card-featured">
+        <div class="pricing-featured-badge">Most Popular</div>
+        <div class="pricing-tier pricing-tier-white">Premium</div>
+        <div class="pricing-price pricing-price-white">$4.99</div>
+        <div class="pricing-period pricing-period-light">per month · 1 member</div>
+        <ul class="pricing-features">
+          <li class="pricing-feature pricing-feature-white">Everything in Free</li>
+          <li class="pricing-feature pricing-feature-white">Unlimited connections</li>
+          <li class="pricing-feature pricing-feature-white">Adjustable discovery radius</li>
+          <li class="pricing-feature pricing-feature-white">Priority neighbor matching</li>
+        </ul>
+      </div>
+
+      <div class="pricing-card" style="border-color:rgba(212,135,74,0.3); background:var(--color-accent-xlight);">
+        <div class="pricing-tier" style="color:var(--color-accent);">Family Premium</div>
+        <div class="pricing-price">$9.99</div>
+        <div class="pricing-period">per month · up to 4 members</div>
+        <ul class="pricing-features">
+          <li class="pricing-feature">Everything in Premium</li>
+          <li class="pricing-feature">Invite up to 3 family members</li>
+          <li class="pricing-feature">Separate family logins</li>
+          <li class="pricing-feature">Shared family profile</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- RV VOCABULARY -->
+  <section class="section section-alt" id="vocabulary">
+    <h2 class="section-title">RV Vocabulary</h2>
+    <p class="section-desc">These are the canonical RV type names used throughout the app. Always use the full, proper name — never abbreviate (e.g., not "Class A" alone, always "Class A Motorhome").</p>
+
+    <div class="rv-tags">
+      <span class="chip chip-selected">Class A Motorhome</span>
+      <span class="chip chip-selected">Class B Motorhome</span>
+      <span class="chip chip-selected">Class C Motorhome</span>
+      <span class="chip">Fifth Wheel</span>
+      <span class="chip">Travel Trailer</span>
+      <span class="chip">Toy Hauler</span>
+      <span class="chip">Pop-Up Camper</span>
+      <span class="chip">Truck Camper</span>
+      <span class="chip">Teardrop Trailer</span>
+      <span class="chip chip-accent">Airstream</span>
+      <span class="chip">Bus Conversion</span>
+      <span class="chip">Van Conversion</span>
+    </div>
+
+    <div class="divider"></div>
+
+    <h3 style="font-size:16px; font-weight:700; color:var(--color-text); margin-bottom:16px;">Interest Categories (60+)</h3>
+    <p style="font-size:13px; color:var(--color-text-secondary); margin-bottom:16px; line-height:1.6;">These tags appear on user profiles and drive the discovery algorithm. They're displayed as chips and grouped into categories: Nature &amp; Outdoor, Arts &amp; Culture, Lifestyle, Activities, Technical.</p>
+    <div class="rv-tags">
+      <span class="chip">Hiking</span><span class="chip">Fishing</span><span class="chip">Kayaking</span>
+      <span class="chip chip-selected">National Parks</span><span class="chip">Photography</span>
+      <span class="chip">Biking</span><span class="chip">Cooking</span><span class="chip">Music</span>
+      <span class="chip">Ham Radio</span><span class="chip">Gardening</span><span class="chip">Fitness</span>
+      <span class="chip">Meditation</span><span class="chip">Art</span><span class="chip">Technology</span>
+      <span class="chip">Gaming</span><span class="chip">+ 45 more</span>
+    </div>
+  </section>
+
+  <!-- SCREEN MOCKUPS -->
+  <section class="section" id="screens">
+    <p class="section-label">07 — Screen Mockups</p>
+    <h2 class="section-title">App Screens</h2>
+    <p class="section-desc screens-intro">Pixel-faithful representations of the five primary screens, built from the actual source code. Colors, typography, spacing, and component hierarchy all match production. These mockups reflect the current codebase state.</p>
+
+    <div class="screens-grid">
+
+      <!-- ═══════════════════════════════════════════
+           LOGIN SCREEN
+      ═══════════════════════════════════════════ -->
+      <div class="screen-item" id="screen-login">
+        <div class="phone-frame">
+          <div class="phone-notch">
+            <div class="phone-notch-pill"></div>
+            <div class="phone-notch-camera"></div>
+          </div>
+          <div class="phone-screen">
+            <div class="s-login">
+              <div class="s-login-glow-tr"></div>
+              <div class="s-login-glow-bl"></div>
+              <!-- Status bar -->
+              <div class="phone-status-bar" style="color: rgba(255,255,255,0.7);">
+                <span style="font-family: var(--font-body); font-size:11px; font-weight:700;">9:41</span>
+                <span class="phone-status-icons" style="color:rgba(255,255,255,0.7);">▲▲▲ 🔋</span>
+              </div>
+              <div class="s-login-scroll">
+                <!-- Logo -->
+                <div class="s-login-logo-section">
+                  <div class="s-login-logo-mark">RV</div>
+                  <div class="s-login-app-name">RV Neighbors</div>
+                  <div class="s-login-tagline">Connect with fellow travelers</div>
+                </div>
+                <!-- Form -->
+                <div class="s-welcome">Welcome Back</div>
+
+                <div class="s-input-label">Email</div>
+                <div class="s-input-group">
+                  <span class="s-input-icon">✉</span>
+                  <span class="s-input-text">Email address</span>
+                </div>
+
+                <div class="s-input-label">Password</div>
+                <div class="s-input-group">
+                  <span class="s-input-icon">🔒</span>
+                  <span class="s-input-text">Password</span>
+                </div>
+
+                <div class="s-forgot">Forgot Password?</div>
+                <div class="s-btn-primary">Sign In</div>
+
+                <div class="s-divider">
+                  <div class="s-divider-line"></div>
+                  <span class="s-divider-text">or continue with</span>
+                  <div class="s-divider-line"></div>
+                </div>
+
+                <div class="s-social-row">
+                  <div class="s-social-btn">
+                    <span class="s-google-g">G</span>
+                    <span>Google</span>
+                  </div>
+                  <div class="s-social-btn">
+                    <span class="s-facebook-f">f</span>
+                    <span>Facebook</span>
+                  </div>
+                </div>
+
+                <div class="s-signup-link">
+                  Don't have an account? <b>Sign Up</b>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="screen-label-row">
+          <div class="screen-name">Login Screen</div>
+          <div class="screen-route">app/(auth)/login.tsx</div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════
+           NEIGHBORS SCREEN
+      ═══════════════════════════════════════════ -->
+      <div class="screen-item" id="screen-neighbors">
+        <div class="phone-frame">
+          <div class="phone-notch">
+            <div class="phone-notch-pill"></div>
+            <div class="phone-notch-camera"></div>
+          </div>
+          <div class="phone-screen">
+            <div class="s-neighbors">
+              <!-- Status bar -->
+              <div class="phone-status-bar" style="background:#fff; color:#111B14;">
+                <span style="font-family: var(--font-body); font-size:11px; font-weight:700;">9:41</span>
+                <span class="phone-status-icons">▲▲▲ 🔋</span>
+              </div>
+              <!-- Toolbar -->
+              <div class="s-nav-header">
+                <div class="s-action-row">
+                  <div class="s-discover-btn">
+                    <span style="font-size:10px;">⬆</span> Discover
+                  </div>
+                  <div class="s-toggle-group">
+                    <div class="s-toggle-opt active">
+                      <span style="font-size:9px;">☰</span> List
+                    </div>
+                    <div class="s-toggle-opt">
+                      <span style="font-size:9px;">🗺</span> Map
+                    </div>
+                  </div>
+                </div>
+                <div class="s-radius-row">
+                  <div class="s-radius-chip"><span style="font-size:8px;">📍</span> 5 mi</div>
+                  <div class="s-radius-chip"><span style="font-size:8px;">📍</span> 15 mi</div>
+                  <div class="s-radius-chip active"><span style="font-size:8px;">📍</span> 30 mi</div>
+                  <div class="s-radius-chip"><span style="font-size:8px;">📍</span> 75 mi</div>
+                </div>
+              </div>
+              <!-- List -->
+              <div class="s-list-scroll">
+                <div class="s-list-header">
+                  <div class="s-list-title">8 Neighbors Nearby</div>
+                  <div class="s-list-sub">Within 30 miles</div>
+                </div>
+
+                <div class="s-user-card">
+                  <div class="s-avatar">JM</div>
+                  <div class="s-user-info">
+                    <div class="s-user-name">Jake &amp; Rita</div>
+                    <div class="s-user-meta">🚐 Class A Motorhome · 1.2 mi</div>
+                    <div class="s-user-badges">
+                      <span class="s-badge s-badge-connected">● Connected</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="s-user-card">
+                  <div class="s-avatar s-avatar-slate">SC</div>
+                  <div class="s-user-info">
+                    <div class="s-user-name">Sarah &amp; Tom</div>
+                    <div class="s-user-meta">🚐 Fifth Wheel · 4.7 mi</div>
+                    <div class="s-user-badges">
+                      <span class="s-badge s-badge-connect">+ Connect</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="s-user-card">
+                  <div class="s-avatar s-avatar-secondary">MR</div>
+                  <div class="s-user-info">
+                    <div class="s-user-name">Mike Ramirez</div>
+                    <div class="s-user-meta">🚐 Travel Trailer · 8.3 mi</div>
+                    <div class="s-user-badges">
+                      <span class="s-badge s-badge-pending">⌛ Pending</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="s-user-card">
+                  <div class="s-avatar s-avatar-accent">LP</div>
+                  <div class="s-user-info">
+                    <div class="s-user-name">The Park Family</div>
+                    <div class="s-user-meta">🚐 Class C · 12.1 mi</div>
+                    <div class="s-user-badges">
+                      <span class="s-badge s-badge-connected">● Connected</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="s-user-card">
+                  <div class="s-avatar">DW</div>
+                  <div class="s-user-info">
+                    <div class="s-user-name">Dan &amp; Carol Wolfe</div>
+                    <div class="s-user-meta">🚐 Toy Hauler · 15.4 mi</div>
+                    <div class="s-user-badges">
+                      <span class="s-badge s-badge-pending">↓ Incoming</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="s-user-card">
+                  <div class="s-avatar s-avatar-slate">PN</div>
+                  <div class="s-user-info">
+                    <div class="s-user-name">Priya Nair</div>
+                    <div class="s-user-meta">🚐 Van Conversion · 19.8 mi</div>
+                    <div class="s-user-badges">
+                      <span class="s-badge s-badge-connect">+ Connect</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="s-user-card">
+                  <div class="s-avatar s-avatar-secondary">CB</div>
+                  <div class="s-user-info">
+                    <div class="s-user-name">Captain Bill</div>
+                    <div class="s-user-meta">🚐 Class A · 24.3 mi</div>
+                    <div class="s-user-badges">
+                      <span class="s-badge s-badge-connected">● Connected</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="s-user-card">
+                  <div class="s-avatar">WH</div>
+                  <div class="s-user-info">
+                    <div class="s-user-name">Wade Hansen</div>
+                    <div class="s-user-meta">🚐 Fifth Wheel · 3.1 mi</div>
+                    <div class="s-user-badges">
+                      <span class="s-badge s-badge-connected">● Connected</span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- Tab bar -->
+              <div class="s-tab-bar">
+                <div class="s-tab-item active">
+                  <span class="s-tab-icon">📍</span>
+                  <span class="s-tab-text active">Neighbors</span>
+                </div>
+                <div class="s-tab-item">
+                  <span class="s-tab-icon">👤</span>
+                  <span class="s-tab-text">Profile</span>
+                </div>
+                <div class="s-tab-item">
+                  <span class="s-tab-icon">💬</span>
+                  <span class="s-tab-text">Messages</span>
+                </div>
+                <div class="s-tab-item">
+                  <span class="s-tab-icon">👨‍👩‍👧</span>
+                  <span class="s-tab-text">Family</span>
+                </div>
+                <div class="s-tab-item">
+                  <span class="s-tab-icon">⚙️</span>
+                  <span class="s-tab-text">Settings</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="screen-label-row">
+          <div class="screen-name">Neighbors Screen</div>
+          <div class="screen-route">app/(tabs)/(neighbors)/index.tsx</div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════
+           MESSAGES SCREEN
+      ═══════════════════════════════════════════ -->
+      <div class="screen-item" id="screen-messages">
+        <div class="phone-frame">
+          <div class="phone-notch">
+            <div class="phone-notch-pill"></div>
+            <div class="phone-notch-camera"></div>
+          </div>
+          <div class="phone-screen">
+            <div class="s-messages" style="position:relative;">
+              <!-- Status bar -->
+              <div class="phone-status-bar" style="background:#fff; color:#111B14;">
+                <span style="font-family: var(--font-body); font-size:11px; font-weight:700;">9:41</span>
+                <span class="phone-status-icons">▲▲▲ 🔋</span>
+              </div>
+              <!-- Header -->
+              <div class="s-msg-header">
+                <div class="s-msg-title">Messages</div>
+              </div>
+              <!-- Tabs -->
+              <div class="s-msg-tab-wrap">
+                <div class="s-msg-tabs">
+                  <div class="s-msg-tab active">
+                    <span style="font-size:11px;">💬</span> Messages
+                    <span style="background:#fff; color:#1E4A2E; font-size:9px; font-weight:700; padding:1px 5px; border-radius:9px;">3</span>
+                  </div>
+                  <div class="s-msg-tab">
+                    <span style="font-size:11px;">👤+</span> Requests
+                    <span style="background:#F0A76A; color:#fff; font-size:9px; font-weight:700; padding:1px 5px; border-radius:9px;">2</span>
+                  </div>
+                </div>
+              </div>
+              <!-- Unread banner -->
+              <div class="s-msg-unread-banner">
+                <div class="s-msg-banner-dot"></div>
+                <span class="s-msg-banner-text">3 unread messages</span>
+              </div>
+              <!-- Conversation list -->
+              <div class="s-conv-list">
+                <div class="s-conv-row">
+                  <div class="s-conv-avatar">JM</div>
+                  <div class="s-conv-content">
+                    <div class="s-conv-top">
+                      <span class="s-conv-name unread">Jake &amp; Rita</span>
+                      <span class="s-conv-time unread">2h ago</span>
+                    </div>
+                    <div class="s-conv-bottom">
+                      <span class="s-conv-preview unread">Hey! We just pulled in next door — Class A with the blue...</span>
+                      <span class="s-conv-unread-badge">2</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="s-conv-row">
+                  <div class="s-conv-avatar s-conv-avatar-group" style="font-size:13px;">👥</div>
+                  <div class="s-conv-content">
+                    <div class="s-conv-top">
+                      <span class="s-conv-name unread">Sedona Campsite Crew</span>
+                      <span class="s-conv-time unread">5h ago</span>
+                    </div>
+                    <div class="s-conv-bottom">
+                      <span class="s-conv-preview unread">Wade: Campfire at site 14 tonight, all welcome!</span>
+                      <span class="s-conv-unread-badge">1</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="s-conv-row">
+                  <div class="s-conv-avatar" style="background:linear-gradient(135deg,#D4874A,#F0A76A);">LP</div>
+                  <div class="s-conv-content">
+                    <div class="s-conv-top">
+                      <span class="s-conv-name">The Park Family</span>
+                      <span class="s-conv-time">Yesterday</span>
+                    </div>
+                    <div class="s-conv-bottom">
+                      <span class="s-conv-preview">Thanks for the hiking tips, the kids loved it!</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="s-conv-row">
+                  <div class="s-conv-avatar" style="background:linear-gradient(135deg,#4A6FA5,#6B8FC5);">WH</div>
+                  <div class="s-conv-content">
+                    <div class="s-conv-top">
+                      <span class="s-conv-name">Wade Hansen</span>
+                      <span class="s-conv-time">Mar 18</span>
+                    </div>
+                    <div class="s-conv-bottom">
+                      <span class="s-conv-preview">Safe travels! Catch you on the road 🚐</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="s-conv-row">
+                  <div class="s-conv-avatar" style="background:linear-gradient(135deg,#8B6F47,#A68B63);">MR</div>
+                  <div class="s-conv-content">
+                    <div class="s-conv-top">
+                      <span class="s-conv-name">Mike Ramirez</span>
+                      <span class="s-conv-time">Mar 15</span>
+                    </div>
+                    <div class="s-conv-bottom">
+                      <span class="s-conv-preview">That Airstream Bambi is the best decision I ever made.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- FAB -->
+              <div class="s-fab">
+                +
+                <div class="s-fab-badge">3</div>
+              </div>
+              <!-- Tab bar -->
+              <div class="s-tab-bar">
+                <div class="s-tab-item">
+                  <span class="s-tab-icon">📍</span>
+                  <span class="s-tab-text">Neighbors</span>
+                </div>
+                <div class="s-tab-item">
+                  <span class="s-tab-icon">👤</span>
+                  <span class="s-tab-text">Profile</span>
+                </div>
+                <div class="s-tab-item active">
+                  <span class="s-tab-icon">💬</span>
+                  <span class="s-tab-text active">Messages</span>
+                </div>
+                <div class="s-tab-item">
+                  <span class="s-tab-icon">👨‍👩‍👧</span>
+                  <span class="s-tab-text">Family</span>
+                </div>
+                <div class="s-tab-item">
+                  <span class="s-tab-icon">⚙️</span>
+                  <span class="s-tab-text">Settings</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="screen-label-row">
+          <div class="screen-name">Messages Screen</div>
+          <div class="screen-route">app/(tabs)/(messages)/index.tsx</div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════
+           PROFILE SCREEN
+      ═══════════════════════════════════════════ -->
+      <div class="screen-item" id="screen-profile">
+        <div class="phone-frame">
+          <div class="phone-notch">
+            <div class="phone-notch-pill"></div>
+            <div class="phone-notch-camera"></div>
+          </div>
+          <div class="phone-screen">
+            <div class="s-profile" style="position:relative;">
+              <!-- Status bar -->
+              <div class="phone-status-bar" style="background:#F6F7F5; color:#111B14;">
+                <span style="font-family: var(--font-body); font-size:11px; font-weight:700;">9:41</span>
+                <span class="phone-status-icons">▲▲▲ 🔋</span>
+              </div>
+              <!-- Nav header -->
+              <div class="s-profile-header">
+                <div class="s-profile-header-title">My Profile</div>
+                <div class="s-edit-btn">✏</div>
+              </div>
+              <!-- Content -->
+              <div class="s-profile-scroll">
+                <!-- Hero -->
+                <div class="s-profile-hero">
+                  <div class="s-profile-hero-orb"></div>
+                  <div class="s-profile-hero-content">
+                    <div class="s-profile-avatar-box">AM</div>
+                    <div class="s-profile-hero-info">
+                      <div class="s-profile-hero-name">Alex Mercer</div>
+                      <div class="s-profile-hero-handle">@alex_rv · Full-timer</div>
+                      <div class="s-profile-member-badge">★ PREMIUM MEMBER</div>
+                    </div>
+                  </div>
+                  <div class="s-profile-hero-bio">Full-time RVer since 2021. Chasing sunsets and good WiFi. Class A all the way.</div>
+                </div>
+                <!-- Check in -->
+                <div class="s-checkin-btn">
+                  <span style="font-size:12px; color:rgba(255,255,255,0.7);">📍</span>
+                  <span class="s-checkin-text">Check In Here</span>
+                  <span class="s-checkin-last">Last: Sedona, AZ</span>
+                </div>
+                <!-- RV Info -->
+                <div class="s-section-block">
+                  <div class="s-section-label-sm">RV INFO</div>
+                  <div class="s-info-card">
+                    <div class="s-info-row">
+                      <div class="s-info-icon-box" style="background:#EAF4EE;">🚐</div>
+                      <div>
+                        <div class="s-info-label">Type</div>
+                        <div class="s-info-value">The Road King · Class A</div>
+                      </div>
+                    </div>
+                    <div class="s-info-row">
+                      <div class="s-info-icon-box" style="background:#FEF3EA;">📏</div>
+                      <div>
+                        <div class="s-info-label">Length</div>
+                        <div class="s-info-value">38 ft · Thor Palazzo</div>
+                      </div>
+                    </div>
+                    <div class="s-info-row">
+                      <div class="s-info-icon-box" style="background:#EAF4EE;">📍</div>
+                      <div>
+                        <div class="s-info-label">Current Location</div>
+                        <div class="s-info-value">Sedona, AZ</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Interests -->
+                <div class="s-section-block" style="margin-top:8px;">
+                  <div class="s-section-label-sm">INTERESTS</div>
+                  <div class="s-info-card">
+                    <div class="s-chip-grid">
+                      <span class="s-chip-sm">Hiking</span>
+                      <span class="s-chip-sm">Photography</span>
+                      <span class="s-chip-sm">Fly Fishing</span>
+                      <span class="s-chip-sm">Campfire Cooking</span>
+                      <span class="s-chip-sm">National Parks</span>
+                      <span class="s-chip-sm">Boondocking</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Tab bar -->
+              <div class="s-tab-bar">
+                <div class="s-tab-item">
+                  <span class="s-tab-icon">📍</span>
+                  <span class="s-tab-text">Neighbors</span>
+                </div>
+                <div class="s-tab-item active">
+                  <span class="s-tab-icon">👤</span>
+                  <span class="s-tab-text active">Profile</span>
+                </div>
+                <div class="s-tab-item">
+                  <span class="s-tab-icon">💬</span>
+                  <span class="s-tab-text">Messages</span>
+                </div>
+                <div class="s-tab-item">
+                  <span class="s-tab-icon">👨‍👩‍👧</span>
+                  <span class="s-tab-text">Family</span>
+                </div>
+                <div class="s-tab-item">
+                  <span class="s-tab-icon">⚙️</span>
+                  <span class="s-tab-text">Settings</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="screen-label-row">
+          <div class="screen-name">Profile Screen</div>
+          <div class="screen-route">app/(tabs)/(profile)/index.tsx</div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════
+           SETTINGS SCREEN
+      ═══════════════════════════════════════════ -->
+      <div class="screen-item" id="screen-settings">
+        <div class="phone-frame">
+          <div class="phone-notch">
+            <div class="phone-notch-pill"></div>
+            <div class="phone-notch-camera"></div>
+          </div>
+          <div class="phone-screen">
+            <div class="s-settings" style="position:relative;">
+              <!-- Status bar -->
+              <div class="phone-status-bar" style="background:#F6F7F5; color:#111B14;">
+                <span style="font-family: var(--font-body); font-size:11px; font-weight:700;">9:41</span>
+                <span class="phone-status-icons">▲▲▲ 🔋</span>
+              </div>
+              <!-- Header -->
+              <div class="s-settings-header">
+                <div class="s-settings-title">Settings</div>
+              </div>
+              <!-- Content -->
+              <div class="s-settings-scroll">
+
+                <!-- Profile card -->
+                <div class="s-profile-card">
+                  <div class="s-profile-card-avatar">AM</div>
+                  <div class="s-profile-card-info">
+                    <div class="s-profile-card-name">Alex Mercer</div>
+                    <div class="s-profile-card-email">alex@rvneighbors.app</div>
+                  </div>
+                  <div class="s-plan-badge">★ Premium</div>
+                </div>
+
+                <!-- Location Sharing -->
+                <div class="s-settings-section">
+                  <div class="s-settings-section-header">
+                    <div class="s-settings-icon-box" style="background:#3A8A55; color:#fff;">📍</div>
+                    <div class="s-settings-section-title">Location Sharing</div>
+                  </div>
+                  <div class="s-settings-card">
+                    <div class="s-toggle-row">
+                      <div class="s-toggle-info">
+                        <div class="s-toggle-label">Go Off The Grid</div>
+                        <div class="s-toggle-sub">Hide your location from everyone</div>
+                      </div>
+                      <div class="s-toggle-switch off"></div>
+                    </div>
+                    <div class="s-toggle-row">
+                      <div class="s-toggle-info">
+                        <div class="s-toggle-label">Auto Location Update</div>
+                        <div class="s-toggle-sub">Refreshes in background daily</div>
+                      </div>
+                      <div class="s-toggle-switch"></div>
+                    </div>
+                    <div class="s-toggle-row">
+                      <div class="s-toggle-info">
+                        <div class="s-toggle-label" style="font-size:11px; color:#4A5550;">★ Close Friends · 25 mi</div>
+                        <div class="s-toggle-sub">Share with close friends</div>
+                      </div>
+                      <div class="s-toggle-switch"></div>
+                    </div>
+                    <div class="s-toggle-row">
+                      <div class="s-toggle-info">
+                        <div class="s-toggle-label" style="font-size:11px; color:#4A5550;">👥 Connections · 10 mi</div>
+                        <div class="s-toggle-sub">Connected friends</div>
+                      </div>
+                      <div class="s-toggle-switch"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Membership -->
+                <div class="s-settings-section">
+                  <div class="s-settings-section-header">
+                    <div class="s-settings-icon-box" style="background:#D4874A; color:#fff;">★</div>
+                    <div class="s-settings-section-title">Membership</div>
+                  </div>
+                  <div class="s-settings-card">
+                    <div style="display:flex; align-items:center; padding:10px 12px; gap:10px;">
+                      <div style="flex:1;">
+                        <div style="font-size:13px; font-weight:700; color:#111B14;">Premium</div>
+                        <div style="font-size:11px; color:#8A9490;">$4.99 / month</div>
+                      </div>
+                      <div style="display:flex; align-items:center; gap:4px; font-size:11px; font-weight:600; color:#1E4A2E;">
+                        Manage <span style="font-size:10px;">›</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Account -->
+                <div class="s-settings-section">
+                  <div class="s-settings-section-header">
+                    <div class="s-settings-icon-box" style="background:#4A6FA5; color:#fff;">🛡</div>
+                    <div class="s-settings-section-title">Account</div>
+                  </div>
+                  <div class="s-settings-card">
+                    <div class="s-menu-item">
+                      <div class="s-menu-icon-box" style="background:#F0F1EE;">✉</div>
+                      <div class="s-menu-text" style="color:#8A9490; font-size:10px;">alex@rvneighbors.app</div>
+                    </div>
+                    <div class="s-menu-item">
+                      <div class="s-menu-icon-box" style="background:#FFF0E6;">🔔</div>
+                      <span class="s-menu-text">Notifications</span>
+                      <span class="s-menu-chevron">›</span>
+                    </div>
+                    <div class="s-menu-item">
+                      <div class="s-menu-icon-box" style="background:#EEF2FA;">🔒</div>
+                      <span class="s-menu-text">Privacy &amp; Security</span>
+                      <span class="s-menu-chevron">›</span>
+                    </div>
+                    <div class="s-menu-item">
+                      <div class="s-menu-icon-box" style="background:#EAF4EE;">❓</div>
+                      <span class="s-menu-text">Help &amp; Support</span>
+                      <span class="s-menu-chevron">›</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Sign out -->
+                <div class="s-signout-btn">
+                  <span style="font-size:13px;">↩</span> Sign Out
+                </div>
+
+                <div class="s-version">RV Neighbors v1.0.0</div>
+
+              </div>
+
+              <!-- Tab bar -->
+              <div class="s-tab-bar">
+                <div class="s-tab-item">
+                  <span class="s-tab-icon">📍</span>
+                  <span class="s-tab-text">Neighbors</span>
+                </div>
+                <div class="s-tab-item">
+                  <span class="s-tab-icon">👤</span>
+                  <span class="s-tab-text">Profile</span>
+                </div>
+                <div class="s-tab-item">
+                  <span class="s-tab-icon">💬</span>
+                  <span class="s-tab-text">Messages</span>
+                </div>
+                <div class="s-tab-item">
+                  <span class="s-tab-icon">👨‍👩‍👧</span>
+                  <span class="s-tab-text">Family</span>
+                </div>
+                <div class="s-tab-item active">
+                  <span class="s-tab-icon">⚙️</span>
+                  <span class="s-tab-text active">Settings</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="screen-label-row">
+          <div class="screen-name">Settings Screen</div>
+          <div class="screen-route">app/(tabs)/(settings)/index.tsx</div>
+        </div>
+      </div>
+
+    </div><!-- /screens-grid -->
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-left">
+      <strong>RV Neighbors</strong> Brand Kit — For internal use and authorized design partners.
+    </div>
+    <div class="footer-right">app.rvneighbors.mod · v1.0.0 · 2025</div>
+  </footer>
+
+</main>
+
+</body>
+</html>
