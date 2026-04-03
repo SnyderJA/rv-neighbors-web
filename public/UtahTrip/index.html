@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Utah Mighty 5 Trip</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sand:#F2E8D9;--sand-dark:#E8D9C0;--rust:#C4522A;--terracotta:#E07A45;
+    --ochre:#D4A843;--slate:#2C3A47;--cream:#FAF6EF;--ink:#1A1A1A;--muted:#8A7D6E;--white:#FFFFFF;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);overflow-x:hidden;}
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(26,26,26,0.94);backdrop-filter:blur(12px);padding:0 6vw;display:flex;align-items:center;justify-content:space-between;height:56px;border-bottom:1px solid rgba(255,255,255,0.08);transform:translateY(-100%);transition:transform .35s ease;}
+  nav.visible{transform:translateY(0);}
+  .nav-brand{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--sand);}
+  .nav-links{display:flex;gap:.25rem;overflow-x:auto;scrollbar-width:none;}
+  .nav-links::-webkit-scrollbar{display:none;}
+  .nav-link{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:.4rem .75rem;border-radius:6px;white-space:nowrap;transition:color .2s,background .2s;}
+  .nav-link:hover{color:var(--sand);background:rgba(255,255,255,.06);}
+  .hero{position:relative;min-height:100vh;background:var(--slate);display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;}
+  .hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 120% 60% at 50% 100%,#C4522A44 0%,transparent 60%),radial-gradient(ellipse 80% 40% at 20% 80%,#D4A84322 0%,transparent 50%),linear-gradient(170deg,#1A2530 0%,#2C3A47 40%,#3D2010 100%);}
+  .canyon-layers{position:absolute;bottom:0;left:0;right:0;height:55%;}
+  .canyon-layers svg{width:100%;height:100%;display:block;}
+  .hero-content{position:relative;z-index:10;padding:0 6vw 8vh;}
+  .hero-eyebrow{font-family:'DM Mono',monospace;font-size:.75rem;letter-spacing:.25em;color:var(--ochre);text-transform:uppercase;margin-bottom:1.5rem;opacity:0;animation:fadeUp .8s ease .3s forwards;}
+  .hero-title{font-family:'Playfair Display',serif;font-size:clamp(3rem,9vw,8rem);font-weight:900;line-height:.92;color:var(--sand);margin-bottom:2rem;opacity:0;animation:fadeUp .9s ease .5s forwards;}
+  .hero-title em{font-style:italic;color:var(--terracotta);}
+  .hero-meta{display:flex;gap:3rem;flex-wrap:wrap;opacity:0;animation:fadeUp .8s ease .8s forwards;}
+  .hero-meta-item{display:flex;flex-direction:column;gap:.25rem;}
+  .hero-meta-label{font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);}
+  .hero-meta-value{font-size:1rem;font-weight:500;color:var(--sand);}
+  .scroll-hint{position:absolute;bottom:3rem;right:6vw;display:flex;flex-direction:column;align-items:center;gap:.5rem;color:var(--muted);font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;z-index:10;opacity:0;animation:fadeUp .8s ease 1.2s forwards;}
+  .scroll-line{width:1px;height:4rem;background:linear-gradient(to bottom,var(--rust),transparent);animation:scrollPulse 2s ease-in-out infinite;}
+  .parks-strip{background:var(--slate);display:flex;overflow-x:auto;scrollbar-width:none;}
+  .parks-strip::-webkit-scrollbar{display:none;}
+  .park-chip{flex-shrink:0;padding:1rem 2rem;display:flex;align-items:center;gap:.75rem;border-right:1px solid rgba(255,255,255,.08);cursor:pointer;transition:background .2s;text-decoration:none;}
+  .park-chip:hover{background:rgba(255,255,255,.05);}
+  .park-chip-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+  .park-chip-name{font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--sand);white-space:nowrap;}
+  .park-chip-dates{font-size:.7rem;color:var(--muted);white-space:nowrap;}
+  .section{padding:5rem 6vw;}
+  .section-alt{background:var(--sand);}
+  .section-label{font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:.25em;text-transform:uppercase;color:var(--rust);margin-bottom:.75rem;}
+  .section-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3.25rem);font-weight:700;line-height:1.1;color:var(--slate);margin-bottom:3rem;}
+  .section-title em{font-style:italic;color:var(--rust);}
+  .legend{display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:2.5rem;padding:1.25rem 1.5rem;background:var(--white);border-radius:12px;border:1px solid var(--sand-dark);}
+  .legend-item{display:flex;align-items:center;gap:.5rem;font-size:.78rem;color:var(--muted);}
+  .legend-swatch{width:14px;height:14px;border-radius:4px;flex-shrink:0;}
+  .summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.25rem;margin-bottom:3rem;}
+  .stat-card{background:var(--white);border:1px solid var(--sand-dark);border-radius:14px;padding:1.5rem;}
+  .stat-label{font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;}
+  .stat-value{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:var(--slate);line-height:1;margin-bottom:.3rem;}
+  .stat-unit{font-size:.8rem;color:var(--muted);}
+  .days-off-bar{background:var(--slate);padding:2.5rem 6vw;display:flex;gap:8px;flex-wrap:wrap;}
+  .day-off-chip{flex:1;min-width:180px;padding:1.25rem 1.75rem;background:rgba(255,255,255,.04);border-radius:10px;}
+  .day-off-chip-park{font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;margin-bottom:.4rem;}
+  .day-off-chip-date{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--sand);}
+  .day-off-chip-note{font-size:.75rem;color:var(--muted);margin-top:.25rem;}
+  .park-block{margin-bottom:3.5rem;border-radius:16px;overflow:hidden;border:1px solid var(--sand-dark);background:var(--white);box-shadow:0 2px 20px rgba(0,0,0,.04);}
+  .park-header{padding:1.5rem 2rem;display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap;}
+  .park-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;}
+  .park-header-text{flex:1;}
+  .park-name{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;line-height:1.2;}
+  .park-sub{font-size:.8rem;margin-top:.2rem;font-family:'DM Mono',monospace;letter-spacing:.05em;}
+  .park-badge{font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;padding:.35rem .85rem;border-radius:99px;white-space:nowrap;}
+  .tip-row{padding:.85rem 1.5rem;background:#FFFBF4;border-top:1px solid var(--sand-dark);display:flex;gap:.75rem;align-items:flex-start;}
+  .tip-icon{font-size:.85rem;margin-top:.15rem;flex-shrink:0;}
+  .tip-text{font-size:.8rem;color:var(--muted);line-height:1.6;}
+  .tip-text strong{color:var(--slate);font-weight:500;}
+  .days-table{width:100%;border-collapse:collapse;}
+  .day-row{border-top:1px solid var(--sand-dark);}
+  .day-row:hover > td{background-color:#FDFAF6 !important;}
+  .day-cell-label{width:110px;padding:1rem;vertical-align:top;border-right:1px solid var(--sand-dark);background:var(--cream);}
+  .day-name{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);}
+  .day-date{font-weight:500;font-size:.9rem;color:var(--slate);margin-top:.15rem;}
+  .day-type-pill{display:inline-block;margin-top:.4rem;font-family:'DM Mono',monospace;font-size:.56rem;letter-spacing:.08em;text-transform:uppercase;padding:.2rem .5rem;border-radius:99px;}
+  .pill-off{background:#D4EDDA;color:#1A6B35;}
+  .pill-work{background:#EBEBEB;color:#555;}
+  .pill-weekend{background:#D6EAF8;color:#1A5B8B;}
+  .pill-travel{background:#FEF0D7;color:#9B6B1A;}
+  .day-cell-content{padding:1rem 1.5rem;vertical-align:top;}
+  .bg-off{background:#F4FBF5;}
+  .bg-weekend{background:#F4F9FE;}
+  .bg-travel{background:#FDFAF4;}
+  .bg-work{background:var(--white);}
+  .day-lines{display:flex;flex-direction:column;gap:.55rem;}
+  .day-line{display:flex;align-items:flex-start;gap:.75rem;}
+  .day-line-tag{flex-shrink:0;width:96px;font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.07em;text-transform:uppercase;padding:.25rem .55rem;border-radius:99px;text-align:center;white-space:nowrap;margin-top:.15rem;}
+  .lt-title-tag{background:transparent;width:0;padding:0;}
+  .lt-work{background:#EBEBEB;color:#555;}
+  .lt-hike{background:#E8F5E2;color:#2D6B35;}
+  .lt-drive{background:#E3EEF9;color:#1A4B7A;}
+  .lt-relax{background:#FEF3E2;color:#9B6B1A;}
+  .lt-book{background:#FFF3CD;color:#856404;}
+  .lt-9pm{background:#FDECEC;color:#8B2020;}
+  .lt-note{background:#F1EFE8;color:#5F5E5A;}
+  .day-line-text{font-size:.84rem;color:var(--muted);line-height:1.6;flex:1;}
+  .day-line-text strong{color:var(--slate);font-weight:500;}
+  .day-line-text.is-title{font-size:.95rem;font-weight:500;color:var(--slate);}
+  /* Park themes */
+  .park-zion .park-header{background:linear-gradient(135deg,#1B4332,#2D6B4A);}
+  .park-zion .park-name{color:#D4F5E4;} .park-zion .park-sub{color:#7EC8A0;} .park-zion .park-badge{background:rgba(255,255,255,.15);color:#A8E6C3;} .park-zion .park-icon{background:rgba(255,255,255,.12);}
+  .park-capitol .park-header{background:linear-gradient(135deg,#5C3A0A,#9B6B1A);}
+  .park-capitol .park-name{color:#FDE9B8;} .park-capitol .park-sub{color:#D4A843;} .park-capitol .park-badge{background:rgba(255,255,255,.15);color:#FDE9B8;} .park-capitol .park-icon{background:rgba(255,255,255,.12);}
+  .park-canyonlands .park-header{background:linear-gradient(135deg,#4A1A08,#8B3A1A);}
+  .park-canyonlands .park-name{color:#FDDCC8;} .park-canyonlands .park-sub{color:#D4845A;} .park-canyonlands .park-badge{background:rgba(255,255,255,.15);color:#FDDCC8;} .park-canyonlands .park-icon{background:rgba(255,255,255,.12);}
+  .park-arches .park-header{background:linear-gradient(135deg,#6B1A08,#B84020);}
+  .park-arches .park-name{color:#FDE0D4;} .park-arches .park-sub{color:#E89070;} .park-arches .park-badge{background:rgba(255,255,255,.15);color:#FDE0D4;} .park-arches .park-icon{background:rgba(255,255,255,.12);}
+  .park-bryce .park-header{background:linear-gradient(135deg,#2D1A5C,#5B3A8B);}
+  .park-bryce .park-name{color:#E8DAFE;} .park-bryce .park-sub{color:#B09ADE;} .park-bryce .park-badge{background:rgba(255,255,255,.15);color:#E8DAFE;} .park-bryce .park-icon{background:rgba(255,255,255,.12);}
+  .park-parkcity .park-header{background:linear-gradient(135deg,#0D2E4A,#1A5B8B);}
+  .park-parkcity .park-name{color:#D4EAF8;} .park-parkcity .park-sub{color:#80B8D8;} .park-parkcity .park-badge{background:rgba(255,255,255,.15);color:#D4EAF8;} .park-parkcity .park-icon{background:rgba(255,255,255,.12);}
+  .park-transit .park-header{background:linear-gradient(135deg,#2C2C2C,#4A4A4A);}
+  .park-transit .park-name{color:#EEE;} .park-transit .park-sub{color:#AAA;} .park-transit .park-badge{background:rgba(255,255,255,.12);color:#DDD;} .park-transit .park-icon{background:rgba(255,255,255,.1);}
+  .reminders-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;}
+  .reminder-card{background:var(--white);border:1px solid var(--sand-dark);border-radius:12px;padding:1.25rem 1.5rem;display:flex;gap:1rem;align-items:flex-start;}
+  .reminder-icon{font-size:1.4rem;flex-shrink:0;margin-top:.1rem;}
+  .reminder-title{font-weight:500;font-size:.9rem;color:var(--slate);margin-bottom:.3rem;}
+  .reminder-text{font-size:.8rem;color:var(--muted);line-height:1.55;}
+  footer{background:var(--ink);padding:3rem 6vw;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1.5rem;}
+  .footer-title{font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:var(--sand);}
+  .footer-sub{font-size:.78rem;color:var(--muted);margin-top:.25rem;font-family:'DM Mono',monospace;letter-spacing:.05em;}
+  .footer-miles{font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:900;color:var(--rust);line-height:1;}
+  .footer-miles-label{font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:.25rem;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes scrollPulse{0%,100%{opacity:.3;transform:scaleY(1)}50%{opacity:1;transform:scaleY(1.15)}}
+  @media(max-width:640px){.day-cell-label{width:80px;padding:.75rem}.day-cell-content{padding:.75rem 1rem}.park-header{padding:1.25rem}.hero-meta{gap:1.5rem}.nav-links{display:none}.day-line-tag{width:72px;font-size:.55rem}}
+</style>
+</head>
+<body>
+
+<nav id="main-nav">
+  <div class="nav-brand">Our Utah Mighty 5</div>
+  <div class="nav-links">
+    <a class="nav-link" href="#zion">Zion</a>
+    <a class="nav-link" href="#capitol">Capitol Reef</a>
+    <a class="nav-link" href="#canyonlands">Canyonlands</a>
+    <a class="nav-link" href="#arches">Arches</a>
+    <a class="nav-link" href="#bryce">Bryce</a>
+    <a class="nav-link" href="#parkcity">Park City</a>
+    <a class="nav-link" href="#reminders">Reminders</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="canyon-layers">
+    <svg viewBox="0 0 1440 500" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,400 L0,500 L1440,500 L1440,380 L1380,360 L1320,340 L1260,355 L1200,335 L1140,350 L1080,320 L1020,340 L960,310 L900,330 L840,300 L780,320 L720,295 L660,315 L600,285 L540,305 L480,275 L420,295 L360,265 L300,285 L240,255 L180,275 L120,250 L60,270 L0,260 Z" fill="#1A2030" opacity="0.9"/>
+      <path d="M0,500 L0,420 L60,400 L100,380 L140,360 L180,340 L200,420 L220,500" fill="#2A1505" opacity="0.95"/>
+      <path d="M1440,500 L1440,400 L1380,380 L1340,355 L1300,370 L1260,345 L1240,420 L1220,500" fill="#2A1505" opacity="0.95"/>
+      <path d="M180,500 L200,430 L230,410 L270,395 L320,400 L370,385 L420,390 L470,375 L520,380 L570,365 L620,370 L670,355 L720,360 L770,345 L820,350 L870,365 L920,355 L970,370 L1020,360 L1070,375 L1120,365 L1170,375 L1220,500 Z" fill="#3D1A08" opacity="0.9"/>
+      <path d="M0,500 L0,460 L40,445 L80,450 L120,435 L160,440 L180,500 Z" fill="#4A1E0A"/>
+      <path d="M1260,500 L1260,440 L1300,435 L1340,445 L1380,440 L1440,460 L1440,500 Z" fill="#4A1E0A"/>
+      <path d="M580,500 L600,450 L640,440 L680,445 L720,438 L760,443 L800,440 L840,448 L860,500 Z" fill="#1A3A5C" opacity="0.6"/>
+    </svg>
+  </div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">April 23 &mdash; May 29, 2026 &nbsp;&middot;&nbsp; Utah Road Trip</div>
+    <h1 class="hero-title">Our Utah<br><em>Mighty 5</em><br>Trip</h1>
+    <div class="hero-meta">
+      <div class="hero-meta-item"><span class="hero-meta-label">Total Miles</span><span class="hero-meta-value">1,922 mi</span></div>
+      <div class="hero-meta-item"><span class="hero-meta-label">Duration</span><span class="hero-meta-value">36 nights</span></div>
+      <div class="hero-meta-item"><span class="hero-meta-label">Parks</span><span class="hero-meta-value">5 National Parks</span></div>
+      <div class="hero-meta-item"><span class="hero-meta-label">Basecamp</span><span class="hero-meta-value">Tucson, AZ</span></div>
+    </div>
+  </div>
+  <div class="scroll-hint"><span>Scroll</span><div class="scroll-line"></div></div>
+</section>
+
+<div class="parks-strip">
+  <a class="park-chip" href="#zion"><div class="park-chip-dot" style="background:#2D6B4A"></div><span class="park-chip-name">Zion</span><span class="park-chip-dates">Apr 26 &ndash; May 3</span></a>
+  <a class="park-chip" href="#capitol"><div class="park-chip-dot" style="background:#9B6B1A"></div><span class="park-chip-name">Capitol Reef</span><span class="park-chip-dates">May 3&ndash;7</span></a>
+  <a class="park-chip" href="#canyonlands"><div class="park-chip-dot" style="background:#8B3A1A"></div><span class="park-chip-name">Canyonlands</span><span class="park-chip-dates">May 7&ndash;15</span></a>
+  <a class="park-chip" href="#arches"><div class="park-chip-dot" style="background:#B84020"></div><span class="park-chip-name">Arches</span><span class="park-chip-dates">May 7&ndash;15</span></a>
+  <a class="park-chip" href="#bryce"><div class="park-chip-dot" style="background:#5B3A8B"></div><span class="park-chip-name">Bryce Canyon</span><span class="park-chip-dates">May 20 day trip</span></a>
+  <a class="park-chip" href="#parkcity"><div class="park-chip-dot" style="background:#1A5B8B"></div><span class="park-chip-name">Park City + SLC</span><span class="park-chip-dates">May 15&ndash;24</span></a>
+</div>
+
+<section class="section">
+  <div class="section-label">At a glance</div>
+  <div class="section-title">The <em>Big Picture</em></div>
+  <div class="summary-grid">
+    <div class="stat-card"><div class="stat-label">Total Distance</div><div class="stat-value">1,922</div><div class="stat-unit">miles round-trip from Tucson</div></div>
+    <div class="stat-card"><div class="stat-label">Nights Away</div><div class="stat-value">36</div><div class="stat-unit">April 23 &ndash; May 29</div></div>
+    <div class="stat-card"><div class="stat-label">Parks Visited</div><div class="stat-value">5</div><div class="stat-unit">All of Utah&rsquo;s Mighty 5</div></div>
+    <div class="stat-card"><div class="stat-label">Weekday Days Off</div><div class="stat-value">5</div><div class="stat-unit">One per park &mdash; Tue / Wed / Thu only</div></div>
+    <div class="stat-card"><div class="stat-label">Work Schedule</div><div class="stat-value">5&ndash;2</div><div class="stat-unit">Adventures from 3pm on work days</div></div>
+    <div class="stat-card"><div class="stat-label">Home By</div><div class="stat-value">9pm</div><div class="stat-unit">Every single evening</div></div>
+  </div>
+</section>
+
+<div class="days-off-bar">
+  <div class="day-off-chip"><div class="day-off-chip-park" style="color:#7EC8A0">Zion</div><div class="day-off-chip-date">Wed, Apr 29</div><div class="day-off-chip-note">Riverside Walk + Canyon Overlook + East Zion</div></div>
+  <div class="day-off-chip"><div class="day-off-chip-park" style="color:#D4A843">Capitol Reef</div><div class="day-off-chip-date">Wed, May 6</div><div class="day-off-chip-note">Scenic Drive + Hickman Bridge + Gifford pie</div></div>
+  <div class="day-off-chip"><div class="day-off-chip-park" style="color:#E89070">Arches</div><div class="day-off-chip-date">Tue, May 12</div><div class="day-off-chip-note">Delicate Arch + Devils Garden + scenic drive</div></div>
+  <div class="day-off-chip"><div class="day-off-chip-park" style="color:#D4845A">Canyonlands</div><div class="day-off-chip-date">Thu, May 14</div><div class="day-off-chip-note">Island in the Sky deep dive &mdash; Upheaval Dome + Aztec Butte</div></div>
+  <div class="day-off-chip"><div class="day-off-chip-park" style="color:#B09ADE">Bryce Canyon</div><div class="day-off-chip-date">Wed, May 20</div><div class="day-off-chip-note">Full scenic drive + Navajo Loop + Bristlecone</div></div>
+</div>
+
+<section class="section">
+  <div class="section-label">Day-by-Day Plan</div>
+  <div class="section-title">The Full <em>Itinerary</em></div>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-swatch" style="background:#D4EDDA;border:1.5px solid #1A6B35;"></div> Weekday day off &mdash; full day in the park (Tue / Wed / Thu only)</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#D6EAF8;border:1.5px solid #1A5B8B;"></div> Weekend &mdash; full day adventure (Sat &amp; Sun always free)</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#F5F5F5;border:1px solid #DDD;"></div> Work day &mdash; adventures from 3pm, home by 9pm</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#FEF0D7;border:1px solid #D4A843;"></div> Travel day</div>
+  </div>
+
+  <!-- TRANSIT -->
+  <div class="park-block park-transit" id="transit">
+    <div class="park-header">
+      <div class="park-icon">&#x1F690;</div>
+      <div class="park-header-text"><div class="park-name">Transit Stop &mdash; Camp Verde, AZ</div><div class="park-sub">Verde Ranch RV Resort &nbsp;&middot;&nbsp; Apr 23&ndash;26 &nbsp;&middot;&nbsp; 3 nights</div></div>
+      <span class="park-badge">Staging stop</span>
+    </div>
+    <table class="days-table">
+      <tr class="day-row">
+        <td class="day-cell-label"><div class="day-name">Thu</div><div class="day-date">Apr 23</div><span class="day-type-pill pill-travel">Travel</span></td>
+        <td class="day-cell-content bg-travel"><div class="day-lines">
+          <div class="day-line"><div class="day-line-tag lt-title-tag"></div><div class="day-line-text is-title">Depart Tucson &rarr; Arrive Camp Verde</div></div>
+          <div class="day-line"><div class="day-line-tag lt-note">Drive</div><div class="day-line-text">2.5 hr drive north. Set up camp and settle in.</div></div>
+        </div></td>
+      </tr>
+      <tr class="day-row">
+        <td class="day-cell-label"><div class="day-name">Fri</div><div class="day-date">Apr 24</div><span class="day-type-pill pill-work">Work + 3pm</span></td>
+        <td class="day-cell-content bg-work"><div class="day-lines">
+          <div class="day-line"><div class="day-line-tag lt-work">Work</div><div class="day-line-text">Work until 2pm (5am&ndash;2pm).</div></div>
+          <div class="day-line"><div class="day-line-tag lt-drive">3pm</div><div class="day-line-text"><strong>Jerome Ghost Town</strong> &mdash; 15 min drive up the mountain. Cliffside galleries and shops in this former copper mining town with stunning Verde Valley views.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-relax">Dinner</div><div class="day-line-text">Dinner back in Camp Verde.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-9pm">9pm</div><div class="day-line-text">Back at RV by 9pm.</div></div>
+        </div></td>
+      </tr>
+      <tr class="day-row">
+        <td class="day-cell-label"><div class="day-name">Sat</div><div class="day-date">Apr 25</div><span class="day-type-pill pill-weekend">Weekend</span></td>
+        <td class="day-cell-content bg-weekend"><div class="day-lines">
+          <div class="day-line"><div class="day-line-tag lt-title-tag"></div><div class="day-line-text is-title">Sedona Day</div></div>
+          <div class="day-line"><div class="day-line-tag lt-drive">Scenic drive</div><div class="day-line-text">Drive Oak Creek Canyon scenic highway (AZ-89A) into Sedona &mdash; one of the most beautiful drives in Arizona.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-hike">Hike</div><div class="day-line-text"><strong>Airport Mesa Trail</strong> (0.9 mi loop) &mdash; 360&deg; red rock vortex views, easy and spectacular.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-relax">Afternoon</div><div class="day-line-text">Lunch in Sedona. Browse the Tlaquepaque arts village.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-9pm">9pm</div><div class="day-line-text">Back at RV by 9pm.</div></div>
+        </div></td>
+      </tr>
+      <tr class="day-row">
+        <td class="day-cell-label"><div class="day-name">Sun</div><div class="day-date">Apr 26</div><span class="day-type-pill pill-travel">Travel</span></td>
+        <td class="day-cell-content bg-travel"><div class="day-lines">
+          <div class="day-line"><div class="day-line-tag lt-title-tag"></div><div class="day-line-text is-title">Travel &rarr; Zion (White Bison RV Resort, Virgin UT)</div></div>
+          <div class="day-line"><div class="day-line-tag lt-note">Drive</div><div class="day-line-text">4.5 hr drive. Arrive early afternoon and set up camp.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-relax">Evening</div><div class="day-line-text">Walk along the Virgin River &mdash; the canyon walls glow orange at dusk.</div></div>
+        </div></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- ZION -->
+  <div class="park-block park-zion" id="zion">
+    <div class="park-header">
+      <div class="park-icon">&#x1F3D4;&#xFE0F;</div>
+      <div class="park-header-text"><div class="park-name">Zion National Park</div><div class="park-sub">White Bison RV Resort, Virgin UT &nbsp;&middot;&nbsp; Apr 26 &ndash; May 3 &nbsp;&middot;&nbsp; 7 nights</div></div>
+      <span class="park-badge">Day off: Wed Apr 29</span>
+    </div>
+    <div class="tip-row"><span class="tip-icon">&#x1F4A1;</span><div class="tip-text"><strong>Crowd tip:</strong> Timed entry required Apr&ndash;Oct, 7am&ndash;4pm &mdash; book at recreation.gov. Entering after 4pm is always open; your 3pm work cutoff is perfect on weekdays. On weekends, arrive before 8am to beat shuttle lines.</div></div>
+    <table class="days-table">
+      <tr class="day-row">
+        <td class="day-cell-label"><div class="day-name">Mon</div><div class="day-date">Apr 27</div><span class="day-type-pill pill-work">Work + 3pm</span></td>
+        <td class="day-cell-content bg-work"><div class="day-lines">
+          <div class="day-line"><div class="day-line-tag lt-work">Work</div><div class="day-line-text">Work until 2pm.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-drive">3pm &middot; Enter</div><div class="day-line-text">Enter Zion after 4pm &mdash; no reservation needed. Ride the full shuttle loop for a first look at the canyon scale from end to end.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-relax">Sunset</div><div class="day-line-text">Watch the canyon walls turn red from the Virgin River bridge near the visitor center.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-9pm">9pm</div><div class="day-line-text">Back at RV by 9pm.</div></div>
+        </div></td>
+      </tr>
+      <tr class="day-row">
+        <td class="day-cell-label"><div class="day-name">Tue</div><div class="day-date">Apr 28</div><span class="day-type-pill pill-work">Work + 3pm</span></td>
+        <td class="day-cell-content bg-work"><div class="day-lines">
+          <div class="day-line"><div class="day-line-tag lt-work">Work</div><div class="day-line-text">Work until 2pm.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-drive">3pm &middot; Drive</div><div class="day-line-text"><strong>Kolob Canyons</strong> &mdash; 45 min north via I-15. A separate, uncrowded section of Zion NP with 5-mile scenic drive past dramatic red finger canyons.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-hike">Hike</div><div class="day-line-text"><strong>Taylor Creek Trail</strong> (2.7 mi RT) &mdash; canyon narrows to a double arch alcove. One of the park&rsquo;s most underrated hikes with almost no one on it.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-9pm">9pm</div><div class="day-line-text">Back at RV by 9pm.</div></div>
+        </div></td>
+      </tr>
+      <tr class="day-row">
+        <td class="day-cell-label"><div class="day-name">Wed</div><div class="day-date">Apr 29</div><span class="day-type-pill pill-off">Day Off &#x2713;</span></td>
+        <td class="day-cell-content bg-off"><div class="day-lines">
+          <div class="day-line"><div class="day-line-tag lt-title-tag"></div><div class="day-line-text is-title">Full Day &mdash; Zion Canyon + East Side Scenic Drive</div></div>
+          <div class="day-line"><div class="day-line-tag lt-note">Enter</div><div class="day-line-text">Use timed entry pass (book at recreation.gov). Ride the shuttle to the Temple of Sinawava.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-hike">Hike 1</div><div class="day-line-text"><strong>Riverside Walk</strong> (2 mi RT, flat, paved) &mdash; follows the Virgin River right into the gateway of the Narrows. Towering canyon walls on both sides.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-hike">Hike 2</div><div class="day-line-text"><strong>Canyon Overlook Trail</strong> (1 mi RT) &mdash; best view-per-mile hike in the park. Short, rewarding, and far less crowded than the valley floor trails.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-drive">Scenic drive</div><div class="day-line-text">Drive UT-9 east through the Zion&ndash;Mt. Carmel Tunnel (check RV height clearance in advance). Checkerboard Mesa and East Zion&rsquo;s white sandstone formations are otherworldly.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-relax">Dinner</div><div class="day-line-text">Dinner in Springdale.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-9pm">9pm</div><div class="day-line-text">Back at RV by 9pm.</div></div>
+        </div></td>
+      </tr>
+      <tr class="day-row">
+        <td class="day-cell-label"><div class="day-name">Thu</div><div class="day-date">Apr 30</div><span class="day-type-pill pill-work">Work + 3pm</span></td>
+        <td class="day-cell-content bg-work"><div class="day-lines">
+          <div class="day-line"><div class="day-line-tag lt-work">Work</div><div class="day-line-text">Work until 2pm.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-drive">3pm &middot; Drive</div><div class="day-line-text">Drive east on UT-9 past the tunnel &mdash; every pullout reveals another jaw-dropping white sandstone view.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-relax">Golden hour</div><div class="day-line-text"><strong>Coral Pink Sand Dunes State Park</strong> (30 min) &mdash; massive pink dunes between canyon walls at sunset. A completely different Utah landscape.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-9pm">9pm</div><div class="day-line-text">Back at RV by 9pm.</div></div>
+        </div></td>
+      </tr>
+      <tr class="day-row">
+        <td class="day-cell-label"><div class="day-name">Fri</div><div class="day-date">May 1</div><span class="day-type-pill pill-work">Work + 3pm</span></td>
+        <td class="day-cell-content bg-work"><div class="day-lines">
+          <div class="day-line"><div class="day-line-tag lt-work">Work</div><div class="day-line-text">Work until 2pm.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-relax">3pm</div><div class="day-line-text"><strong>Sand Hollow State Park</strong> &mdash; 20 min from camp. Brilliant blue reservoir surrounded by red sandstone. Kayak and paddleboard rentals available. The perfect Friday wind-down.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-9pm">9pm</div><div class="day-line-text">Back at RV by 9pm.</div></div>
+        </div></td>
+      </tr>
+      <tr class="day-row">
+        <td class="day-cell-label"><div class="day-name">Sat</div><div class="day-date">May 2</div><span class="day-type-pill pill-weekend">Weekend</span></td>
+        <td class="day-cell-content bg-weekend"><div class="day-lines">
+          <div class="day-line"><div class="day-line-tag lt-title-tag"></div><div class="day-line-text is-title">Zion Canyon &mdash; Pa&rsquo;rus Trail + Weeping Rock</div></div>
+          <div class="day-line"><div class="day-line-tag lt-note">Timing</div><div class="day-line-text">Arrive at the park entrance before 8am to beat the shuttle lines. Use your weekend timed entry pass.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-hike">Hike 1</div><div class="day-line-text"><strong>Pa&rsquo;rus Trail</strong> (1.8 mi RT, flat, paved) &mdash; along the Virgin River through cottonwoods. Deer are commonly spotted. Peaceful canyon walking.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-hike">Hike 2</div><div class="day-line-text"><strong>Weeping Rock</strong> (0.4 mi RT) &mdash; a hanging garden dripping with springs tucked into the canyon wall.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-relax">Afternoon</div><div class="day-line-text">Lunch in Springdale. Browse the shops and enjoy the town before heading back.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-9pm">9pm</div><div class="day-line-text">Back at RV by 9pm.</div></div>
+        </div></td>
+      </tr>
+      <tr class="day-row">
+        <td class="day-cell-label"><div class="day-name">Sun</div><div class="day-date">May 3</div><span class="day-type-pill pill-travel">Travel</span></td>
+        <td class="day-cell-content bg-travel"><div class="day-lines">
+          <div class="day-line"><div class="day-line-tag lt-title-tag"></div><div class="day-line-text is-title">Travel &rarr; Capitol Reef (Beas Lewis Flat, Torrey UT)</div></div>
+          <div class="day-line"><div class="day-line-tag lt-note">Drive</div><div class="day-line-text">2.75 hr drive. Arrive early afternoon &mdash; remote red rock solitude at the dispersed campsite.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-relax">Dinner</div><div class="day-line-text">Dinner in Torrey &mdash; try the Rim Rock Restaurant for spectacular valley views.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-9pm">9pm</div><div class="day-line-text">Back at RV by 9pm.</div></div>
+        </div></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- CAPITOL REEF -->
+  <div class="park-block park-capitol" id="capitol">
+    <div class="park-header">
+      <div class="park-icon">&#x1FAA8;</div>
+      <div class="park-header-text"><div class="park-name">Capitol Reef National Park</div><div class="park-sub">Beas Lewis Flat Dispersed Camping, Torrey UT &nbsp;&middot;&nbsp; May 3&ndash;7 &nbsp;&middot;&nbsp; 4 nights</div></div>
+      <span class="park-badge">Day off: Wed May 6</span>
+    </div>
+    <div class="tip-row"><span class="tip-icon">&#x1F4A1;</span><div class="tip-text"><strong>Most underrated of the Mighty 5</strong> &mdash; far less crowded than Zion or Arches, no timed entry required. Weekday afternoons are nearly empty. Don&rsquo;t skip the Gifford House pie.</div></div>
+    <table class="days-table">
+      <tr class="day-row">
+        <td class="day-cell-label"><div class="day-name">Mon</div><div class="day-date">May 4</div><span class="day-type-pill pill-work">Work + 3pm</span></td>
+        <td class="day-cell-content bg-work"><div class="day-lines">
+          <div class="day-line"><div class="day-line-tag lt-work">Work</div><div class="day-line-text">Work until 2pm.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-drive">3pm &middot; Drive</div><div class="day-line-text">Drive the 8-mile paved <strong>Capitol Reef Scenic Drive</strong> to its end &mdash; jaw-dropping canyon formations with almost no other visitors on a Monday afternoon.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-hike">Hike</div><div class="day-line-text"><strong>Capitol Gorge Trail</strong> (1.5 mi RT, flat) &mdash; canyon walk to the Pioneer Register where settlers carved their names in 1880.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-9pm">9pm</div><div class="day-line-text">Back at RV by 9pm.</div></div>
+        </div></td>
+      </tr>
+      <tr class="day-row">
+        <td class="day-cell-label"><div class="day-name">Tue</div><div class="day-date">May 5</div><span class="day-type-pill pill-work">Work + 3pm</span></td>
+        <td class="day-cell-content bg-work"><div class="day-lines">
+          <div class="day-line"><div class="day-line-tag lt-work">Work</div><div class="day-line-text">Work until 2pm.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-drive">3pm &middot; Drive</div><div class="day-line-text"><strong>Highway 24 corridor</strong> &mdash; drive east stopping at the Fremont Petroglyphs panel, Behunin Cabin, and Goosenecks Overlook.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-hike">Hike</div><div class="day-line-text"><strong>Sunset Point</strong> (0.8 mi RT) &mdash; one of the best views in the park. Virtually no one there by late afternoon as canyon walls turn amber and red.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-9pm">9pm</div><div class="day-line-text">Back at RV by 9pm.</div></div>
+        </div></td>
+      </tr>
+      <tr class="day-row">
+        <td class="day-cell-label"><div class="day-name">Wed</div><div class="day-date">May 6</div><span class="day-type-pill pill-off">Day Off &#x2713;</span></td>
+        <td class="day-cell-content bg-off"><div class="day-lines">
+          <div class="day-line"><div class="day-line-tag lt-title-tag"></div><div class="day-line-text is-title">Full Day &mdash; Hickman Bridge + Grand Wash + Fruita</div></div>
+          <div class="day-line"><div class="day-line-tag lt-drive">Scenic drive</div><div class="day-line-text">Full 8-mile Scenic Drive then Capitol Gorge Road (2.3 mi gravel, car-friendly). No time pressure &mdash; stop at every pullout.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-hike">Hike 1</div><div class="day-line-text"><strong>Hickman Bridge Trail</strong> (1.8 mi RT) &mdash; gorgeous natural arch with a river walk approach. One of the most rewarding short hikes in the park.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-hike">Hike 2</div><div class="day-line-text"><strong>Grand Wash Narrows</strong> (2 mi RT) &mdash; canyon walls narrow to just feet apart. Bighorn sheep country, flat and dramatic.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-relax">Fruita stop</div><div class="day-line-text">Stop at the Fruita orchards &mdash; fruit may be in early bloom. <strong>Gifford House pie stop is mandatory.</strong> Check hours at nps.gov/care before the day.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-relax">Sunset</div><div class="day-line-text">Panorama Point for sunset &mdash; sweeping 360&deg; views over the park with no effort.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-9pm">9pm</div><div class="day-line-text">Back at RV by 9pm.</div></div>
+        </div></td>
+      </tr>
+      <tr class="day-row">
+        <td class="day-cell-label"><div class="day-name">Thu</div><div class="day-date">May 7</div><span class="day-type-pill pill-travel">Travel</span></td>
+        <td class="day-cell-content bg-travel"><div class="day-lines">
+          <div class="day-line"><div class="day-line-tag lt-title-tag"></div><div class="day-line-text is-title">Travel &rarr; Moab (Sun Outdoors Canyonlands Gateway)</div></div>
+          <div class="day-line"><div class="day-line-tag lt-note">Drive</div><div class="day-line-text">~2 hr drive via I-70 east. Arrive early afternoon.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-relax">Afternoon</div><div class="day-line-text">Lunch in Moab &mdash; Moab Brewery, Blu Pig BBQ, or Desert Bistro.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-relax">Evening</div><div class="day-line-text">Walk along the Colorado River near camp. Get excited &mdash; Arches and Canyonlands start tomorrow.</div></div>
+        </div></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- CANYONLANDS -->
+  <div class="park-block park-canyonlands" id="canyonlands">
+    <div class="park-header">
+      <div class="park-icon">&#x1F3DC;&#xFE0F;</div>
+      <div class="park-header-text"><div class="park-name">Canyonlands National Park</div><div class="park-sub">Sun Outdoors Canyonlands Gateway, Moab UT &nbsp;&middot;&nbsp; May 7&ndash;15 &nbsp;&middot;&nbsp; 8 nights</div></div>
+      <span class="park-badge">Day off: Thu May 14</span>
+    </div>
+    <div class="tip-row"><span class="tip-icon">&#x1F4A1;</span><div class="tip-text"><strong>No timed entry required</strong> &mdash; dramatically less crowded than Arches. Island in the Sky is 40 min from Moab. The Needles district is even quieter. Both weekend days cover different districts; Thursday&rsquo;s day off goes deeper into Island in the Sky with no time pressure.</div></div>
+    <table class="days-table">
+      <tr class="day-row">
+        <td class="day-cell-label"><div class="day-name">Sat</div><div class="day-date">May 9</div><span class="day-type-pill pill-weekend">Weekend</span></td>
+        <td class="day-cell-content bg-weekend"><div class="day-lines">
+          <div class="day-line"><div class="day-line-tag lt-title-tag"></div><div class="day-line-text is-title">Canyonlands Island in the Sky + Dead Horse Point</div></div>
+          <div class="day-line"><div class="day-line-tag lt-note">Timing</div><div class="day-line-text">Arrive early at Island in the Sky for the best morning light and fewer cars at the overlooks.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-hike">Hike 1</div><div class="day-line-text"><strong>Mesa Arch</strong> (0.5 mi loop) &mdash; the iconic arch framing the canyon 1,000 ft below.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-drive">Scenic drive</div><div class="day-line-text">Full 34-mile scenic drive: Grand View Point, Green River Overlook, Upheaval Dome, Shafer Canyon Overlook. Stop at every pullout.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-hike">Hike 2</div><div class="day-line-text"><strong>Grand View Point Trail</strong> (2 mi RT) &mdash; panoramic rim walk along the canyon edge with 1,000-ft drop views.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-drive">Afternoon</div><div class="day-line-text"><strong>Dead Horse Point State Park</strong> (15 min away) &mdash; arguably Utah&rsquo;s most jaw-dropping overlook. Easy 1.5-mi rim loop.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-9pm">9pm</div><div class="day-line-text">Back at RV by 9pm.</div></div>
+        </div></td>
+      </tr>
+      <tr class="day-row">
+        <td class="day-cell-label"><div class="day-name">Sun</div><div class="day-date">May 10</div><span class="day-type-pill pill-weekend">Weekend</span></td>
+        <td class="day-cell-content bg-weekend"><div class="day-lines">
+          <div class="day-line"><div class="day-line-tag lt-title-tag"></div><div class="day-line-text is-title">Canyonlands &mdash; The Needles District</div></div>
+          <div class="day-line"><div class="day-line-tag lt-drive">Drive</div><div class="day-line-text">1 hr drive south via US-191. Red and white striped spires &mdash; completely different from Island in the Sky and far fewer visitors.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-hike">Hike 1</div><div class="day-line-text"><strong>Cave Spring Trail</strong> (0.6 mi loop) &mdash; ancient cowboy line camp and Native American pictographs under a rock overhang.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-hike">Hike 2</div><div class="day-line-text"><strong>Roadside Ruin</strong> (0.3 mi) &mdash; an 800-year-old Ancestral Puebloan granary built into the canyon wall.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-hike">Hike 3</div><div class="day-line-text"><strong>Pothole Point Trail</strong> (0.6 mi loop) &mdash; slickrock walk past potholes teeming with desert life.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-relax">Lunch</div><div class="day-line-text">Picnic lunch at a canyon overlook before heading back to Moab.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-9pm">9pm</div><div class="day-line-text">Back at RV by 9pm.</div></div>
+        </div></td>
+      </tr>
+      <tr class="day-row">
+        <td class="day-cell-label"><div class="day-name">Mon</div><div class="day-date">May 11</div><span class="day-type-pill pill-work">Work + 3pm</span></td>
+        <td class="day-cell-content bg-work"><div class="day-lines">
+          <div class="day-line"><div class="day-line-tag lt-work">Work</div><div class="day-line-text">Work until 2pm.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-hike">3pm</div><div class="day-line-text"><strong>Corona Arch Trail</strong> (3 mi RT) &mdash; just outside Arches NP boundary, no entry fee or reservation needed. One of the largest arches in the Moab area and almost crowd-free. Dramatic canyon views the entire way.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-9pm">9pm</div><div class="day-line-text">Back at RV by 9pm.</div></div>
+        </div></td>
+      </tr>
+      <tr class="day-row">
+        <td class="day-cell-label"><div class="day-name">Wed</div><div class="day-date">May 13</div><span class="day-type-pill pill-work">Work + 3pm</span></td>
+        <td class="day-cell-content bg-work"><div class="day-lines">
+          <div class="day-line"><div class="day-line-tag lt-work">Work</div><div class="day-line-text">Work until 2pm.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-drive">3pm &middot; Enter</div><div class="day-line-text">Enter Arches after 4pm &mdash; no timed reservation needed. A bonus evening visit the day after Arches day off.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-hike">Hike 1</div><div class="day-line-text"><strong>Park Avenue Trail</strong> (1.8 mi RT) &mdash; towering sandstone fins like Manhattan skyscrapers. Beautiful late-afternoon light, less crowded than main arches area.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-hike">Hike 2</div><div class="day-line-text"><strong>Windows Loop</strong> (1 mi) &mdash; North Window, South Window, and Turret Arch all in one easy evening circuit.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-9pm">9pm</div><div class="day-line-text">Back at RV by 9pm.</div></div>
+        </div></td>
+      </tr>
+      <tr class="day-row">
+        <td class="day-cell-label"><div class="day-name">Thu</div><div class="day-date">May 14</div><span class="day-type-pill pill-off">Day Off &#x2713;</span></td>
+        <td class="day-cell-content bg-off"><div class="day-lines">
+          <div class="day-line"><div class="day-line-tag lt-title-tag"></div><div class="day-line-text is-title">Full Day &mdash; Canyonlands Island in the Sky Deep Dive</div></div>
+          <div class="day-line"><div class="day-line-tag lt-hike">Hike 1</div><div class="day-line-text"><strong>Upheaval Dome Overlook</strong> (1 mi RT) &mdash; a mysterious crater, either a collapsed salt dome or ancient meteor strike. Geologists still debate it.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-drive">Overlooks</div><div class="day-line-text"><strong>Green River Overlook</strong> and <strong>Buck Canyon Overlook</strong> &mdash; enormous views on a quiet Thursday with almost no other visitors.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-hike">Hike 2</div><div class="day-line-text"><strong>Aztec Butte Trail</strong> (2 mi RT) &mdash; ancient Puebloan granaries on top of a sandstone dome. Rarely visited and completely peaceful.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-relax">Dinner</div><div class="day-line-text">Farewell dinner on Main Street Moab.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-9pm">9pm</div><div class="day-line-text">Back at RV by 9pm.</div></div>
+        </div></td>
+      </tr>
+      <tr class="day-row">
+        <td class="day-cell-label"><div class="day-name">Fri</div><div class="day-date">May 15</div><span class="day-type-pill pill-travel">Travel</span></td>
+        <td class="day-cell-content bg-travel"><div class="day-lines">
+          <div class="day-line"><div class="day-line-tag lt-title-tag"></div><div class="day-line-text is-title">Travel &rarr; Park City RV Resort</div></div>
+          <div class="day-line"><div class="day-line-tag lt-note">Drive</div><div class="day-line-text">3.5 hr drive north through Price Canyon &mdash; dramatic desert-to-mountain scenery. Arrive Park City early afternoon.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-note">Site info</div><div class="day-line-text">Site A6 &nbsp;&middot;&nbsp; Restrooms &amp; Laundry: 4578 &nbsp;&middot;&nbsp; Pool / Hot Tub: 6705</div></div>
+        </div></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- ARCHES — FULL DEDICATED SECTION -->
+  <div class="park-block park-arches" id="arches">
+    <div class="park-header">
+      <div class="park-icon">&#x1F305;</div>
+      <div class="park-header-text"><div class="park-name">Arches National Park</div><div class="park-sub">Sun Outdoors Canyonlands Gateway, Moab UT &nbsp;&middot;&nbsp; May 8&ndash;15 &nbsp;&middot;&nbsp; Full day off + 3 evening visits</div></div>
+      <span class="park-badge">Day off: Tue May 12</span>
+    </div>
+    <div class="tip-row"><span class="tip-icon">&#x1F4A1;</span><div class="tip-text"><strong>Timed entry required Apr&ndash;Oct, 7am&ndash;4pm</strong> &mdash; book at recreation.gov NOW, morning slots sell out months ahead. On your day off (Tue May 12) grab an early timed entry. On other weekdays, you enter after 4pm &mdash; no reservation needed and crowds are thinning. The park has 2,000+ arches; Delicate Arch is the bucket-list centerpiece.</div></div>
+    <table class="days-table">
+      <tr class="day-row">
+        <td class="day-cell-label"><div class="day-name">Fri</div><div class="day-date">May 8</div><span class="day-type-pill pill-work">Work + 3pm</span></td>
+        <td class="day-cell-content bg-work"><div class="day-lines">
+          <div class="day-line"><div class="day-line-tag lt-work">Work</div><div class="day-line-text">Work until 2pm.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-drive">3pm &middot; Enter</div><div class="day-line-text">Enter Arches after 4pm &mdash; no reservation needed. First look at the park on the drive in.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-hike">Hike 1</div><div class="day-line-text"><strong>Balanced Rock Loop</strong> (0.3 mi) &mdash; a 3,600-ton boulder balanced on a thin pedestal. Remarkable up close. Great golden-hour photos.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-hike">Hike 2</div><div class="day-line-text"><strong>Double Arch</strong> (0.6 mi RT) &mdash; two massive arches you walk directly under. Shares a parking lot with Balanced Rock. One of the most dramatic spots in the park.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-9pm">9pm</div><div class="day-line-text">Back at RV by 9pm.</div></div>
+        </div></td>
+      </tr>
+      <tr class="day-row">
+        <td class="day-cell-label"><div class="day-name">Tue</div><div class="day-date">May 12</div><span class="day-type-pill pill-off">Day Off &#x2713;</span></td>
+        <td class="day-cell-content bg-off"><div class="day-lines">
+          <div class="day-line"><div class="day-line-tag lt-title-tag"></div><div class="day-line-text is-title">Full Day &mdash; Delicate Arch + Devils Garden + Fiery Furnace</div></div>
+          <div class="day-line"><div class="day-line-tag lt-note">Enter</div><div class="day-line-text">Enter with a morning timed entry pass (book at recreation.gov well in advance). Arrive early to beat the heat and the crowds.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-drive">Scenic drive</div><div class="day-line-text">Drive the full <strong>Arches Scenic Drive</strong> &mdash; stop at every pullout heading north. Courthouse Towers, La Sal Mountain Viewpoint, and the Windows section viewpoints. Stunning variety of formations.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-hike">Hike 1</div><div class="day-line-text"><strong>Delicate Arch</strong> (3 mi RT, 629 ft elevation) &mdash; THE bucket-list hike. Walk across open slickrock to reach the world&rsquo;s most iconic arch standing alone on the canyon rim. Allow 2&ndash;3 hours. Bring plenty of water &mdash; exposed trail with no shade.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-relax">Lunch break</div><div class="day-line-text">Rest and eat at the Wolf Ranch picnic area near the Delicate Arch trailhead.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-hike">Hike 2</div><div class="day-line-text"><strong>Landscape Arch</strong> (1.9 mi RT) at Devils Garden &mdash; the world&rsquo;s longest natural arch at 306 ft. Flat, easy trail through a gorgeous canyon. Continue a short way further to see <strong>Navajo Arch</strong> and <strong>Partition Arch</strong> for bonus arches with almost no extra effort.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-hike">Hike 3</div><div class="day-line-text"><strong>Sand Dune Arch</strong> (0.4 mi RT) &mdash; a beautiful arch tucked between fins with a sandy floor. Quick, easy, and totally unique. Kids and adults love it equally.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-drive">Late afternoon</div><div class="day-line-text"><strong>Fiery Furnace Viewpoint</strong> &mdash; stop at the overlook to see this labyrinth of narrow sandstone fins that glows red at late-afternoon light. No permit needed for the viewpoint.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-relax">Sunset</div><div class="day-line-text">Return toward the park entrance &mdash; <strong>Courthouse Towers</strong> and <strong>Three Gossips</strong> formations at golden hour are stunning. Pull off at the Park Avenue viewpoint for one final shot.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-9pm">9pm</div><div class="day-line-text">Back at RV by 9pm.</div></div>
+        </div></td>
+      </tr>
+      <tr class="day-row">
+        <td class="day-cell-label"><div class="day-name">Wed</div><div class="day-date">May 13</div><span class="day-type-pill pill-work">Work + 3pm</span></td>
+        <td class="day-cell-content bg-work"><div class="day-lines">
+          <div class="day-line"><div class="day-line-tag lt-work">Work</div><div class="day-line-text">Work until 2pm.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-drive">3pm &middot; Enter</div><div class="day-line-text">Enter Arches after 4pm &mdash; no timed reservation needed. Bonus evening to catch anything missed on the day off.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-hike">Hike 1</div><div class="day-line-text"><strong>Park Avenue Trail</strong> (1.8 mi RT) &mdash; towering sandstone fins that look like a Manhattan skyline. Beautiful late-afternoon light, less crowded than the main arches areas.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-hike">Hike 2</div><div class="day-line-text"><strong>Windows Loop</strong> (1 mi) &mdash; North Window, South Window, and Turret Arch all in one easy evening circuit. Some of the most photogenic arches in the park.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-9pm">9pm</div><div class="day-line-text">Back at RV by 9pm.</div></div>
+        </div></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- BRYCE -->
+  <div class="park-block park-bryce" id="bryce">
+    <div class="park-header">
+      <div class="park-icon">&#x1F7E3;</div>
+      <div class="park-header-text"><div class="park-name">Bryce Canyon National Park</div><div class="park-sub">Day trip from Park City RV Resort &nbsp;&middot;&nbsp; Wed May 20 &nbsp;&middot;&nbsp; 2.5 hrs each way</div></div>
+      <span class="park-badge">Day off: Wed May 20</span>
+    </div>
+    <div class="tip-row"><span class="tip-icon">&#x1F4A1;</span><div class="tip-text"><strong>Crowd tip:</strong> 60% of Bryce visitors come June&ndash;September. A Wednesday in late May is one of the quietest times of year. Elevation 8,000&ndash;9,100 ft &mdash; bring layers even in May. The 38-mile scenic drive alone is worth the trip.</div></div>
+    <table class="days-table">
+      <tr class="day-row">
+        <td class="day-cell-label"><div class="day-name">Wed</div><div class="day-date">May 20</div><span class="day-type-pill pill-off">Day Off &#x2713;</span></td>
+        <td class="day-cell-content bg-off"><div class="day-lines">
+          <div class="day-line"><div class="day-line-tag lt-title-tag"></div><div class="day-line-text is-title">Full Day &mdash; Bryce Scenic Drive + Navajo Loop + Bristlecone</div></div>
+          <div class="day-line"><div class="day-line-tag lt-note">Depart</div><div class="day-line-text">Leave Park City at 7am &mdash; arrive Bryce ~9:30am. Wednesday means minimal crowds all day.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-drive">Scenic drive</div><div class="day-line-text"><strong>Full 38-mile Bryce Scenic Drive</strong> &mdash; all 13 overlooks including Natural Bridge arch and Rainbow Point (9,115 ft, highest paved viewpoint in the park). Drive south to north.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-hike">Hike 1</div><div class="day-line-text"><strong>Navajo Loop + Queens Garden Trail</strong> (2.9 mi RT) &mdash; the must-do hike. Wall Street narrow slot canyon, Thor&rsquo;s Hammer hoodoo, and the surreal Queen&rsquo;s Garden spires. Under 3 miles, moderate.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-hike">Hike 2</div><div class="day-line-text"><strong>Bristlecone Loop</strong> (1 mi at Rainbow Point) &mdash; ancient pine forest, completely peaceful, sweeping views of the Grand Staircase stretching into the distance.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-drive">Drive home</div><div class="day-line-text">Stop at <strong>Red Canyon</strong> on the way back &mdash; free, no crowds, stunning red fins right off the highway. Worth 20 minutes.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-9pm">9pm</div><div class="day-line-text">Back at RV by 9pm.</div></div>
+        </div></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- PARK CITY -->
+  <div class="park-block park-parkcity" id="parkcity">
+    <div class="park-header">
+      <div class="park-icon">&#x26F0;&#xFE0F;</div>
+      <div class="park-header-text"><div class="park-name">Park City + Salt Lake City</div><div class="park-sub">Park City RV Resort &nbsp;&middot;&nbsp; May 15&ndash;24 &nbsp;&middot;&nbsp; 9 nights &nbsp;&middot;&nbsp; Site A6 &nbsp;&middot;&nbsp; Pool code: 6705</div></div>
+      <span class="park-badge">9 nights &middot; Elev. 7,000 ft</span>
+    </div>
+    <table class="days-table">
+      <tr class="day-row">
+        <td class="day-cell-label"><div class="day-name">Sat</div><div class="day-date">May 16</div><span class="day-type-pill pill-weekend">Weekend</span></td>
+        <td class="day-cell-content bg-weekend"><div class="day-lines">
+          <div class="day-line"><div class="day-line-tag lt-title-tag"></div><div class="day-line-text is-title">Utah Olympic Park + Main Street Dinner</div></div>
+          <div class="day-line"><div class="day-line-tag lt-relax">Activity</div><div class="day-line-text"><strong>Utah Olympic Park</strong> &mdash; zip lines, bobsled experiences, watch aerial ski jump training. Half-day activity great for adults.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-relax">Evening</div><div class="day-line-text">Stroll Park City&rsquo;s historic Main Street. Dinner at <strong>Riverhorse, Handle, or Tupelo</strong>.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-9pm">9pm</div><div class="day-line-text">Back at RV by 9pm.</div></div>
+        </div></td>
+      </tr>
+      <tr class="day-row">
+        <td class="day-cell-label"><div class="day-name">Sun</div><div class="day-date">May 17</div><span class="day-type-pill pill-weekend">Weekend</span></td>
+        <td class="day-cell-content bg-weekend"><div class="day-lines">
+          <div class="day-line"><div class="day-line-tag lt-title-tag"></div><div class="day-line-text is-title">Deer Valley Gondola + Jordanelle Reservoir</div></div>
+          <div class="day-line"><div class="day-line-tag lt-book">Call ahead</div><div class="day-line-text">Confirm Deer Valley or PCMR gondola is running for May sightseeing before the day.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-relax">Morning</div><div class="day-line-text">Gondola ride for mountain views over Park City and the Wasatch Range (if open).</div></div>
+          <div class="day-line"><div class="day-line-tag lt-relax">Afternoon</div><div class="day-line-text"><strong>Jordanelle Reservoir</strong> (10 min from camp) &mdash; kayak and paddleboard rentals with a gorgeous mountain backdrop.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-9pm">9pm</div><div class="day-line-text">Back at RV by 9pm.</div></div>
+        </div></td>
+      </tr>
+      <tr class="day-row">
+        <td class="day-cell-label"><div class="day-name">Mon</div><div class="day-date">May 18</div><span class="day-type-pill pill-work">Work + 3pm</span></td>
+        <td class="day-cell-content bg-work"><div class="day-lines">
+          <div class="day-line"><div class="day-line-tag lt-work">Work</div><div class="day-line-text">Work until 2pm.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-drive">3pm &middot; Drive</div><div class="day-line-text">45 min to Salt Lake City.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-relax">Museum</div><div class="day-line-text"><strong>Natural History Museum of Utah</strong> &mdash; world-class dinosaur collection, one of the best natural history museums in the US. Easy 2-hr visit.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-relax">Dinner</div><div class="day-line-text">Dinner in the 9th &amp; 9th or Sugarhouse neighborhood &mdash; great local food scene.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-9pm">9pm</div><div class="day-line-text">Back at RV by 9pm.</div></div>
+        </div></td>
+      </tr>
+      <tr class="day-row">
+        <td class="day-cell-label"><div class="day-name">Tue</div><div class="day-date">May 19</div><span class="day-type-pill pill-work">Work + 3pm</span></td>
+        <td class="day-cell-content bg-work"><div class="day-lines">
+          <div class="day-line"><div class="day-line-tag lt-work">Work</div><div class="day-line-text">Work until 2pm.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-drive">3pm &middot; Drive</div><div class="day-line-text">75 min to <strong>Antelope Island State Park</strong> on the Great Salt Lake.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-drive">Scenic drive</div><div class="day-line-text">Drive the island road past free-roaming bison herds &mdash; one of Utah&rsquo;s most surreal landscapes.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-hike">Hike</div><div class="day-line-text"><strong>Buffalo Point Trail</strong> (0.5 mi RT) &mdash; short scramble to a summit with 360&deg; Great Salt Lake views.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-9pm">9pm</div><div class="day-line-text">Back at RV by 9pm.</div></div>
+        </div></td>
+      </tr>
+      <tr class="day-row">
+        <td class="day-cell-label"><div class="day-name">Thu</div><div class="day-date">May 21</div><span class="day-type-pill pill-work">Work + 3pm</span></td>
+        <td class="day-cell-content bg-work"><div class="day-lines">
+          <div class="day-line"><div class="day-line-tag lt-work">Work</div><div class="day-line-text">Work until 2pm.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-relax">3pm</div><div class="day-line-text"><strong>Homestead Crater, Midway</strong> &mdash; 25 min from Park City. A warm geothermal pool inside a hollowed volcanic crater. Soak or snorkel inside the cave. Completely one-of-a-kind.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-book">Book ahead</div><div class="day-line-text">Reserve at homesteadresort.com &mdash; slots fill fast.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-9pm">9pm</div><div class="day-line-text">Back at RV by 9pm.</div></div>
+        </div></td>
+      </tr>
+      <tr class="day-row">
+        <td class="day-cell-label"><div class="day-name">Fri</div><div class="day-date">May 22</div><span class="day-type-pill pill-work">Work + 3pm</span></td>
+        <td class="day-cell-content bg-work"><div class="day-lines">
+          <div class="day-line"><div class="day-line-tag lt-work">Work</div><div class="day-line-text">Work until 2pm.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-hike">3pm</div><div class="day-line-text"><strong>Round Valley or Mid-Mountain Trail</strong> &mdash; right out of Park City, easy to moderate mountain meadow trail. E-bike rentals available locally. Relaxing last work Friday.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-9pm">9pm</div><div class="day-line-text">Back at RV by 9pm.</div></div>
+        </div></td>
+      </tr>
+      <tr class="day-row">
+        <td class="day-cell-label"><div class="day-name">Sat</div><div class="day-date">May 23</div><span class="day-type-pill pill-weekend">Weekend</span></td>
+        <td class="day-cell-content bg-weekend"><div class="day-lines">
+          <div class="day-line"><div class="day-line-tag lt-title-tag"></div><div class="day-line-text is-title">Timpanogos Cave + Farewell SLC Dinner</div></div>
+          <div class="day-line"><div class="day-line-tag lt-hike">Morning</div><div class="day-line-text"><strong>Timpanogos Cave National Monument</strong> (1 hr away) &mdash; guided cave tour with incredible formations. 1.5-mile uphill hike to the cave entrance.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-book">Book ahead</div><div class="day-line-text">Reserve at recreation.gov &mdash; May slots fill very fast.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-relax">Evening</div><div class="day-line-text">Farewell dinner in Salt Lake City &mdash; celebrate the last full night before heading home.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-9pm">9pm</div><div class="day-line-text">Back at RV by 9pm.</div></div>
+        </div></td>
+      </tr>
+      <tr class="day-row">
+        <td class="day-cell-label"><div class="day-name">Sun</div><div class="day-date">May 24</div><span class="day-type-pill pill-travel">Travel</span></td>
+        <td class="day-cell-content bg-travel"><div class="day-lines">
+          <div class="day-line"><div class="day-line-tag lt-title-tag"></div><div class="day-line-text is-title">Travel &rarr; BLM Joseph, UT (overnight boondock)</div></div>
+          <div class="day-line"><div class="day-line-tag lt-note">Drive</div><div class="day-line-text">2.5 hr scenic drive south. Quick overnight before the long push home.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-relax">Evening</div><div class="day-line-text">Clear skies, zero light pollution &mdash; outstanding stargazing night in the high desert.</div></div>
+        </div></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- RETURN -->
+  <div class="park-block park-transit" id="return">
+    <div class="park-header">
+      <div class="park-icon">&#x1F3E0;</div>
+      <div class="park-header-text"><div class="park-name">Homeward Bound</div><div class="park-sub">Joseph UT &rarr; Grand Canyon Railway RV Park (Williams AZ) &rarr; Tucson &nbsp;&middot;&nbsp; May 24&ndash;29</div></div>
+      <span class="park-badge">Grand Canyon bonus stop</span>
+    </div>
+    <table class="days-table">
+      <tr class="day-row">
+        <td class="day-cell-label"><div class="day-name">Mon</div><div class="day-date">May 25</div><span class="day-type-pill pill-travel">Travel</span></td>
+        <td class="day-cell-content bg-travel"><div class="day-lines">
+          <div class="day-line"><div class="day-line-tag lt-title-tag"></div><div class="day-line-text is-title">Joseph UT &rarr; Williams AZ (Grand Canyon Railway RV Park)</div></div>
+          <div class="day-line"><div class="day-line-tag lt-drive">Scenic drive</div><div class="day-line-text">5 hr drive south on US-89 through Kanab and the <strong>Mount Carmel Scenic Byway</strong> &mdash; one of the most beautiful highway stretches in the Southwest.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-relax">Evening</div><div class="day-line-text">Route 66 evening in Williams &mdash; great steakhouses and classic Americana. Reservation #34412378.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-9pm">9pm</div><div class="day-line-text">Back at RV by 9pm.</div></div>
+        </div></td>
+      </tr>
+      <tr class="day-row">
+        <td class="day-cell-label"><div class="day-name">Tue</div><div class="day-date">May 26</div><span class="day-type-pill pill-work">Work + 3pm</span></td>
+        <td class="day-cell-content bg-work"><div class="day-lines">
+          <div class="day-line"><div class="day-line-tag lt-work">Work</div><div class="day-line-text">Work until 2pm.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-drive">3pm &middot; Drive</div><div class="day-line-text">1 hr drive to <strong>Grand Canyon South Rim</strong>.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-drive">Scenic drive</div><div class="day-line-text"><strong>Desert View Drive</strong> east &mdash; far fewer people than the main village. All viewpoints ending at the Desert View Watchtower.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-hike">Hike</div><div class="day-line-text"><strong>Rim Trail near Mather Point</strong> (1&ndash;2 mi, flat) &mdash; golden-hour canyon views. Memorial Day weekend is approaching so go early in the afternoon.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-9pm">9pm</div><div class="day-line-text">Back at RV by 9pm.</div></div>
+        </div></td>
+      </tr>
+      <tr class="day-row">
+        <td class="day-cell-label"><div class="day-name">Wed</div><div class="day-date">May 27</div><span class="day-type-pill pill-work">Work + 3pm</span></td>
+        <td class="day-cell-content bg-work"><div class="day-lines">
+          <div class="day-line"><div class="day-line-tag lt-work">Work</div><div class="day-line-text">Work until 2pm.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-relax">3pm</div><div class="day-line-text"><strong>Bearizona Wildlife Park</strong> &mdash; drive-thru park right in Williams. Bison, black bears, and wolves roam freely around your vehicle. A fun final adventure.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-note">Timing</div><div class="day-line-text">Closes at 5pm &mdash; arrive by 3pm sharp.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-9pm">9pm</div><div class="day-line-text">Back at RV by 9pm.</div></div>
+        </div></td>
+      </tr>
+      <tr class="day-row">
+        <td class="day-cell-label"><div class="day-name">Thu</div><div class="day-date">May 28</div><span class="day-type-pill pill-travel">Travel</span></td>
+        <td class="day-cell-content bg-travel"><div class="day-lines">
+          <div class="day-line"><div class="day-line-tag lt-title-tag"></div><div class="day-line-text is-title">Williams AZ &rarr; Tucson &mdash; Trip Complete</div></div>
+          <div class="day-line"><div class="day-line-tag lt-note">Drive</div><div class="day-line-text">3.5 hr drive home.</div></div>
+          <div class="day-line"><div class="day-line-tag lt-relax">&#x1F389;</div><div class="day-line-text"><strong>1,922 miles. 36 nights. 5 national parks. One unforgettable trip.</strong></div></div>
+        </div></td>
+      </tr>
+    </table>
+  </div>
+
+</section>
+
+<section class="section section-alt" id="reminders">
+  <div class="section-label">Before you go</div>
+  <div class="section-title">Book-Ahead <em>Reminders</em></div>
+  <div class="reminders-grid">
+    <div class="reminder-card"><div class="reminder-icon">&#x1F3AB;</div><div><div class="reminder-title">Zion Timed Entry</div><div class="reminder-text">Required Apr&ndash;Oct, 7am&ndash;4pm. Book at recreation.gov. Confirm RV height clearance for the Zion&ndash;Mt. Carmel Tunnel before arrival.</div></div></div>
+    <div class="reminder-card"><div class="reminder-icon">&#x1F3F9;</div><div><div class="reminder-title">Arches Timed Entry &mdash; Book Now!</div><div class="reminder-text">Required Apr&ndash;Oct, 7am&ndash;4pm. Morning slots for Tue May 12 sell out months ahead. Book at recreation.gov immediately. After 4pm entries are always open.</div></div></div>
+    <div class="reminder-card"><div class="reminder-icon">&#x1F30A;</div><div><div class="reminder-title">Homestead Crater</div><div class="reminder-text">Geothermal soaking/snorkeling inside a volcanic crater in Midway, UT. Slots fill fast &mdash; book at homesteadresort.com before your trip.</div></div></div>
+    <div class="reminder-card"><div class="reminder-icon">&#x1F98E;</div><div><div class="reminder-title">Timpanogos Cave</div><div class="reminder-text">Guided cave tours fill fast in May. Book at recreation.gov as early as possible. Plan for a 1.5-mile uphill hike to the entrance.</div></div></div>
+    <div class="reminder-card"><div class="reminder-icon">&#x1F6A1;</div><div><div class="reminder-title">Deer Valley / PCMR Gondola</div><div class="reminder-text">Lifts may not run mid-May for sightseers. Call Deer Valley or Park City Mountain Resort ahead to confirm May operating hours.</div></div></div>
+    <div class="reminder-card"><div class="reminder-icon">&#x1F34E;</div><div><div class="reminder-title">Gifford House Pie &mdash; Capitol Reef</div><div class="reminder-text">Famous homemade pies in the historic Fruita district. Check hours at nps.gov/care before your day off on Wed May 6.</div></div></div>
+    <div class="reminder-card"><div class="reminder-icon">&#x1F4F1;</div><div><div class="reminder-title">Download Offline Maps</div><div class="reminder-text">No cell service in Canyonlands, Capitol Reef, and many scenic byways. Download AllTrails and Google offline maps each morning before heading out.</div></div></div>
+    <div class="reminder-card"><div class="reminder-icon">&#x1F321;&#xFE0F;</div><div><div class="reminder-title">Layer Up for Bryce</div><div class="reminder-text">Bryce Canyon sits at 8,000&ndash;9,100 ft. May mornings can be 30&ndash;40&deg;F. Pack a jacket and layers for the Wed May 20 day trip.</div></div></div>
+    <div class="reminder-card"><div class="reminder-icon">&#x1F4A7;</div><div><div class="reminder-title">Water on Arches Day Off</div><div class="reminder-text">Delicate Arch is a fully exposed 3-mile hike with zero shade and intense desert sun in May. Carry at least 3 liters of water per person and start early.</div></div></div>
+  </div>
+</section>
+
+<footer>
+  <div>
+    <div class="footer-title">Our Utah Mighty 5 Trip</div>
+    <div class="footer-sub">Apr 23 &ndash; May 29, 2026 &nbsp;&middot;&nbsp; Tucson, AZ &#x2194; Utah</div>
+  </div>
+  <div style="text-align:right;">
+    <div class="footer-miles">1,922</div>
+    <div class="footer-miles-label">Total miles</div>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('main-nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('visible', window.scrollY > window.innerHeight * 0.6);
+  });
+</script>
+</body>
+</html>
