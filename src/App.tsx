@@ -1,9 +1,5 @@
 import Navbar from './components/Navbar'
-import Hero from './components/Hero'
-import Features from './components/Features'
-import Screenshots from './components/Screenshots'
-import HowItWorks from './components/HowItWorks'
-import DownloadCTA from './components/DownloadCTA'
+import ComingSoon from './components/ComingSoon'
 import Footer from './components/Footer'
 
 export default function App() {
@@ -11,11 +7,7 @@ export default function App() {
     <>
       <Navbar />
       <main>
-        <Hero />
-        <Features />
-        <Screenshots />
-        <HowItWorks />
-        <DownloadCTA />
+        <ComingSoon />
       </main>
       <Footer />
     </>
