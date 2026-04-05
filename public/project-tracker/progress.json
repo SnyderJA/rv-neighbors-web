@@ -1,0 +1,242 @@
+{
+  "project": "RV Neighbors v2",
+  "lastUpdated": "2026-04-04T22:00:00Z",
+  "lastSessionSummary": "Reviewed v1 codebase, decided on full rewrite with Supabase + NativeWind. Set up rv-neighbors-app repo with brand kit, carry-forward files, and context tracking system.",
+  "nextSteps": [
+    "Create Supabase project and get URL + anon key",
+    "Decide on new bundle ID (e.g., com.rvneighbors.app)",
+    "Start Phase 0: Scaffold Expo project with Supabase + NativeWind"
+  ],
+  "openQuestions": [
+    "What should the new bundle ID be?",
+    "Has a Supabase project been created yet?"
+  ],
+  "timeline": {
+    "testflight": "2026-04-21",
+    "friendsTesting": "2026-04-21 to 2026-05-05",
+    "defectResolution": "2026-05-05 to 2026-05-10",
+    "production": "2026-05-15"
+  },
+  "phases": [
+    {
+      "id": 0,
+      "name": "Project Scaffold & Infrastructure",
+      "status": "not_started",
+      "targetDays": "Days 1-2",
+      "description": "New Expo project with Supabase, NativeWind, and CI foundation.",
+      "tasks": [
+        { "name": "Create Expo project with TypeScript", "status": "not_started" },
+        { "name": "Configure new bundle ID", "status": "not_started" },
+        { "name": "Install and configure NativeWind with brand theme", "status": "not_started" },
+        { "name": "Copy brand assets (logos, fonts, splash)", "status": "not_started" },
+        { "name": "Set up Supabase client with session persistence", "status": "not_started" },
+        { "name": "Install core dependencies", "status": "not_started" },
+        { "name": "Configure app.json / app.config.js (no hardcoded secrets)", "status": "not_started" },
+        { "name": "Set up EAS build profiles", "status": "not_started" },
+        { "name": "Set up .gitignore properly", "status": "not_started" },
+        { "name": "Install testing: Jest + RNTL + MSW", "status": "not_started" },
+        { "name": "Create initial Supabase migration with full schema", "status": "not_started" }
+      ],
+      "gateTests": [
+        { "name": "Expo export build succeeds", "status": "not_started" },
+        { "name": "EAS dev build compiles for iOS simulator", "status": "not_started" },
+        { "name": "Supabase client connects and queries", "status": "not_started" },
+        { "name": "NativeWind renders styled component", "status": "not_started" },
+        { "name": "Tailwind config has all brand colors/fonts", "status": "not_started" },
+        { "name": ".env is gitignored and not tracked", "status": "not_started" },
+        { "name": "Jest runs with passing placeholder test", "status": "not_started" }
+      ]
+    },
+    {
+      "id": 1,
+      "name": "Auth & User Profiles",
+      "status": "not_started",
+      "targetDays": "Days 3-5",
+      "description": "Sign up, log in, complete onboarding, persisted profile with photo uploads.",
+      "tasks": [
+        { "name": "Enable Supabase Email/Password + Google + Facebook auth", "status": "not_started" },
+        { "name": "Create RLS policies for profiles table", "status": "not_started" },
+        { "name": "Create Storage buckets with RLS (profile-photos, rv-photos)", "status": "not_started" },
+        { "name": "Build Login screen (email + social)", "status": "not_started" },
+        { "name": "Build Signup screen", "status": "not_started" },
+        { "name": "Build Forgot Password flow", "status": "not_started" },
+        { "name": "Build Onboarding wizard (4 steps)", "status": "not_started" },
+        { "name": "Build root layout with auth gate", "status": "not_started" },
+        { "name": "Create useAuth hook (Supabase session)", "status": "not_started" },
+        { "name": "Create useProfile hook (React Query)", "status": "not_started" },
+        { "name": "Create Zod schemas for all forms", "status": "not_started" }
+      ],
+      "gateTests": [
+        { "name": "Zod schemas validate correct/incorrect input", "status": "not_started" },
+        { "name": "useAuth returns correct states", "status": "not_started" },
+        { "name": "Sign up → profile row created in Supabase", "status": "not_started" },
+        { "name": "Log in → session persisted to AsyncStorage", "status": "not_started" },
+        { "name": "Log out → session cleared, redirect to login", "status": "not_started" },
+        { "name": "Onboarding → profile updated with all steps", "status": "not_started" },
+        { "name": "Profile photo upload → Storage + URL saved", "status": "not_started" },
+        { "name": "RV photo upload → Storage + URL saved", "status": "not_started" },
+        { "name": "RLS: user can only read/update own profile", "status": "not_started" },
+        { "name": "E2E: full signup → onboarding → home screen", "status": "not_started" }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Connections & Neighbor Discovery",
+      "status": "not_started",
+      "targetDays": "Days 6-9",
+      "description": "Discover neighbors on map/list, send/accept connections, check-in locations.",
+      "tasks": [
+        { "name": "Create connections + connection_requests tables", "status": "not_started" },
+        { "name": "Create close_friends + check_ins tables", "status": "not_started" },
+        { "name": "Create DB function: accept_connection_request (atomic)", "status": "not_started" },
+        { "name": "Create DB function: get_nearby_users (distance query)", "status": "not_started" },
+        { "name": "Build Neighbors List/Map screen with radius filter", "status": "not_started" },
+        { "name": "Build Discovery screen (non-connected users)", "status": "not_started" },
+        { "name": "Build Friends screen (All / Close / Pending tabs)", "status": "not_started" },
+        { "name": "Build User Detail screen with connection actions", "status": "not_started" },
+        { "name": "Create useConnections hook", "status": "not_started" },
+        { "name": "Create useNeighbors hook with real distance calc", "status": "not_started" },
+        { "name": "Create useCheckIn hook", "status": "not_started" }
+      ],
+      "gateTests": [
+        { "name": "Haversine distance calculation is accurate", "status": "not_started" },
+        { "name": "Connection status derivation works all states", "status": "not_started" },
+        { "name": "Send request → row created, recipient sees it", "status": "not_started" },
+        { "name": "Accept request → connection created, bidirectional", "status": "not_started" },
+        { "name": "Decline request → no connection created", "status": "not_started" },
+        { "name": "Radius filter actually filters by distance", "status": "not_started" },
+        { "name": "Discovery only shows non-connected users", "status": "not_started" },
+        { "name": "Check-in saves coordinates + location name", "status": "not_started" },
+        { "name": "RLS: requests only visible to sender/recipient", "status": "not_started" },
+        { "name": "DB function: accept is atomic (no partial state)", "status": "not_started" },
+        { "name": "E2E: send request → accept → see in neighbors", "status": "not_started" }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Real-Time Messaging",
+      "status": "not_started",
+      "targetDays": "Days 10-12",
+      "description": "Direct and group messaging with real-time delivery and push notifications.",
+      "tasks": [
+        { "name": "Create conversations + messages + reads tables", "status": "not_started" },
+        { "name": "Set up Supabase Realtime subscriptions", "status": "not_started" },
+        { "name": "Create Edge Function: send-push-notification", "status": "not_started" },
+        { "name": "Create Edge Function: send-invite-email", "status": "not_started" },
+        { "name": "Create Edge Function: send-support-email", "status": "not_started" },
+        { "name": "Build Conversations list screen", "status": "not_started" },
+        { "name": "Build Chat screen with real-time messages", "status": "not_started" },
+        { "name": "Build New Message screen", "status": "not_started" },
+        { "name": "Build New Group screen", "status": "not_started" },
+        { "name": "Create useConversations hook (React Query + Realtime)", "status": "not_started" },
+        { "name": "Create useMessages hook (React Query + Realtime)", "status": "not_started" },
+        { "name": "Create usePushNotifications hook", "status": "not_started" }
+      ],
+      "gateTests": [
+        { "name": "Message validation (max 500 chars, not empty)", "status": "not_started" },
+        { "name": "Create direct conversation → both users see it", "status": "not_started" },
+        { "name": "Create group conversation → all participants see it", "status": "not_started" },
+        { "name": "Send message → appears for all participants", "status": "not_started" },
+        { "name": "Realtime: message appears without refresh", "status": "not_started" },
+        { "name": "Unread count increments/resets correctly", "status": "not_started" },
+        { "name": "Push notification sent to participants", "status": "not_started" },
+        { "name": "RLS: only see own conversations", "status": "not_started" },
+        { "name": "RLS: only send to own conversations", "status": "not_started" },
+        { "name": "E2E: send message → recipient sees it", "status": "not_started" }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Membership, Family & IAP",
+      "status": "not_started",
+      "targetDays": "Days 13-15",
+      "description": "RevenueCat integration, membership tiers, family management with invites.",
+      "tasks": [
+        { "name": "Create families + family_invites + push_tokens tables", "status": "not_started" },
+        { "name": "Build Membership selection screen (RevenueCat)", "status": "not_started" },
+        { "name": "Build Family dashboard screen", "status": "not_started" },
+        { "name": "Build Invite member screen", "status": "not_started" },
+        { "name": "Build Settings - Membership screen", "status": "not_started" },
+        { "name": "Create useMembership hook", "status": "not_started" },
+        { "name": "Create usePurchases hook (RevenueCat)", "status": "not_started" },
+        { "name": "Create useFamilyInvites hook", "status": "not_started" },
+        { "name": "Enforce connection limits (basic=8)", "status": "not_started" }
+      ],
+      "gateTests": [
+        { "name": "Connection limit enforcement (basic blocks at 8)", "status": "not_started" },
+        { "name": "Family capacity calculation correct per tier", "status": "not_started" },
+        { "name": "Purchase → entitlement → Supabase tier updated", "status": "not_started" },
+        { "name": "Send invite → email sent, invite row created", "status": "not_started" },
+        { "name": "Accept invite → member added to family", "status": "not_started" },
+        { "name": "Cancel invite → status updated", "status": "not_started" },
+        { "name": "Downgrade tier → members over limit warned", "status": "not_started" },
+        { "name": "RLS: family data only visible to members", "status": "not_started" },
+        { "name": "E2E: free user hits 8 connections → upgrade prompt", "status": "not_started" }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Settings, Location & Background Services",
+      "status": "not_started",
+      "targetDays": "Days 16-17",
+      "description": "Privacy controls, location sharing, off-the-grid, background location, notifications.",
+      "tasks": [
+        { "name": "Build Settings home screen", "status": "not_started" },
+        { "name": "Build Privacy & Location settings", "status": "not_started" },
+        { "name": "Build Notification preferences", "status": "not_started" },
+        { "name": "Build Help & Support form", "status": "not_started" },
+        { "name": "Build Profile view screen with check-in", "status": "not_started" },
+        { "name": "Build Edit Profile screen", "status": "not_started" },
+        { "name": "Create background location service", "status": "not_started" },
+        { "name": "Create push notification sync service", "status": "not_started" },
+        { "name": "Create off-the-grid timer service", "status": "not_started" },
+        { "name": "Create useLocationSettings hook", "status": "not_started" },
+        { "name": "Create useOffTheGrid hook", "status": "not_started" }
+      ],
+      "gateTests": [
+        { "name": "Off-the-grid expiry calculation correct", "status": "not_started" },
+        { "name": "Radius validation within allowed range", "status": "not_started" },
+        { "name": "Toggle location sharing → persisted in Supabase", "status": "not_started" },
+        { "name": "Change radius → affects neighbor query visibility", "status": "not_started" },
+        { "name": "Off-the-grid → user hidden from queries", "status": "not_started" },
+        { "name": "Off-the-grid expires → user visible again", "status": "not_started" },
+        { "name": "Background task updates coordinates (with session check)", "status": "not_started" },
+        { "name": "Support form → email sent via Edge Function", "status": "not_started" },
+        { "name": "Check-in → location saved, visible to connections", "status": "not_started" },
+        { "name": "RLS: location settings only editable by owner", "status": "not_started" },
+        { "name": "E2E: toggle off-the-grid → hidden from search", "status": "not_started" }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Polish, Error Handling & Production Prep",
+      "status": "not_started",
+      "targetDays": "Days 18-19",
+      "description": "Error boundaries, loading states, RLS audit, App Store assets, final QA.",
+      "tasks": [
+        { "name": "Add React Error Boundaries (root + per-tab)", "status": "not_started" },
+        { "name": "Add loading skeletons for all screens", "status": "not_started" },
+        { "name": "Add empty states (no connections, messages, etc.)", "status": "not_started" },
+        { "name": "Add pull-to-refresh on all list screens", "status": "not_started" },
+        { "name": "Review and tighten all RLS policies", "status": "not_started" },
+        { "name": "Add rate limiting to Edge Functions", "status": "not_started" },
+        { "name": "Input sanitization on Edge Functions", "status": "not_started" },
+        { "name": "Prepare App Store screenshots and metadata", "status": "not_started" },
+        { "name": "Configure EAS Submit with real credentials", "status": "not_started" },
+        { "name": "Accessibility pass (labels, contrast, touch targets)", "status": "not_started" },
+        { "name": "Configure Sentry for crash reporting", "status": "not_started" },
+        { "name": "Remove all console.log statements", "status": "not_started" },
+        { "name": "Final .env audit — no secrets in source", "status": "not_started" }
+      ],
+      "gateTests": [
+        { "name": "Error boundary catches render errors, shows fallback", "status": "not_started" },
+        { "name": "Network offline → graceful error states + retry", "status": "not_started" },
+        { "name": "All forms validate with Zod before submission", "status": "not_started" },
+        { "name": "Security: no API keys in source code", "status": "not_started" },
+        { "name": "Security: all RLS policies reviewed", "status": "not_started" },
+        { "name": "Performance: app loads to home in <3 seconds", "status": "not_started" },
+        { "name": "Full E2E: signup → onboarding → discover → connect → message → checkin → settings", "status": "not_started" }
+      ]
+    }
+  ]
+}

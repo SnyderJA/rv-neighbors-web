@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RV Neighbors v2 — Project Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #1E4A2E;
+      --primary-mid: #265C39;
+      --primary-light: #3A8A55;
+      --primary-extra-light: #EAF4EE;
+      --primary-dark: #0F2419;
+      --accent: #D4874A;
+      --accent-light: #F0A76A;
+      --accent-extra-light: #FEF3EA;
+      --bg: #F6F7F5;
+      --bg-alt: #F0F1EE;
+      --card: #FFFFFF;
+      --text: #111B14;
+      --text-secondary: #4A5550;
+      --text-light: #8A9490;
+      --border: #E4E6E2;
+      --border-light: #EDEEEB;
+      --success: #2E7D52;
+      --error: #C0392B;
+      --warning: #E07B2A;
+      --shadow: 0 1px 4px rgba(0,0,0,0.08);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.10);
+      --shadow-lg: 0 8px 24px rgba(0,0,0,0.14);
+      --radius-sm: 10px;
+      --radius-md: 14px;
+      --radius-lg: 16px;
+      --radius-pill: 20px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(160deg, var(--primary-dark) 0%, var(--primary) 50%, var(--primary-mid) 100%);
+      color: white;
+      padding: 2.5rem 1.5rem 2rem;
+    }
+    .header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+    .header .subtitle {
+      opacity: 0.8;
+      font-size: 0.95rem;
+    }
+    .header .last-updated {
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      opacity: 0.6;
+      font-family: 'Space Mono', monospace;
+    }
+
+    /* Overall progress bar */
+    .overall-progress {
+      max-width: 1100px;
+      margin: -1.25rem auto 0;
+      padding: 0 1.5rem;
+    }
+    .overall-card {
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem 1.5rem;
+      box-shadow: var(--shadow-md);
+    }
+    .overall-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .overall-pct {
+      font-family: 'Space Mono', monospace;
+      color: var(--primary-light);
+      font-weight: 700;
+    }
+    .progress-bar {
+      width: 100%;
+      height: 10px;
+      background: var(--border-light);
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+      border-radius: 5px;
+      transition: width 0.6s ease;
+    }
+
+    /* Timeline */
+    .timeline-section {
+      max-width: 1100px;
+      margin: 1.5rem auto;
+      padding: 0 1.5rem;
+    }
+    .timeline-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0.75rem;
+    }
+    .timeline-card {
+      background: var(--card);
+      border-radius: var(--radius-sm);
+      padding: 1rem 1.25rem;
+      box-shadow: var(--shadow);
+      border-left: 3px solid var(--border);
+    }
+    .timeline-card.milestone-active { border-left-color: var(--accent); }
+    .timeline-card.milestone-done { border-left-color: var(--success); }
+    .timeline-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-light);
+      font-weight: 600;
+    }
+    .timeline-date {
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--text);
+      margin-top: 0.15rem;
+    }
+    .days-away {
+      font-size: 0.75rem;
+      color: var(--text-light);
+      margin-top: 0.15rem;
+    }
+
+    /* Status + Next Steps row */
+    .info-row {
+      max-width: 1100px;
+      margin: 1.5rem auto;
+      padding: 0 1.5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    @media (max-width: 700px) { .info-row { grid-template-columns: 1fr; } }
+    .info-card {
+      background: var(--card);
+      border-radius: var(--radius-md);
+      padding: 1.25rem 1.5rem;
+      box-shadow: var(--shadow);
+    }
+    .info-card h3 {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-light);
+      margin-bottom: 0.75rem;
+      font-weight: 600;
+    }
+    .info-card p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+    .info-card ul {
+      list-style: none;
+      padding: 0;
+    }
+    .info-card li {
+      color: var(--text-secondary);
+      font-size: 0.88rem;
+      padding: 0.3rem 0;
+      padding-left: 1.25rem;
+      position: relative;
+    }
+    .info-card li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.65rem;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+    .info-card.questions li::before { background: var(--warning); }
+
+    /* Phases */
+    .phases-section {
+      max-width: 1100px;
+      margin: 1.5rem auto 3rem;
+      padding: 0 1.5rem;
+    }
+    .phases-section > h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+      color: var(--primary-dark);
+    }
+
+    .phase-card {
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      margin-bottom: 1rem;
+      overflow: hidden;
+      border: 1px solid var(--border-light);
+    }
+
+    .phase-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.5rem;
+      cursor: pointer;
+      user-select: none;
+      gap: 1rem;
+      transition: background 0.15s;
+    }
+    .phase-header:hover { background: var(--bg); }
+
+    .phase-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .phase-number {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+      font-family: 'Space Mono', monospace;
+    }
+    .phase-number.not_started { background: var(--border-light); color: var(--text-light); }
+    .phase-number.in_progress { background: var(--accent-extra-light); color: var(--accent); }
+    .phase-number.complete { background: var(--primary-extra-light); color: var(--success); }
+
+    .phase-info { flex: 1; min-width: 0; }
+    .phase-name {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text);
+    }
+    .phase-desc {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .phase-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-shrink: 0;
+    }
+
+    .phase-badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: var(--radius-pill);
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .badge-not-started { background: var(--bg-alt); color: var(--text-light); }
+    .badge-in-progress { background: var(--accent-extra-light); color: var(--accent); }
+    .badge-complete { background: var(--primary-extra-light); color: var(--success); }
+
+    .phase-mini-bar {
+      width: 80px;
+      height: 6px;
+      background: var(--border-light);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .phase-mini-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.5s ease;
+    }
+    .phase-mini-fill.not_started { background: var(--border); width: 0%; }
+    .phase-mini-fill.in_progress { background: var(--accent); }
+    .phase-mini-fill.complete { background: var(--success); width: 100%; }
+
+    .chevron {
+      width: 20px;
+      height: 20px;
+      color: var(--text-light);
+      transition: transform 0.2s;
+      flex-shrink: 0;
+    }
+    .phase-card.open .chevron { transform: rotate(180deg); }
+
+    /* Phase body */
+    .phase-body {
+      display: none;
+      padding: 0 1.5rem 1.25rem;
+      border-top: 1px solid var(--border-light);
+    }
+    .phase-card.open .phase-body { display: block; }
+
+    .phase-body h4 {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-light);
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .task-list { list-style: none; padding: 0; }
+    .task-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.35rem 0;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+    }
+    .task-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+    }
+    .task-icon.not_started {
+      border: 2px solid var(--border);
+      background: white;
+    }
+    .task-icon.in_progress {
+      border: 2px solid var(--accent);
+      background: var(--accent-extra-light);
+      color: var(--accent);
+    }
+    .task-icon.in_progress::after { content: '~'; font-weight: 700; }
+    .task-icon.complete {
+      border: 2px solid var(--success);
+      background: var(--primary-extra-light);
+      color: var(--success);
+    }
+    .task-icon.complete::after { content: '\2713'; font-weight: 700; }
+
+    .task-item.complete .task-name {
+      text-decoration: line-through;
+      color: var(--text-light);
+    }
+
+    .gate-tests { margin-top: 0.5rem; }
+    .gate-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.3rem 0;
+      font-size: 0.85rem;
+      font-family: 'Space Mono', monospace;
+    }
+    .gate-icon {
+      width: 16px;
+      height: 16px;
+      border-radius: 3px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.6rem;
+      border: 2px solid var(--border);
+      background: white;
+    }
+    .gate-icon.complete {
+      border-color: var(--success);
+      background: var(--primary-extra-light);
+      color: var(--success);
+    }
+    .gate-icon.complete::after { content: '\2713'; font-weight: 700; }
+    .gate-name { color: var(--text-secondary); }
+    .gate-item.complete .gate-name {
+      text-decoration: line-through;
+      color: var(--text-light);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.8rem;
+      color: var(--text-light);
+      font-family: 'Space Mono', monospace;
+    }
+
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.5rem; }
+      .phase-desc { display: none; }
+      .phase-mini-bar { width: 50px; }
+      .info-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="header-inner">
+      <h1>RV Neighbors v2</h1>
+      <div class="subtitle">Full Rewrite Project Tracker</div>
+      <div class="last-updated" id="lastUpdated"></div>
+    </div>
+  </div>
+
+  <div class="overall-progress">
+    <div class="overall-card">
+      <div class="overall-label">
+        <span>Overall Progress</span>
+        <span class="overall-pct" id="overallPct">0%</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="overallFill" style="width: 0%"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="timeline-section">
+    <div class="timeline-row" id="timeline"></div>
+  </div>
+
+  <div class="info-row">
+    <div class="info-card">
+      <h3>Last Session</h3>
+      <p id="sessionSummary"></p>
+    </div>
+    <div class="info-card">
+      <h3>Next Steps</h3>
+      <ul id="nextSteps"></ul>
+    </div>
+  </div>
+
+  <div class="info-row" id="questionsRow" style="display:none;">
+    <div class="info-card questions" style="grid-column: 1 / -1;">
+      <h3>Open Questions</h3>
+      <ul id="openQuestions"></ul>
+    </div>
+  </div>
+
+  <div class="phases-section">
+    <h2>Build Phases</h2>
+    <div id="phases"></div>
+  </div>
+
+  <div class="footer">
+    Auto-updated on every commit &bull; Powered by Claude Code
+  </div>
+
+  <script>
+    const SVG_CHEVRON = '<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>';
+
+    async function load() {
+      const res = await fetch('./progress.json?t=' + Date.now());
+      const data = await res.json();
+      render(data);
+    }
+
+    function daysUntil(dateStr) {
+      const target = new Date(dateStr + 'T00:00:00');
+      const now = new Date();
+      now.setHours(0,0,0,0);
+      const diff = Math.ceil((target - now) / (1000 * 60 * 60 * 24));
+      if (diff === 0) return 'Today';
+      if (diff === 1) return 'Tomorrow';
+      if (diff < 0) return Math.abs(diff) + 'd ago';
+      return diff + ' days away';
+    }
+
+    function formatDate(iso) {
+      const d = new Date(iso);
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' });
+    }
+
+    function calcPhaseProgress(phase) {
+      const total = phase.tasks.length + phase.gateTests.length;
+      if (total === 0) return 0;
+      const done = phase.tasks.filter(t => t.status === 'complete').length +
+                   phase.gateTests.filter(t => t.status === 'complete').length;
+      return Math.round((done / total) * 100);
+    }
+
+    function render(data) {
+      // Last updated
+      document.getElementById('lastUpdated').textContent = 'Last updated: ' + formatDate(data.lastUpdated);
+
+      // Overall progress
+      const allTasks = data.phases.flatMap(p => [...p.tasks, ...p.gateTests]);
+      const totalItems = allTasks.length;
+      const doneItems = allTasks.filter(t => t.status === 'complete').length;
+      const overallPct = totalItems > 0 ? Math.round((doneItems / totalItems) * 100) : 0;
+      document.getElementById('overallPct').textContent = overallPct + '%';
+      document.getElementById('overallFill').style.width = overallPct + '%';
+
+      // Timeline
+      const milestones = [
+        { label: 'TestFlight', date: data.timeline.testflight },
+        { label: 'Testing', date: data.timeline.friendsTesting.split(' to ')[0] },
+        { label: 'Defect Fix', date: data.timeline.defectResolution.split(' to ')[0] },
+        { label: 'Production', date: data.timeline.production }
+      ];
+      const timelineEl = document.getElementById('timeline');
+      timelineEl.innerHTML = milestones.map(m => {
+        const days = daysUntil(m.date);
+        const isPast = days.includes('ago');
+        const cls = isPast ? 'milestone-done' : 'milestone-active';
+        return `<div class="timeline-card ${cls}">
+          <div class="timeline-label">${m.label}</div>
+          <div class="timeline-date">${m.date}</div>
+          <div class="days-away">${days}</div>
+        </div>`;
+      }).join('');
+
+      // Session summary + next steps
+      document.getElementById('sessionSummary').textContent = data.lastSessionSummary;
+      document.getElementById('nextSteps').innerHTML = data.nextSteps.map(s => `<li>${s}</li>`).join('');
+
+      // Open questions
+      if (data.openQuestions && data.openQuestions.length > 0) {
+        document.getElementById('questionsRow').style.display = '';
+        document.getElementById('openQuestions').innerHTML = data.openQuestions.map(q => `<li>${q}</li>`).join('');
+      }
+
+      // Phases
+      const phasesEl = document.getElementById('phases');
+      phasesEl.innerHTML = data.phases.map(phase => {
+        const pct = calcPhaseProgress(phase);
+        const statusClass = phase.status;
+        const badgeLabel = phase.status.replace('_', ' ');
+        const badgeClass = 'badge-' + phase.status.replace('_', '-');
+
+        const tasksHTML = phase.tasks.map(t => `
+          <li class="task-item ${t.status}">
+            <span class="task-icon ${t.status}"></span>
+            <span class="task-name">${t.name}</span>
+          </li>
+        `).join('');
+
+        const gatesHTML = phase.gateTests.map(t => `
+          <li class="gate-item ${t.status}">
+            <span class="gate-icon ${t.status}"></span>
+            <span class="gate-name">${t.name}</span>
+          </li>
+        `).join('');
+
+        return `
+          <div class="phase-card" onclick="this.classList.toggle('open')">
+            <div class="phase-header">
+              <div class="phase-left">
+                <div class="phase-number ${statusClass}">${phase.id}</div>
+                <div class="phase-info">
+                  <div class="phase-name">${phase.name}</div>
+                  <div class="phase-desc">${phase.description}</div>
+                </div>
+              </div>
+              <div class="phase-right">
+                <span class="phase-badge ${badgeClass}">${badgeLabel}</span>
+                <div class="phase-mini-bar">
+                  <div class="phase-mini-fill ${statusClass}" style="width:${pct}%"></div>
+                </div>
+                ${SVG_CHEVRON}
+              </div>
+            </div>
+            <div class="phase-body" onclick="event.stopPropagation()">
+              <h4>Tasks (${phase.tasks.filter(t=>t.status==='complete').length}/${phase.tasks.length})</h4>
+              <ul class="task-list">${tasksHTML}</ul>
+              <h4>Gate Tests (${phase.gateTests.filter(t=>t.status==='complete').length}/${phase.gateTests.length})</h4>
+              <ul class="task-list gate-tests">${gatesHTML}</ul>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    load();
+  </script>
+</body>
+</html>
