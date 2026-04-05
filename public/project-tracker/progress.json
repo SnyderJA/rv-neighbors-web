@@ -1,16 +1,15 @@
 {
   "project": "RV Neighbors v2",
-  "lastUpdated": "2026-04-04T22:00:00Z",
-  "lastSessionSummary": "Reviewed v1 codebase, decided on full rewrite with Supabase + NativeWind. Set up rv-neighbors-app repo with brand kit, carry-forward files, and context tracking system.",
+  "lastUpdated": "2026-04-04T23:00:00Z",
+  "lastSessionSummary": "GitHub repos created, dev branches set up, Supabase Pro project configured with GitHub branching. Phase 0 started: Expo SDK 54 project scaffolded with app.config.js, bundle ID com.rvneighbors.app.",
   "nextSteps": [
-    "Create Supabase project and get URL + anon key",
-    "Decide on new bundle ID (e.g., com.rvneighbors.app)",
-    "Start Phase 0: Scaffold Expo project with Supabase + NativeWind"
+    "Install NativeWind + brand theme",
+    "Set up Supabase client with session persistence",
+    "Install testing infrastructure",
+    "Set up EAS build profiles",
+    "Create initial Supabase migration"
   ],
-  "openQuestions": [
-    "What should the new bundle ID be?",
-    "Has a Supabase project been created yet?"
-  ],
+  "openQuestions": [],
   "timeline": {
     "testflight": "2026-04-21",
     "friendsTesting": "2026-04-21 to 2026-05-05",
@@ -21,19 +20,19 @@
     {
       "id": 0,
       "name": "Project Scaffold & Infrastructure",
-      "status": "not_started",
+      "status": "in_progress",
       "targetDays": "Days 1-2",
       "description": "New Expo project with Supabase, NativeWind, and CI foundation.",
       "tasks": [
-        { "name": "Create Expo project with TypeScript", "status": "not_started" },
-        { "name": "Configure new bundle ID", "status": "not_started" },
+        { "name": "Create Expo project with TypeScript", "status": "done" },
+        { "name": "Configure new bundle ID", "status": "done" },
         { "name": "Install and configure NativeWind with brand theme", "status": "not_started" },
         { "name": "Copy brand assets (logos, fonts, splash)", "status": "not_started" },
         { "name": "Set up Supabase client with session persistence", "status": "not_started" },
-        { "name": "Install core dependencies", "status": "not_started" },
-        { "name": "Configure app.json / app.config.js (no hardcoded secrets)", "status": "not_started" },
+        { "name": "Install core dependencies", "status": "done" },
+        { "name": "Configure app.json / app.config.js (no hardcoded secrets)", "status": "done" },
         { "name": "Set up EAS build profiles", "status": "not_started" },
-        { "name": "Set up .gitignore properly", "status": "not_started" },
+        { "name": "Set up .gitignore properly", "status": "done" },
         { "name": "Install testing: Jest + RNTL + MSW", "status": "not_started" },
         { "name": "Create initial Supabase migration with full schema", "status": "not_started" }
       ],
