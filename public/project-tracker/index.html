@@ -203,7 +203,7 @@
       }).join('');
     }
 
-    fetch('./progress.json?t=' + Date.now()).then(function(r){return r.json()}).then(render).catch(function(e){
+    fetch('/project-tracker/progress.json?t=' + Date.now()).then(function(r){return r.json()}).then(render).catch(function(e){
       document.getElementById('phases').innerHTML = '<p style="color:var(--error);padding:2rem;">Failed to load progress.json. Make sure this page is served from a web server, not opened as a local file.</p>';
     });
   </script>
