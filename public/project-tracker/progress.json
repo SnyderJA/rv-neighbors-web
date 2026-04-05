@@ -43,7 +43,8 @@
         { "name": "NativeWind renders styled component", "status": "complete" },
         { "name": "Tailwind config has all brand colors/fonts", "status": "complete" },
         { "name": ".env is gitignored and not tracked", "status": "complete" },
-        { "name": "Jest runs with passing placeholder test", "status": "complete" }
+        { "name": "Jest runs with passing placeholder test", "status": "complete" },
+        { "name": "Deprecation review: Expo SDK, React Native, NativeWind, AsyncStorage, app.config.js, TypeScript", "status": "complete" }
       ]
     },
     {
@@ -75,7 +76,8 @@
         { "name": "Profile photo upload → Storage + URL saved", "status": "not_started" },
         { "name": "RV photo upload → Storage + URL saved", "status": "not_started" },
         { "name": "RLS: user can only read/update own profile", "status": "not_started" },
-        { "name": "E2E: full signup → onboarding → home screen", "status": "not_started" }
+        { "name": "E2E: full signup → onboarding → home screen", "status": "not_started" },
+        { "name": "Deprecation review: Supabase Auth v2 methods, expo-image-picker, expo-secure-store, Zod", "status": "not_started" }
       ]
     },
     {
@@ -108,7 +110,8 @@
         { "name": "Check-in saves coordinates + location name", "status": "not_started" },
         { "name": "RLS: requests only visible to sender/recipient", "status": "not_started" },
         { "name": "DB function: accept is atomic (no partial state)", "status": "not_started" },
-        { "name": "E2E: send request → accept → see in neighbors", "status": "not_started" }
+        { "name": "E2E: send request → accept → see in neighbors", "status": "not_started" },
+        { "name": "Deprecation review: react-native-maps, expo-location, React Query v5 patterns", "status": "not_started" }
       ]
     },
     {
@@ -141,7 +144,8 @@
         { "name": "Push notification sent to participants", "status": "not_started" },
         { "name": "RLS: only see own conversations", "status": "not_started" },
         { "name": "RLS: only send to own conversations", "status": "not_started" },
-        { "name": "E2E: send message → recipient sees it", "status": "not_started" }
+        { "name": "E2E: send message → recipient sees it", "status": "not_started" },
+        { "name": "Deprecation review: Supabase Realtime channel API, expo-notifications, expo-linking", "status": "not_started" }
       ]
     },
     {
@@ -170,7 +174,8 @@
         { "name": "Cancel invite → status updated", "status": "not_started" },
         { "name": "Downgrade tier → members over limit warned", "status": "not_started" },
         { "name": "RLS: family data only visible to members", "status": "not_started" },
-        { "name": "E2E: free user hits 8 connections → upgrade prompt", "status": "not_started" }
+        { "name": "E2E: free user hits 8 connections → upgrade prompt", "status": "not_started" },
+        { "name": "Deprecation review: RevenueCat SDK, StoreKit 2 config, Supabase Edge Functions", "status": "not_started" }
       ]
     },
     {
@@ -203,7 +208,8 @@
         { "name": "Support form → email sent via Edge Function", "status": "not_started" },
         { "name": "Check-in → location saved, visible to connections", "status": "not_started" },
         { "name": "RLS: location settings only editable by owner", "status": "not_started" },
-        { "name": "E2E: toggle off-the-grid → hidden from search", "status": "not_started" }
+        { "name": "E2E: toggle off-the-grid → hidden from search", "status": "not_started" },
+        { "name": "Deprecation review: expo-location background, expo-notifications push tokens, Sentry SDK, expo-updates", "status": "not_started" }
       ]
     },
     {
@@ -234,7 +240,8 @@
         { "name": "Security: no API keys in source code", "status": "not_started" },
         { "name": "Security: all RLS policies reviewed", "status": "not_started" },
         { "name": "Performance: app loads to home in <3 seconds", "status": "not_started" },
-        { "name": "Full E2E: signup → onboarding → discover → connect → message → checkin → settings", "status": "not_started" }
+        { "name": "Full E2E: signup → onboarding → discover → connect → message → checkin → settings", "status": "not_started" },
+        { "name": "Deprecation review: expo-doctor clean, npm outdated clean, EAS config, splash screen, iOS Privacy Manifest", "status": "not_started" }
       ]
     }
   ]
