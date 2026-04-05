@@ -74,8 +74,8 @@
         { "name": "Log in → session persisted to AsyncStorage", "status": "complete" },
         { "name": "Log out → session cleared, redirect to login", "status": "complete" },
         { "name": "Onboarding → profile updated with all steps", "status": "complete" },
-        { "name": "Profile photo upload → Storage + URL saved", "status": "not_started" },
-        { "name": "RV photo upload → Storage + URL saved", "status": "not_started" },
+        { "name": "Profile photo upload → Storage + URL saved", "status": "complete" },
+        { "name": "RV photo upload → Storage + URL saved", "status": "complete" },
         { "name": "RLS: user can only read/update own profile", "status": "complete" },
         { "name": "E2E: full signup → onboarding → home screen", "status": "complete" },
         { "name": "Deprecation review: Supabase Auth v2 methods, expo-image-picker, expo-secure-store, Zod", "status": "complete" }
