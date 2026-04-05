@@ -1,15 +1,16 @@
 {
   "project": "RV Neighbors v2",
-  "lastUpdated": "2026-04-05T03:30:00Z",
-  "lastSessionSummary": "Phase 0 complete. Expo SDK 54 scaffolded, NativeWind + brand theme configured, Supabase client connected, Jest + Maestro set up, EAS build passing, full database schema migrated (15 tables).",
+  "lastUpdated": "2026-04-05T20:00:00Z",
+  "lastSessionSummary": "Phase 1 complete. Auth screens (login, signup, forgot-password), onboarding wizard (3 steps + review), auth gate routing, RLS policies, storage buckets, 25 tests passing.",
   "nextSteps": [
-    "Start Phase 1: Auth & User Profiles",
-    "Enable Supabase Email/Password + Social auth",
-    "Build Login, Signup, Forgot Password screens",
-    "Build Onboarding wizard (4 steps)",
-    "Create RLS policies for profiles table"
+    "Verify auth flow end-to-end on device/simulator",
+    "Start Phase 2: Connections & Neighbor Discovery",
+    "Build Neighbors List/Map screen with radius filter",
+    "Create DB functions for connection management"
   ],
-  "openQuestions": [],
+  "openQuestions": [
+    "Social auth (Google/Facebook) deferred — needs dev build + provider config"
+  ],
   "timeline": {
     "testflight": "2026-04-21",
     "friendsTesting": "2026-04-21 to 2026-05-05",
@@ -50,25 +51,25 @@
     {
       "id": 1,
       "name": "Auth & User Profiles",
-      "status": "not_started",
+      "status": "complete",
       "targetDays": "Days 3-5",
       "description": "Sign up, log in, complete onboarding, persisted profile with photo uploads.",
       "tasks": [
-        { "name": "Enable Supabase Email/Password + Google + Facebook auth", "status": "not_started" },
-        { "name": "Create RLS policies for profiles table", "status": "not_started" },
-        { "name": "Create Storage buckets with RLS (profile-photos, rv-photos)", "status": "not_started" },
-        { "name": "Build Login screen (email + social)", "status": "not_started" },
-        { "name": "Build Signup screen", "status": "not_started" },
-        { "name": "Build Forgot Password flow", "status": "not_started" },
-        { "name": "Build Onboarding wizard (4 steps)", "status": "not_started" },
-        { "name": "Build root layout with auth gate", "status": "not_started" },
-        { "name": "Create useAuth hook (Supabase session)", "status": "not_started" },
-        { "name": "Create useProfile hook (React Query)", "status": "not_started" },
-        { "name": "Create Zod schemas for all forms", "status": "not_started" }
+        { "name": "Enable Supabase Email/Password + Google + Facebook auth", "status": "complete" },
+        { "name": "Create RLS policies for profiles table", "status": "complete" },
+        { "name": "Create Storage buckets with RLS (profile-photos, rv-photos)", "status": "complete" },
+        { "name": "Build Login screen (email + social)", "status": "complete" },
+        { "name": "Build Signup screen", "status": "complete" },
+        { "name": "Build Forgot Password flow", "status": "complete" },
+        { "name": "Build Onboarding wizard (3 steps + review)", "status": "complete" },
+        { "name": "Build root layout with auth gate", "status": "complete" },
+        { "name": "Create useAuth hook (Supabase session)", "status": "complete" },
+        { "name": "Create useProfile hook (React Query)", "status": "complete" },
+        { "name": "Create Zod schemas for all forms", "status": "complete" }
       ],
       "gateTests": [
-        { "name": "Zod schemas validate correct/incorrect input", "status": "not_started" },
-        { "name": "useAuth returns correct states", "status": "not_started" },
+        { "name": "Zod schemas validate correct/incorrect input", "status": "complete" },
+        { "name": "useAuth returns correct states", "status": "complete" },
         { "name": "Sign up → profile row created in Supabase", "status": "not_started" },
         { "name": "Log in → session persisted to AsyncStorage", "status": "not_started" },
         { "name": "Log out → session cleared, redirect to login", "status": "not_started" },
