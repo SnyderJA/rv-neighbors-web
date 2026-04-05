@@ -26,24 +26,24 @@
       "tasks": [
         { "name": "Create Expo project with TypeScript", "status": "done" },
         { "name": "Configure new bundle ID", "status": "done" },
-        { "name": "Install and configure NativeWind with brand theme", "status": "not_started" },
-        { "name": "Copy brand assets (logos, fonts, splash)", "status": "not_started" },
-        { "name": "Set up Supabase client with session persistence", "status": "not_started" },
+        { "name": "Install and configure NativeWind with brand theme", "status": "done" },
+        { "name": "Copy brand assets (logos, fonts, splash)", "status": "done" },
+        { "name": "Set up Supabase client with session persistence", "status": "done" },
         { "name": "Install core dependencies", "status": "done" },
         { "name": "Configure app.json / app.config.js (no hardcoded secrets)", "status": "done" },
-        { "name": "Set up EAS build profiles", "status": "not_started" },
+        { "name": "Set up EAS build profiles", "status": "done" },
         { "name": "Set up .gitignore properly", "status": "done" },
-        { "name": "Install testing: Jest + RNTL + MSW", "status": "not_started" },
-        { "name": "Create initial Supabase migration with full schema", "status": "not_started" }
+        { "name": "Install testing: Jest + RNTL + MSW", "status": "done" },
+        { "name": "Create initial Supabase migration with full schema", "status": "done" }
       ],
       "gateTests": [
-        { "name": "Expo export build succeeds", "status": "not_started" },
+        { "name": "Expo export build succeeds", "status": "done" },
         { "name": "EAS dev build compiles for iOS simulator", "status": "not_started" },
         { "name": "Supabase client connects and queries", "status": "not_started" },
-        { "name": "NativeWind renders styled component", "status": "not_started" },
-        { "name": "Tailwind config has all brand colors/fonts", "status": "not_started" },
-        { "name": ".env is gitignored and not tracked", "status": "not_started" },
-        { "name": "Jest runs with passing placeholder test", "status": "not_started" }
+        { "name": "NativeWind renders styled component", "status": "done" },
+        { "name": "Tailwind config has all brand colors/fonts", "status": "done" },
+        { "name": ".env is gitignored and not tracked", "status": "done" },
+        { "name": "Jest runs with passing placeholder test", "status": "done" }
       ]
     },
     {
