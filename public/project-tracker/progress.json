@@ -20,7 +20,7 @@
     {
       "id": 0,
       "name": "Project Scaffold & Infrastructure",
-      "status": "in_progress",
+      "status": "complete",
       "targetDays": "Days 1-2",
       "description": "New Expo project with Supabase, NativeWind, and CI foundation.",
       "tasks": [
@@ -38,8 +38,8 @@
       ],
       "gateTests": [
         { "name": "Expo export build succeeds", "status": "done" },
-        { "name": "EAS dev build compiles for iOS simulator", "status": "not_started" },
-        { "name": "Supabase client connects and queries", "status": "not_started" },
+        { "name": "EAS dev build compiles for iOS simulator", "status": "done" },
+        { "name": "Supabase client connects and queries", "status": "done" },
         { "name": "NativeWind renders styled component", "status": "done" },
         { "name": "Tailwind config has all brand colors/fonts", "status": "done" },
         { "name": ".env is gitignored and not tracked", "status": "done" },
