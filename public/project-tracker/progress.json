@@ -85,7 +85,7 @@
     {
       "id": 2,
       "name": "Connections & Neighbor Discovery",
-      "status": "code_complete",
+      "status": "complete",
       "targetDays": "Days 6-9",
       "description": "Discover neighbors on map/list, send/accept connections, check-in locations.",
       "tasks": [
@@ -102,18 +102,18 @@
         { "name": "Create useCheckIn hook", "status": "complete" }
       ],
       "gateTests": [
-        { "name": "Haversine distance calculation is accurate", "status": "not_started" },
-        { "name": "Connection status derivation works all states", "status": "not_started" },
-        { "name": "Send request → row created, recipient sees it", "status": "not_started" },
-        { "name": "Accept request → connection created, bidirectional", "status": "not_started" },
-        { "name": "Decline request → no connection created", "status": "not_started" },
-        { "name": "Radius filter actually filters by distance", "status": "not_started" },
-        { "name": "Discovery only shows non-connected users", "status": "not_started" },
-        { "name": "Check-in saves coordinates + location name", "status": "not_started" },
-        { "name": "RLS: requests only visible to sender/recipient", "status": "not_started" },
-        { "name": "DB function: accept is atomic (no partial state)", "status": "not_started" },
-        { "name": "E2E: send request → accept → see in neighbors", "status": "not_started" },
-        { "name": "Deprecation review: react-native-maps, expo-location, React Query v5 patterns", "status": "not_started" }
+        { "name": "Haversine distance calculation is accurate", "status": "complete" },
+        { "name": "Connection status derivation works all states", "status": "complete" },
+        { "name": "Send request → row created, recipient sees it", "status": "complete" },
+        { "name": "Accept request → connection created, bidirectional", "status": "complete" },
+        { "name": "Decline request → no connection created", "status": "complete" },
+        { "name": "Radius filter actually filters by distance", "status": "complete" },
+        { "name": "Discovery only shows non-connected users", "status": "complete" },
+        { "name": "Check-in saves coordinates + location name", "status": "complete" },
+        { "name": "RLS: requests only visible to sender/recipient", "status": "complete" },
+        { "name": "DB function: accept is atomic (no partial state)", "status": "complete" },
+        { "name": "E2E: send request → accept → see in neighbors", "status": "complete" },
+        { "name": "Deprecation review: react-native-maps, expo-location, React Query v5 patterns", "status": "complete" }
       ]
     },
     {
