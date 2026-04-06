@@ -1,15 +1,16 @@
 {
   "project": "RV Neighbors v2",
-  "lastUpdated": "2026-04-05T20:00:00Z",
-  "lastSessionSummary": "Phase 1 complete. Auth screens (login, signup, forgot-password), onboarding wizard (3 steps + review), auth gate routing, RLS policies, storage buckets, 25 tests passing.",
+  "lastUpdated": "2026-04-05T23:00:00Z",
+  "lastSessionSummary": "Phase 2 code complete. 11 commits: RLS policies, DB functions (accept/decline/remove/nearby), 5 hooks, 9 components, 4-tab navigation, Neighbors map/list, Friends screen, User Detail, Check-In modal. 39 tests passing.",
   "nextSteps": [
-    "Verify auth flow end-to-end on device/simulator",
-    "Start Phase 2: Connections & Neighbor Discovery",
-    "Build Neighbors List/Map screen with radius filter",
-    "Create DB functions for connection management"
+    "Apply Phase 2 migration to Supabase",
+    "Build new dev client (native modules: react-native-maps, expo-location)",
+    "Test all Phase 2 screens on device",
+    "Start Phase 3: Real-Time Messaging"
   ],
   "openQuestions": [
-    "Social auth (Google/Facebook) deferred — needs dev build + provider config"
+    "Social auth (Google/Facebook) deferred — needs dev build + provider config",
+    "GradientBackground permanently dropped — solid #0F2419 on auth screens"
   ],
   "timeline": {
     "testflight": "2026-04-21",
@@ -84,21 +85,21 @@
     {
       "id": 2,
       "name": "Connections & Neighbor Discovery",
-      "status": "not_started",
+      "status": "code_complete",
       "targetDays": "Days 6-9",
       "description": "Discover neighbors on map/list, send/accept connections, check-in locations.",
       "tasks": [
-        { "name": "Create connections + connection_requests tables", "status": "not_started" },
-        { "name": "Create close_friends + check_ins tables", "status": "not_started" },
-        { "name": "Create DB function: accept_connection_request (atomic)", "status": "not_started" },
-        { "name": "Create DB function: get_nearby_users (distance query)", "status": "not_started" },
-        { "name": "Build Neighbors List/Map screen with radius filter", "status": "not_started" },
-        { "name": "Build Discovery screen (non-connected users)", "status": "not_started" },
-        { "name": "Build Friends screen (All / Close / Pending tabs)", "status": "not_started" },
-        { "name": "Build User Detail screen with connection actions", "status": "not_started" },
-        { "name": "Create useConnections hook", "status": "not_started" },
-        { "name": "Create useNeighbors hook with real distance calc", "status": "not_started" },
-        { "name": "Create useCheckIn hook", "status": "not_started" }
+        { "name": "Create connections + connection_requests tables", "status": "complete" },
+        { "name": "Create close_friends + check_ins tables", "status": "complete" },
+        { "name": "Create DB function: accept_connection_request (atomic)", "status": "complete" },
+        { "name": "Create DB function: get_nearby_users (distance query)", "status": "complete" },
+        { "name": "Build Neighbors List/Map screen with radius filter", "status": "complete" },
+        { "name": "Build Discovery screen (non-connected users)", "status": "complete" },
+        { "name": "Build Friends screen (All / Close / Pending tabs)", "status": "complete" },
+        { "name": "Build User Detail screen with connection actions", "status": "complete" },
+        { "name": "Create useConnections hook", "status": "complete" },
+        { "name": "Create useNeighbors hook with real distance calc", "status": "complete" },
+        { "name": "Create useCheckIn hook", "status": "complete" }
       ],
       "gateTests": [
         { "name": "Haversine distance calculation is accurate", "status": "not_started" },
