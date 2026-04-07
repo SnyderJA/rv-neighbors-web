@@ -242,6 +242,7 @@
         { "name": "Configure EAS Submit with real credentials", "status": "not_started" },
         { "name": "Accessibility pass (labels, contrast, touch targets)", "status": "not_started" },
         { "name": "Configure Sentry for crash reporting", "status": "not_started" },
+        { "name": "Run npx expo install --check to fix version mismatches (AsyncStorage, jest-expo, @types/jest)", "status": "not_started" },
         { "name": "Remove all console.log statements", "status": "not_started" },
         { "name": "Final .env audit — no secrets in source", "status": "not_started" }
       ],
