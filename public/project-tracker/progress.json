@@ -1,16 +1,17 @@
 {
   "project": "RV Neighbors v2",
-  "lastUpdated": "2026-04-05T23:00:00Z",
-  "lastSessionSummary": "Phase 2 code complete. 11 commits: RLS policies, DB functions (accept/decline/remove/nearby), 5 hooks, 9 components, 4-tab navigation, Neighbors map/list, Friends screen, User Detail, Check-In modal. 39 tests passing.",
+  "lastUpdated": "2026-04-06T19:00:00Z",
+  "lastSessionSummary": "Phase 3 COMPLETE. Built group messaging (New Group screen, create_group_conversation DB function, FAB menu with direct/group options). Fixed Realtime sender name display, message input clearing, and subscription timing. All gate tests passing (push notifications deferred to Phase 5). 57 tests passing.",
   "nextSteps": [
-    "Apply Phase 2 migration to Supabase",
-    "Build new dev client (native modules: react-native-maps, expo-location)",
-    "Test all Phase 2 screens on device",
-    "Start Phase 3: Real-Time Messaging"
+    "Start Phase 4: Membership, Family & IAP",
+    "Add push notifications (Edge Function + expo-notifications) in Phase 5",
+    "Edge Functions (push, invite email, support email) deferred"
   ],
   "openQuestions": [
     "Social auth (Google/Facebook) deferred — needs dev build + provider config",
-    "GradientBackground permanently dropped — solid #0F2419 on auth screens"
+    "GradientBackground permanently dropped — solid #0F2419 on auth screens",
+    "Push notifications deferred to Phase 5 (requires Edge Function + device testing)",
+    "Edge Functions (send-push-notification, send-invite-email, send-support-email) deferred to Phase 5"
   ],
   "timeline": {
     "testflight": "2026-04-21",
@@ -119,35 +120,39 @@
     {
       "id": 3,
       "name": "Real-Time Messaging",
-      "status": "not_started",
+      "status": "complete",
       "targetDays": "Days 10-12",
       "description": "Direct and group messaging with real-time delivery and push notifications.",
       "tasks": [
-        { "name": "Create conversations + messages + reads tables", "status": "not_started" },
-        { "name": "Set up Supabase Realtime subscriptions", "status": "not_started" },
+        { "name": "Create conversations + messages + reads tables", "status": "complete" },
+        { "name": "Create RLS policies for messaging tables", "status": "complete" },
+        { "name": "Create DB functions (create_or_get_direct_conversation, get_conversations_for_user, mark_messages_as_read, create_group_conversation)", "status": "complete" },
+        { "name": "Set up Supabase Realtime subscriptions", "status": "complete" },
         { "name": "Create Edge Function: send-push-notification", "status": "not_started" },
         { "name": "Create Edge Function: send-invite-email", "status": "not_started" },
         { "name": "Create Edge Function: send-support-email", "status": "not_started" },
-        { "name": "Build Conversations list screen", "status": "not_started" },
-        { "name": "Build Chat screen with real-time messages", "status": "not_started" },
-        { "name": "Build New Message screen", "status": "not_started" },
-        { "name": "Build New Group screen", "status": "not_started" },
-        { "name": "Create useConversations hook (React Query + Realtime)", "status": "not_started" },
-        { "name": "Create useMessages hook (React Query + Realtime)", "status": "not_started" },
-        { "name": "Create usePushNotifications hook", "status": "not_started" }
+        { "name": "Build Conversations list screen", "status": "complete" },
+        { "name": "Build Chat screen with real-time messages", "status": "complete" },
+        { "name": "Build New Message screen", "status": "complete" },
+        { "name": "Build New Group screen", "status": "complete" },
+        { "name": "Create useConversations hook (React Query + Realtime)", "status": "complete" },
+        { "name": "Create useMessages hook (React Query + Realtime)", "status": "complete" },
+        { "name": "Create usePushNotifications hook", "status": "not_started" },
+        { "name": "Wire Message button on User Detail screen", "status": "complete" },
+        { "name": "Add unread badge to Messages tab", "status": "complete" }
       ],
       "gateTests": [
-        { "name": "Message validation (max 500 chars, not empty)", "status": "not_started" },
-        { "name": "Create direct conversation → both users see it", "status": "not_started" },
-        { "name": "Create group conversation → all participants see it", "status": "not_started" },
-        { "name": "Send message → appears for all participants", "status": "not_started" },
-        { "name": "Realtime: message appears without refresh", "status": "not_started" },
-        { "name": "Unread count increments/resets correctly", "status": "not_started" },
+        { "name": "Message validation (max 500 chars, not empty)", "status": "complete" },
+        { "name": "Create direct conversation → both users see it", "status": "complete" },
+        { "name": "Create group conversation → all participants see it", "status": "complete" },
+        { "name": "Send message → appears for all participants", "status": "complete" },
+        { "name": "Realtime: message appears without refresh", "status": "complete" },
+        { "name": "Unread count increments/resets correctly", "status": "complete" },
         { "name": "Push notification sent to participants", "status": "not_started" },
-        { "name": "RLS: only see own conversations", "status": "not_started" },
-        { "name": "RLS: only send to own conversations", "status": "not_started" },
-        { "name": "E2E: send message → recipient sees it", "status": "not_started" },
-        { "name": "Deprecation review: Supabase Realtime channel API, expo-notifications, expo-linking", "status": "not_started" }
+        { "name": "RLS: only see own conversations", "status": "complete" },
+        { "name": "RLS: only send to own conversations", "status": "complete" },
+        { "name": "E2E: send message → recipient sees it", "status": "complete" },
+        { "name": "Deprecation review: Supabase Realtime channel API, expo-notifications, expo-linking", "status": "complete" }
       ]
     },
     {
