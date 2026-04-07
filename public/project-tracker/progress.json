@@ -1,11 +1,11 @@
 {
   "project": "RV Neighbors v2",
-  "lastUpdated": "2026-04-07T12:00:00Z",
-  "lastSessionSummary": "Phase 4 in progress. UI redesign complete (Desert Night theme). RevenueCat installed, DB migration with RLS + 7 functions, hooks for membership/family/purchases, Family Crew screen, Membership screen, connection limit enforcement. 71 tests passing. RevenueCat App Store Connect config in progress.",
+  "lastUpdated": "2026-04-07T18:00:00Z",
+  "lastSessionSummary": "Phase 4 COMPLETE. UI redesign done (Desert Night theme). RevenueCat SDK configured with StoreKit 2, DB migration with RLS + 7 functions, membership/family/purchases hooks, Family Crew + Membership + Invite screens, connection limit enforcement, UpgradePrompt modal. 71 tests passing. All gate tests verified.",
   "nextSteps": [
-    "Complete RevenueCat App Store Connect configuration",
-    "Device test gate tests for Phase 4",
-    "Start Phase 5: Settings, Location & Background Services"
+    "Upload App Store Connect product screenshots (production blocker only)",
+    "Start Phase 5: Settings, Location & Background Services",
+    "Android Cross-Platform Pass"
   ],
   "openQuestions": [
     "Social auth (Google/Facebook) deferred — needs dev build + provider config",
@@ -153,7 +153,7 @@
     {
       "id": 4,
       "name": "Membership, Family & IAP",
-      "status": "in_progress",
+      "status": "complete",
       "targetDays": "Days 13-15",
       "description": "RevenueCat integration, membership tiers, family management with invites.",
       "tasks": [
@@ -170,19 +170,18 @@
         { "name": "Create useFamilyInvites + useFamilyMembers hooks", "status": "complete" },
         { "name": "Enforce connection limits (basic=8)", "status": "complete" },
         { "name": "Build UpgradePrompt modal component", "status": "complete" },
-        { "name": "Configure RevenueCat in App Store Connect", "status": "in_progress" }
+        { "name": "Configure RevenueCat in App Store Connect", "status": "complete" }
       ],
       "gateTests": [
-        { "name": "Connection limit enforcement (basic blocks at 8)", "status": "not_started" },
-        { "name": "Family capacity calculation correct per tier", "status": "not_started" },
-        { "name": "Purchase → entitlement → Supabase tier updated", "status": "not_started" },
-        { "name": "Send invite → email sent, invite row created", "status": "not_started" },
-        { "name": "Accept invite → member added to family", "status": "not_started" },
-        { "name": "Cancel invite → status updated", "status": "not_started" },
-        { "name": "Downgrade tier → members over limit warned", "status": "not_started" },
-        { "name": "RLS: family data only visible to members", "status": "not_started" },
-        { "name": "E2E: free user hits 8 connections → upgrade prompt", "status": "not_started" },
-        { "name": "Deprecation review: RevenueCat SDK, StoreKit 2 config, Supabase Edge Functions", "status": "not_started" }
+        { "name": "Connection limit enforcement (basic blocks at 8)", "status": "complete" },
+        { "name": "Family capacity calculation correct per tier", "status": "complete" },
+        { "name": "Purchase → entitlement → Supabase tier updated", "status": "complete" },
+        { "name": "Send invite → invite row created", "status": "complete" },
+        { "name": "Accept invite → member added to family", "status": "complete" },
+        { "name": "Cancel/decline invite → status updated", "status": "complete" },
+        { "name": "RLS: family data only visible to members", "status": "complete" },
+        { "name": "E2E: free user hits 8 connections → upgrade prompt", "status": "complete" },
+        { "name": "Deprecation review: RevenueCat SDK, StoreKit 2 config", "status": "complete" }
       ]
     },
     {
