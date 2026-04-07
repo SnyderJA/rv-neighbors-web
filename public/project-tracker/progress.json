@@ -275,7 +275,8 @@
         { "name": "Update MessageBubble: render images with tap-to-expand", "status": "not_started" },
         { "name": "Update MessageBubble: render location as tappable mini map card (opens in Maps)", "status": "not_started" },
         { "name": "Wire image and location send flows into conversation screen", "status": "not_started" },
-        { "name": "Update sendMessage schema to allow empty content when image or location present", "status": "not_started" }
+        { "name": "Update sendMessage schema to allow empty content when image or location present", "status": "not_started" },
+        { "name": "Add subtle RV pattern background to chat conversation screen", "status": "not_started" }
       ],
       "gateTests": [
         { "name": "Pick image from camera roll → preview shows in input", "status": "not_started" },
