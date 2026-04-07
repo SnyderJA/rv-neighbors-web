@@ -295,6 +295,39 @@
         { "name": "E2E: share location → recipient sees map card in real-time", "status": "not_started" },
         { "name": "Deprecation review: expo-image-picker, expo-location, Supabase Storage, react-native-maps static", "status": "not_started" }
       ]
+    },
+    {
+      "id": 8,
+      "name": "Call for Help Broadcast",
+      "status": "not_started",
+      "targetDays": "Post-MVP",
+      "description": "Emergency broadcast feature allowing users to send a help request to all nearby neighbors (connected or not) within range. Includes alert UI, push notifications, and map highlighting.",
+      "tasks": [
+        { "name": "DB migration: create help_broadcasts table (user_id, message, latitude, longitude, radius, status, created_at, resolved_at)", "status": "not_started" },
+        { "name": "DB migration: RLS policies for help_broadcasts (anyone nearby can read, only owner can create/resolve)", "status": "not_started" },
+        { "name": "Create DB function: get_active_broadcasts_nearby (returns broadcasts within radius, ignores connection status)", "status": "not_started" },
+        { "name": "Create Edge Function: broadcast-help-push (sends push to all users within radius)", "status": "not_started" },
+        { "name": "Create useHelpBroadcast hook (create, resolve, query active nearby)", "status": "not_started" },
+        { "name": "Build Call for Help screen (confirm dialog, message input, broadcast radius selector)", "status": "not_started" },
+        { "name": "Build Help Alert banner on map (shows active broadcasts nearby with distance)", "status": "not_started" },
+        { "name": "Build Broadcast Detail screen (message, user info, distance, respond/dismiss actions)", "status": "not_started" },
+        { "name": "Add help broadcast markers on map (distinct SOS-style icon)", "status": "not_started" },
+        { "name": "Wire Call for Help button into map or profile screen", "status": "not_started" },
+        { "name": "Add resolve/cancel broadcast flow", "status": "not_started" },
+        { "name": "Zod schemas for broadcast creation and validation", "status": "not_started" }
+      ],
+      "gateTests": [
+        { "name": "Create broadcast → row created with user location and message", "status": "not_started" },
+        { "name": "Broadcast visible to ALL nearby users regardless of connection status", "status": "not_started" },
+        { "name": "Push notification sent to all users within broadcast radius", "status": "not_started" },
+        { "name": "Broadcast appears as alert banner on nearby users' maps", "status": "not_started" },
+        { "name": "Broadcast marker shows on map with SOS icon", "status": "not_started" },
+        { "name": "Resolve broadcast → removed from active queries", "status": "not_started" },
+        { "name": "RLS: only broadcast owner can resolve/cancel", "status": "not_started" },
+        { "name": "Expired broadcasts auto-hidden after configurable timeout", "status": "not_started" },
+        { "name": "E2E: send help → nearby user sees alert + push + map marker", "status": "not_started" },
+        { "name": "Deprecation review: Supabase Realtime for broadcasts, push API, location queries", "status": "not_started" }
+      ]
     }
   ]
 }
