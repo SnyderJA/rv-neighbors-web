@@ -221,7 +221,7 @@
         { "name": "Check-in → location saved, visible to connections", "status": "complete" },
         { "name": "RLS: location settings only editable by owner", "status": "complete" },
         { "name": "E2E: toggle off-the-grid → hidden from search", "status": "complete" },
-        { "name": "Deprecation review: expo-location background, expo-notifications push tokens, Sentry SDK, expo-updates", "status": "not_started" }
+        { "name": "Deprecation review: expo-location background, expo-notifications push tokens, Sentry SDK, expo-updates", "status": "complete" }
       ]
     },
     {
