@@ -255,6 +255,38 @@
         { "name": "Full E2E: signup → onboarding → discover → connect → message → checkin → settings", "status": "not_started" },
         { "name": "Deprecation review: expo-doctor clean, npm outdated clean, EAS config, splash screen, iOS Privacy Manifest", "status": "not_started" }
       ]
+    },
+    {
+      "id": 7,
+      "name": "Image Sharing in Messaging",
+      "status": "not_started",
+      "targetDays": "Post-MVP",
+      "description": "Allow users to share photos from camera roll in conversations. Image display in chat bubbles, upload to Storage, conversation preview support.",
+      "tasks": [
+        { "name": "DB migration: add image_url column to messages table", "status": "not_started" },
+        { "name": "DB migration: alter content constraint to allow empty when image present", "status": "not_started" },
+        { "name": "DB migration: create message-images Storage bucket with RLS", "status": "not_started" },
+        { "name": "DB migration: update get_conversations_for_user to show 'Sent a photo' preview", "status": "not_started" },
+        { "name": "Update messaging types (DbMessage, MessageWithSender, RealtimeMessage) with image_url", "status": "not_started" },
+        { "name": "Update useMessages hook: query, mutation, optimistic update, realtime handler", "status": "not_started" },
+        { "name": "Create useMessageImage hook (camera roll picker + Storage upload)", "status": "not_started" },
+        { "name": "Update MessageInput: add image picker button, preview, upload state", "status": "not_started" },
+        { "name": "Update MessageBubble: render images with tap-to-expand", "status": "not_started" },
+        { "name": "Wire image send flow into conversation screen", "status": "not_started" },
+        { "name": "Update sendMessage schema to allow empty content when image present", "status": "not_started" }
+      ],
+      "gateTests": [
+        { "name": "Pick image from camera roll → preview shows in input", "status": "not_started" },
+        { "name": "Send image → uploaded to Storage, URL saved in messages table", "status": "not_started" },
+        { "name": "Image appears in chat bubble for sender and recipient", "status": "not_started" },
+        { "name": "Realtime: image message appears without refresh", "status": "not_started" },
+        { "name": "Send image + text together → both render in bubble", "status": "not_started" },
+        { "name": "Conversation list shows 'Sent a photo' as last message preview", "status": "not_started" },
+        { "name": "RLS: only conversation participants can view message images", "status": "not_started" },
+        { "name": "Schema validation: empty content rejected when no image", "status": "not_started" },
+        { "name": "E2E: pick photo → send → recipient sees it in real-time", "status": "not_started" },
+        { "name": "Deprecation review: expo-image-picker, Supabase Storage API, image rendering", "status": "not_started" }
+      ]
     }
   ]
 }
