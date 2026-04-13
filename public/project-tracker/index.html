@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RV Neighbors v2 — Project Tracker</title>
+  <title>RV Neighbors — Project Tracker</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
@@ -103,6 +103,11 @@
     .gate-icon.complete::after { content: '\2713'; font-weight: 700; }
     .gate-item.complete .gate-name { text-decoration: line-through; color: var(--text-light); }
 
+    .project-switcher { max-width: 1100px; margin: 1rem auto 0; padding: 0 1.5rem; display: flex; gap: 0.5rem; }
+    .project-tab { padding: 0.5rem 1.25rem; border-radius: var(--radius-pill); font-size: 0.85rem; font-weight: 600; cursor: pointer; border: 2px solid var(--border); background: var(--card); color: var(--text-secondary); transition: all 0.2s; }
+    .project-tab:hover { border-color: var(--primary-light); color: var(--primary); }
+    .project-tab.active { background: var(--primary); border-color: var(--primary); color: white; }
+
     .footer { text-align: center; padding: 2rem; font-size: 0.8rem; color: var(--text-light); font-family: 'Space Mono', monospace; }
     @media (max-width: 600px) { .header h1 { font-size: 1.5rem; } .phase-desc { display: none; } .phase-mini-bar { width: 50px; } }
   </style>
@@ -110,10 +115,15 @@
 <body>
   <div class="header">
     <div class="header-inner">
-      <h1>RV Neighbors v2</h1>
-      <div class="subtitle">Full Rewrite Project Tracker</div>
+      <h1 id="projectTitle">RV Neighbors v2</h1>
+      <div class="subtitle" id="projectSubtitle">Full Rewrite Project Tracker</div>
       <div class="last-updated" id="lastUpdated"></div>
     </div>
+  </div>
+
+  <div class="project-switcher">
+    <div class="project-tab active" onclick="switchProject('progress.json', this)">Mobile App</div>
+    <div class="project-tab" onclick="switchProject('admin-progress.json', this)">Admin Portal</div>
   </div>
 
   <div class="overall-progress">
@@ -158,6 +168,7 @@
 
   <script>
     var CHEVRON = '<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>';
+    var currentFile = 'progress.json';
 
     function daysUntil(d) {
       var t = new Date(d + 'T00:00:00'), n = new Date(); n.setHours(0,0,0,0);
@@ -167,7 +178,22 @@
     function fmtDate(iso) { return new Date(iso).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric', hour:'numeric', minute:'2-digit' }); }
     function phasePct(p) { var t = p.tasks.length + p.gateTests.length; return t ? Math.round((p.tasks.concat(p.gateTests).filter(function(x){return x.status==='complete'}).length / t) * 100) : 0; }
 
+    function switchProject(file, tab) {
+      currentFile = file;
+      document.querySelectorAll('.project-tab').forEach(function(t) { t.classList.remove('active'); });
+      tab.classList.add('active');
+      loadProject(file);
+    }
+
+    function loadProject(file) {
+      fetch('/project-tracker/' + file + '?t=' + Date.now()).then(function(r){return r.json()}).then(render).catch(function(e){
+        document.getElementById('phases').innerHTML = '<p style="color:var(--error);padding:2rem;">Failed to load ' + file + '.</p>';
+      });
+    }
+
     function render(data) {
+      document.getElementById('projectTitle').textContent = data.project;
+      document.getElementById('projectSubtitle').textContent = data.project === 'RV Neighbors Admin Portal' ? 'Admin Dashboard Project Tracker' : 'Full Rewrite Project Tracker';
       document.getElementById('lastUpdated').textContent = 'Last updated: ' + fmtDate(data.lastUpdated);
 
       var allT = [], allG = [];
@@ -180,17 +206,33 @@
       document.getElementById('overallFill').style.width = pct + '%';
       document.getElementById('statsBar').innerHTML = '<span><strong>' + allT.length + '</strong> tasks</span><span><strong>' + allG.length + '</strong> gate tests</span><span><strong>' + done + '</strong> complete</span><span><strong>' + inProg + '</strong> in progress</span><span><strong>' + (total-done-inProg) + '</strong> remaining</span>';
 
-      var ms = [{l:'TestFlight',d:data.timeline.testflight},{l:'Testing',d:data.timeline.friendsTesting.split(' to ')[0]},{l:'Defect Fix',d:data.timeline.defectResolution.split(' to ')[0]},{l:'Production',d:data.timeline.production}];
-      document.getElementById('timeline').innerHTML = ms.map(function(m) {
-        var dd = daysUntil(m.d), cls = dd.includes('ago') ? 'done' : 'active';
-        return '<div class="timeline-card '+cls+'"><div class="timeline-label">'+m.l+'</div><div class="timeline-date">'+m.d+'</div><div class="days-away">'+dd+'</div></div>';
-      }).join('');
+      // Timeline: only render if mobile app format (has testflight etc.)
+      var timelineEl = document.getElementById('timeline');
+      if (data.timeline && data.timeline.testflight) {
+        timelineEl.parentElement.style.display = '';
+        var ms = [{l:'TestFlight',d:data.timeline.testflight},{l:'Testing',d:data.timeline.friendsTesting.split(' to ')[0]},{l:'Defect Fix',d:data.timeline.defectResolution.split(' to ')[0]},{l:'Production',d:data.timeline.production}];
+        timelineEl.innerHTML = ms.map(function(m) {
+          var dd = daysUntil(m.d), cls = dd.includes('ago') ? 'done' : 'active';
+          return '<div class="timeline-card '+cls+'"><div class="timeline-label">'+m.l+'</div><div class="timeline-date">'+m.d+'</div><div class="days-away">'+dd+'</div></div>';
+        }).join('');
+      } else if (data.timeline) {
+        timelineEl.parentElement.style.display = '';
+        var items = Object.keys(data.timeline).map(function(k) {
+          var label = k.replace(/([A-Z])/g, ' $1').replace(/^./, function(s){return s.toUpperCase()});
+          return '<div class="timeline-card active"><div class="timeline-label">' + label + '</div><div class="timeline-date" style="font-size:0.8rem">' + data.timeline[k] + '</div></div>';
+        });
+        timelineEl.innerHTML = items.join('');
+      } else {
+        timelineEl.parentElement.style.display = 'none';
+      }
 
       document.getElementById('sessionSummary').textContent = data.lastSessionSummary;
       document.getElementById('nextSteps').innerHTML = data.nextSteps.map(function(s){return '<li>'+s+'</li>'}).join('');
       if (data.openQuestions && data.openQuestions.length) {
         document.getElementById('questionsRow').style.display = '';
         document.getElementById('openQuestions').innerHTML = data.openQuestions.map(function(q){return '<li>'+q+'</li>'}).join('');
+      } else {
+        document.getElementById('questionsRow').style.display = 'none';
       }
 
       document.getElementById('phases').innerHTML = data.phases.map(function(ph) {
@@ -203,9 +245,7 @@
       }).join('');
     }
 
-    fetch('/project-tracker/progress.json?t=' + Date.now()).then(function(r){return r.json()}).then(render).catch(function(e){
-      document.getElementById('phases').innerHTML = '<p style="color:var(--error);padding:2rem;">Failed to load progress.json. Make sure this page is served from a web server, not opened as a local file.</p>';
-    });
+    loadProject(currentFile);
   </script>
 </body>
 </html>
