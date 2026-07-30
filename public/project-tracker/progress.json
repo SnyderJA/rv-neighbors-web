@@ -8,23 +8,47 @@
     "Phase 5A: close the critical RLS and Edge Function holes before any real users",
     "Install the dev client and device test on iOS simulator + the new Google Pixel",
     "Android Cross-Platform Pass — now unblocked, Pixel available",
-    "Then Phase 6: Polish & Production Prep",
-    "Rebuild the project timeline with realistic dates"
+    "Then Phase 6: Polish & Production Prep"
   ],
   "openQuestions": [
     "Social auth (Google/Facebook) deferred — needs dev build + provider config",
     "GradientBackground permanently dropped — solid #0F2419 on auth screens",
-    "All timeline dates below are stale (pre-gap) — kept for history, need to be redone",
     "Phase 4/5 were marked complete via code inspection; treat any remaining 'code verified' gate test as unproven until device tested",
     "Decide whether background location ships at all — it is currently dead code and adds an App Store privacy burden",
     "RevenueCat tier sync must move to a server-side webhook; decide the Edge Function shape"
   ],
-  "timeline": {
-    "testflight": "2026-04-21",
-    "friendsTesting": "2026-04-21 to 2026-05-05",
-    "defectResolution": "2026-05-05 to 2026-05-10",
-    "production": "2026-05-15"
-  },
+  "milestones": [
+    {
+      "label": "TestFlight",
+      "date": "2026-09-01"
+    },
+    {
+      "label": "Google Play (Testing)",
+      "date": "2026-09-05"
+    },
+    {
+      "label": "Testing Phase",
+      "date": "2026-09-08",
+      "endDate": "2026-10-05"
+    },
+    {
+      "label": "Defect Fixing",
+      "date": "2026-10-10",
+      "endDate": "2026-10-25"
+    },
+    {
+      "label": "Validation",
+      "date": "2026-10-29"
+    },
+    {
+      "label": "Production Release",
+      "date": "2026-10-30"
+    },
+    {
+      "label": "v1.1 Release",
+      "date": "2026-11-15"
+    }
+  ],
   "phases": [
     {
       "id": 0,

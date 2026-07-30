@@ -45,6 +45,7 @@
     .timeline-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-light); font-weight: 600; }
     .timeline-date { font-family: 'Space Mono', monospace; font-weight: 700; font-size: 0.9rem; margin-top: 0.15rem; }
     .days-away { font-size: 0.75rem; color: var(--text-light); margin-top: 0.15rem; }
+    .date-range { font-family: 'Space Mono', monospace; font-size: 0.75rem; color: var(--text-light); margin-top: 0.1rem; }
 
     .info-row { max-width: 1100px; margin: 1.5rem auto; padding: 0 1.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
     @media (max-width: 700px) { .info-row { grid-template-columns: 1fr; } }
@@ -206,9 +207,17 @@
       document.getElementById('overallFill').style.width = pct + '%';
       document.getElementById('statsBar').innerHTML = '<span><strong>' + allT.length + '</strong> tasks</span><span><strong>' + allG.length + '</strong> gate tests</span><span><strong>' + done + '</strong> complete</span><span><strong>' + inProg + '</strong> in progress</span><span><strong>' + (total-done-inProg) + '</strong> remaining</span>';
 
-      // Timeline: only render if mobile app format (has testflight etc.)
+      // Timeline: prefer the milestones array; fall back to the older timeline object shapes.
       var timelineEl = document.getElementById('timeline');
-      if (data.timeline && data.timeline.testflight) {
+      if (data.milestones && data.milestones.length) {
+        timelineEl.parentElement.style.display = '';
+        timelineEl.innerHTML = data.milestones.map(function(m) {
+          var dd = daysUntil(m.endDate || m.date);
+          var cls = dd.indexOf('ago') !== -1 ? 'done' : 'active';
+          var range = m.endDate ? '<div class="date-range">through ' + m.endDate + '</div>' : '';
+          return '<div class="timeline-card '+cls+'"><div class="timeline-label">'+m.label+'</div><div class="timeline-date">'+m.date+'</div>'+range+'<div class="days-away">'+dd+'</div></div>';
+        }).join('');
+      } else if (data.timeline && data.timeline.testflight) {
         timelineEl.parentElement.style.display = '';
         var ms = [{l:'TestFlight',d:data.timeline.testflight},{l:'Testing',d:data.timeline.friendsTesting.split(' to ')[0]},{l:'Defect Fix',d:data.timeline.defectResolution.split(' to ')[0]},{l:'Production',d:data.timeline.production}];
         timelineEl.innerHTML = ms.map(function(m) {
