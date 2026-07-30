@@ -807,7 +807,7 @@
       "name": "Foundation: Dependencies, Test Harness & Zod Migration",
       "status": "not_started",
       "targetDays": "Step 1 — do first",
-      "description": "Align the dependency tree to SDK 54 and finish the abandoned zod v4 migration. Everything downstream depends on a trustworthy build and test harness, so this goes first.",
+      "description": "Align the dependency tree to SDK 54, finish the abandoned zod v4 migration, and stand up the PR + CI workflow. Everything downstream depends on a trustworthy build, test harness, and review process, so this goes first. Deliberately the phase to practise the PR workflow on — it is small and low-risk.",
       "tasks": [
         {
           "id": "5P-T01",
@@ -858,6 +858,26 @@
           "id": "5P-T10",
           "name": "Record the SDK upgrade target for v1.1 (54 -> 55/56/57) — explicitly NOT before TestFlight",
           "status": "not_started"
+        },
+        {
+          "id": "5P-T11",
+          "name": "Adopt the branch -> PR -> dev workflow; open the first PR (5p/dependency-alignment) instead of committing direct to dev",
+          "status": "not_started"
+        },
+        {
+          "id": "5P-T12",
+          "name": "Add a GitHub Actions CI workflow running jest + tsc --noEmit + expo-doctor on pull_request (free; 2000 private-repo minutes/mo)",
+          "status": "not_started"
+        },
+        {
+          "id": "5P-T13",
+          "name": "Establish the pre-merge review ritual: run /code-review on the diff and /security-review before merging any PR",
+          "status": "not_started"
+        },
+        {
+          "id": "5P-T14",
+          "name": "Defer paid review tooling — claude-code-action needs an ANTHROPIC_API_KEY (separate API billing) and CodeRabbit needs a paid plan for private repos; revisit only if the manual ritual slips",
+          "status": "not_started"
         }
       ],
       "gateTests": [
@@ -889,6 +909,16 @@
         {
           "id": "5P-G06",
           "name": "A screen-level test exists that fails if a submit handler throws",
+          "status": "not_started"
+        },
+        {
+          "id": "5P-G07",
+          "name": "CI runs automatically on a pull request and reports pass/fail",
+          "status": "not_started"
+        },
+        {
+          "id": "5P-G08",
+          "name": "First PR merged to dev with a documented pre-merge review (no direct commits)",
           "status": "not_started"
         }
       ]
