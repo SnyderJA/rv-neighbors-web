@@ -1,18 +1,21 @@
 {
   "project": "RV Neighbors v2",
-  "lastUpdated": "2026-04-07T22:00:00Z",
-  "lastSessionSummary": "Phase 5 COMPLETE. 10 commits: Zod schemas, settings hooks, Edit Profile screen, Settings screens (matching Sleek design), push notification service, background location, off-the-grid timer, 3 Edge Functions, push wiring into messaging/connections. 106 tests passing. Device testing still needed.",
+  "lastUpdated": "2026-07-29T00:00:00Z",
+  "lastSessionSummary": "Session 11 (2026-07-29): Status review after a ~2 month gap. Session 10's work (useConversations.ts Realtime fix, eas.json dev-simulator profile, log/progress updates) had never been committed — committed it now. 106/106 tests still passing. User acquired a Google Pixel, unblocking Android Cross-Platform Pass. Timeline needs to be rebuilt — all original dates have passed.",
   "nextSteps": [
-    "Device test all Phase 5 screens and services",
-    "Deploy Edge Functions to Supabase",
-    "Android Cross-Platform Pass",
-    "Start Phase 6: Polish & Production Prep"
+    "Install new dev client on iOS simulator (eas build:run after build completes) and confirm it's usable",
+    "Device test all Phase 5 screens and services on simulator",
+    "Smoke test the 3 live Edge Functions (push, invite email, support email)",
+    "Android Cross-Platform Pass — now unblocked, Pixel available",
+    "Start Phase 6: Polish & Production Prep",
+    "Rebuild project timeline with realistic dates"
   ],
   "openQuestions": [
     "Social auth (Google/Facebook) deferred — needs dev build + provider config",
     "GradientBackground permanently dropped — solid #0F2419 on auth screens",
-    "Push notifications deferred to Phase 5 (requires Edge Function + device testing)",
-    "Edge Functions (send-push-notification, send-invite-email, send-support-email) deferred to Phase 5"
+    "Push notifications: Edge Function deployed; device-side registration still needs simulator test",
+    "Edge Functions deployed to Supabase (all 3 ACTIVE, v4) — runtime smoke tests pending device install",
+    "All timeline dates below are stale (pre-gap) — kept for history, need to be redone"
   ],
   "timeline": {
     "testflight": "2026-04-21",
