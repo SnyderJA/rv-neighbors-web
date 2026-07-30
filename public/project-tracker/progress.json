@@ -1,21 +1,22 @@
 {
   "project": "RV Neighbors v2",
   "lastUpdated": "2026-07-29T00:00:00Z",
-  "lastSessionSummary": "Session 12 (2026-07-29): Full multi-agent code review of app + backend before resuming dev. Found 3 features marked complete that are not actually wired up (IAP purchase flow, push token registration, background location), a guaranteed zod v4 crash in 2 screens, and multiple critical backend security holes (client-writable membership_tier, spoofable accept_connection_request, unauthenticated Edge Functions acting as an open mail relay, off-the-grid bypass, 2 tables with no RLS). Added Phase 5A (Security Hardening) and 5B (Wire Up Unfinished Features) as launch blockers; reopened the Phase 4/5 gate tests that were marked complete by code inspection rather than device testing.",
+  "lastSessionSummary": "Session 14 (2026-07-29): Re-sequenced all outstanding work into true execution order and folded in the dependency/zod findings. New order: 5P Foundation (dep alignment + finish the abandoned zod v4 migration) -> 5A Security (server-side trust boundary) -> 5B Wiring (IAP/push/bg location) -> 5C Device Validation (iOS + Pixel) -> 5D Launch Requirements -> 6 Post-Launch Polish. Key ordering calls: security precedes client wiring so the purchase flow isn't built against a model 5A replaces; foundation precedes everything because the test harness (jest-expo 55 on SDK 54) can't be trusted until aligned. Deduped 4 Phase 6 tasks against 5A/5P and promoted 7 launch-blocking items out of polish into 5D. Added the previously untracked Android/device phase. Decision recorded: ship v1.0 on SDK 54, upgrade for v1.1 (currently 3 majors behind — latest is 57).",
   "nextSteps": [
-    "Phase 5B first: fix the zod crash, then wire the IAP purchase flow (nobody can pay today)",
-    "Phase 5B: mount usePushNotifications and wire or delete backgroundLocation",
-    "Phase 5A: close the critical RLS and Edge Function holes before any real users",
-    "Install the dev client and device test on iOS simulator + the new Google Pixel",
-    "Android Cross-Platform Pass — now unblocked, Pixel available",
-    "Then Phase 6: Polish & Production Prep"
+    "Phase 5P step 1: npx expo install --check, align AsyncStorage to 2.2.0, align jest-expo/@types/jest to SDK 54",
+    "Phase 5P step 2: finish the zod v4 migration — 2 crash sites, the silent errorMap, deprecated .url()/.uuid()",
+    "Phase 5P step 3: add screen-level validation tests (suite is schema-only, which hid both zod defects)",
+    "Confirm SDK 54 is still in Expo's EAS Build support window, and that API 36 satisfies Play's Sep requirement",
+    "Then Phase 5A security (server-side tier sync first — it gates how 5B wires purchases)",
+    "Then 5B wiring, 5C device validation on iOS + the new Pixel, 5D launch requirements"
   ],
   "openQuestions": [
     "Social auth (Google/Facebook) deferred — needs dev build + provider config",
     "GradientBackground permanently dropped — solid #0F2419 on auth screens",
-    "Phase 4/5 were marked complete via code inspection; treat any remaining 'code verified' gate test as unproven until device tested",
-    "Decide whether background location ships at all — it is currently dead code and adds an App Store privacy burden",
-    "RevenueCat tier sync must move to a server-side webhook; decide the Edge Function shape"
+    "Phase 4/5 were marked complete via code inspection; treat any remaining 'code verified' gate test as unproven until 5C",
+    "Decide whether background location ships at all — dead code today and adds App Store privacy burden",
+    "SDK upgrade deferred to v1.1 by decision: on 54.0.33, latest is 57.0.9 (3 majors behind). Managed/CNG workflow means no native dirs to merge, so the eventual jump is tractable",
+    "34 days to the Sep 1 TestFlight with ~123 MVP items outstanding — scope or date may need to move; 5P/5A/5B/5C/5D are the true blockers"
   ],
   "milestones": [
     {
@@ -443,7 +444,7 @@
       "name": "Membership, Family & IAP",
       "status": "in_progress",
       "targetDays": "Days 13-15",
-      "description": "RevenueCat integration, membership tiers, family management with invites.",
+      "description": "RevenueCat integration, membership tiers, family management with invites. NOTE: remaining in_progress items are finished by Phase 5B (wiring) and verified in 5C.",
       "tasks": [
         {
           "name": "Redesign: Profile/Settings tab (match Sleek design)",
@@ -546,7 +547,7 @@
       "name": "Settings, Location & Background Services",
       "status": "in_progress",
       "targetDays": "Days 16-17",
-      "description": "Privacy controls, location sharing, off-the-grid, background location, notifications.",
+      "description": "Privacy controls, location sharing, off-the-grid, background location, notifications. NOTE: remaining in_progress items are finished by Phase 5B (wiring) and verified in 5C.",
       "tasks": [
         {
           "name": "Build Settings home screen",
@@ -665,11 +666,86 @@
       ]
     },
     {
+      "id": "5P",
+      "name": "Foundation: Dependencies, Test Harness & Zod Migration",
+      "status": "not_started",
+      "targetDays": "Step 1 — do first",
+      "description": "Align the dependency tree to SDK 54 and finish the abandoned zod v4 migration. Everything downstream depends on a trustworthy build and test harness, so this goes first.",
+      "tasks": [
+        {
+          "name": "Run `npx expo install --check` — align 8 patch mismatches + react-native-svg to SDK 54",
+          "status": "not_started"
+        },
+        {
+          "name": "Align @react-native-async-storage/async-storage 3.0.2 -> 2.2.0 (SDK 54 expects v2; only getItem/setItem/removeItem are used so there is no migration cost)",
+          "status": "not_started"
+        },
+        {
+          "name": "Align jest-expo 55.0.13 -> ~54.0.17 and @types/jest 30 -> 29.x before writing any component tests",
+          "status": "not_started"
+        },
+        {
+          "name": "Fix zod v4 crash — .error.errors -> .error.issues in edit-profile.tsx:93 and settings/help.tsx:41",
+          "status": "not_started"
+        },
+        {
+          "name": "Fix zod v4 errorMap -> error in utils/schemas/membership.ts:11 (custom message is silently ignored today)",
+          "status": "not_started"
+        },
+        {
+          "name": "Migrate deprecated zod formats: z.string().url()/.uuid() -> z.url()/z.uuid() (profile.ts:22,54; messaging.ts:22)",
+          "status": "not_started"
+        },
+        {
+          "name": "Add screen-level validation tests — the suite is schema-only today, which is why the zod crash and errorMap regression both survived",
+          "status": "not_started"
+        },
+        {
+          "name": "Confirm SDK 54 is still inside Expo's EAS Build support window; if not, escalate an SDK upgrade decision immediately",
+          "status": "not_started"
+        },
+        {
+          "name": "Verify Android targetSdkVersion (API 36 on SDK 54) still meets Google Play's requirement before the Sep 5 submission",
+          "status": "not_started"
+        },
+        {
+          "name": "Record the SDK upgrade target for v1.1 (54 -> 55/56/57) — explicitly NOT before TestFlight",
+          "status": "not_started"
+        }
+      ],
+      "gateTests": [
+        {
+          "name": "npx expo-doctor reports no major or minor version mismatches",
+          "status": "not_started"
+        },
+        {
+          "name": "Full test suite passes on the SDK-54-matched jest-expo harness",
+          "status": "not_started"
+        },
+        {
+          "name": "Edit Profile with invalid input shows field errors and does not crash",
+          "status": "not_started"
+        },
+        {
+          "name": "Help form with invalid input shows field errors and does not crash",
+          "status": "not_started"
+        },
+        {
+          "name": "Invalid family role shows the custom message, not zod's default text",
+          "status": "not_started"
+        },
+        {
+          "name": "A screen-level test exists that fails if a submit handler throws",
+          "status": "not_started"
+        }
+      ]
+    },
+    {
       "id": "5A",
       "name": "Security Hardening (Launch Blocker)",
       "status": "not_started",
-      "targetDays": "Blocker",
-      "description": "Fixes for critical RLS, DB function, and Edge Function vulnerabilities found in the Jul 2026 code review. Must ship before any real users.",
+      "targetDays": "Step 2 — before client wiring",
+      "description": "Close the critical RLS, DB-function, and Edge Function holes. Runs BEFORE 5B on purpose: it establishes the server-side trust boundary (notably moving RevenueCat tier sync off the client) so the purchase flow is wired against the correct model instead of being rewritten.",
       "tasks": [
         {
           "name": "Restrict users UPDATE policy — block client writes to membership_tier, family_id, is_owner, role, email",
@@ -795,13 +871,9 @@
       "id": "5B",
       "name": "Wire Up Unfinished Features & Fix Crashes (Launch Blocker)",
       "status": "not_started",
-      "targetDays": "Blocker",
-      "description": "Phase 4/5 code exists but was never connected to the UI or app lifecycle: IAP, push registration, and background location are all non-functional. Plus a guaranteed zod v4 crash.",
+      "targetDays": "Step 3 — after trust boundary",
+      "description": "Connect the Phase 4/5 code that was written but never wired: IAP purchase flow, push token registration, background location. Depends on 5A for the tier-sync model. Non-IAP items here (cache clear on sign-out, push mounting, realtime retries) can be pulled forward if 5A stalls.",
       "tasks": [
-        {
-          "name": "Fix zod v4 crash — .error.errors -> .error.issues in edit-profile.tsx:93 and settings/help.tsx:41",
-          "status": "not_started"
-        },
         {
           "name": "Wire the purchase flow — connect useOfferings/usePurchasePackage to the Upgrade buttons in membership.tsx (no onPress today)",
           "status": "not_started"
@@ -889,14 +961,6 @@
       ],
       "gateTests": [
         {
-          "name": "Edit Profile with invalid input shows field errors and does not crash",
-          "status": "not_started"
-        },
-        {
-          "name": "Help form with invalid input shows field errors and does not crash",
-          "status": "not_started"
-        },
-        {
           "name": "Tap Upgrade -> paywall opens -> purchase completes -> Supabase tier updates",
           "status": "not_started"
         },
@@ -947,16 +1011,190 @@
       ]
     },
     {
-      "id": 6,
-      "name": "Polish, Error Handling & Production Prep",
+      "id": "5C",
+      "name": "Device Validation — iOS + Android",
       "status": "not_started",
-      "targetDays": "Days 18-19",
-      "description": "Error boundaries, loading states, RLS audit, App Store assets, final QA.",
+      "targetDays": "Step 4 — before store prep",
+      "description": "First real device pass on both platforms, and the re-verification of every Phase 4/5 gate test that was previously marked complete by code inspection. Google Pixel is now available.",
+      "tasks": [
+        {
+          "name": "Build + install the dev client on the iOS simulator (eas build:run -p ios --profile development)",
+          "status": "not_started"
+        },
+        {
+          "name": "Add an Android EAS dev-client profile and build for the Google Pixel",
+          "status": "not_started"
+        },
+        {
+          "name": "Obtain and configure the Google Maps API key for Android",
+          "status": "not_started"
+        },
+        {
+          "name": "Walk the full flow on iOS: signup -> onboarding -> map -> crew -> messages -> settings -> edit profile",
+          "status": "not_started"
+        },
+        {
+          "name": "Walk the same full flow on the Google Pixel",
+          "status": "not_started"
+        },
+        {
+          "name": "Smoke test all 3 deployed Edge Functions from a device (push, invite email, support email)",
+          "status": "not_started"
+        },
+        {
+          "name": "Verify push end-to-end on a PHYSICAL device (simulators cannot receive real push)",
+          "status": "not_started"
+        },
+        {
+          "name": "Android platform pass: keyboard, status bar, safe areas, shadow->elevation, fonts, hardware back button",
+          "status": "not_started"
+        },
+        {
+          "name": "Verify maps render correctly on Android",
+          "status": "not_started"
+        },
+        {
+          "name": "Verify RevenueCat sandbox purchase on iOS (App Store sandbox)",
+          "status": "not_started"
+        },
+        {
+          "name": "Verify RevenueCat sandbox purchase on Android (Play Store config)",
+          "status": "not_started"
+        },
+        {
+          "name": "Re-verify every reopened Phase 4/5 gate test on real hardware",
+          "status": "not_started"
+        }
+      ],
+      "gateTests": [
+        {
+          "name": "Full end-to-end flow passes on iOS",
+          "status": "not_started"
+        },
+        {
+          "name": "Full end-to-end flow passes on the Google Pixel",
+          "status": "not_started"
+        },
+        {
+          "name": "A real push notification is received on a physical device",
+          "status": "not_started"
+        },
+        {
+          "name": "Maps render correctly on Android",
+          "status": "not_started"
+        },
+        {
+          "name": "Sandbox purchase completes and updates tier on iOS",
+          "status": "not_started"
+        },
+        {
+          "name": "Sandbox purchase completes and updates tier on Android",
+          "status": "not_started"
+        },
+        {
+          "name": "All previously 'code verified' Phase 4/5 gate tests re-verified on device",
+          "status": "not_started"
+        },
+        {
+          "name": "No platform-specific layout breakage on either OS",
+          "status": "not_started"
+        }
+      ]
+    },
+    {
+      "id": "5D",
+      "name": "Launch Requirements (Store + Observability)",
+      "status": "not_started",
+      "targetDays": "Step 5 — gates TestFlight",
+      "description": "Hard requirements for shipping to TestFlight and Play internal testing, plus the crash reporting and error boundaries you need in place BEFORE external testers arrive. Promoted out of Phase 6 polish because these are blockers, not nice-to-haves.",
       "tasks": [
         {
           "name": "Add React Error Boundaries (root + per-tab)",
           "status": "not_started"
         },
+        {
+          "name": "Configure Sentry for crash reporting",
+          "status": "not_started"
+        },
+        {
+          "name": "Add a working Terms & Privacy Policy link (App Store review requirement)",
+          "status": "not_started"
+        },
+        {
+          "name": "Prepare App Store screenshots and metadata",
+          "status": "not_started"
+        },
+        {
+          "name": "Configure EAS Submit with real credentials",
+          "status": "not_started"
+        },
+        {
+          "name": "Remove all console.log statements",
+          "status": "not_started"
+        },
+        {
+          "name": "Final .env audit — no secrets in source",
+          "status": "not_started"
+        },
+        {
+          "name": "iOS Privacy Manifest (PrivacyInfo.xcprivacy) — required by App Store",
+          "status": "not_started"
+        },
+        {
+          "name": "Prepare Google Play listing assets + Data Safety form",
+          "status": "not_started"
+        },
+        {
+          "name": "Complete the App Store Connect IAP product screenshots (pending since Phase 4)",
+          "status": "not_started"
+        },
+        {
+          "name": "Decide and document whether background location ships — it carries an App Store privacy-review burden",
+          "status": "not_started"
+        },
+        {
+          "name": "Add graceful offline/retry states for network failures",
+          "status": "not_started"
+        }
+      ],
+      "gateTests": [
+        {
+          "name": "Error boundary catches render errors, shows fallback",
+          "status": "not_started"
+        },
+        {
+          "name": "Network offline → graceful error states + retry",
+          "status": "not_started"
+        },
+        {
+          "name": "Security: no API keys in source code",
+          "status": "not_started"
+        },
+        {
+          "name": "Sentry receives a test crash from a release build",
+          "status": "not_started"
+        },
+        {
+          "name": "Terms & Privacy Policy link opens a real page",
+          "status": "not_started"
+        },
+        {
+          "name": "TestFlight build uploads and installs successfully",
+          "status": "not_started"
+        },
+        {
+          "name": "Google Play internal testing track accepts the build",
+          "status": "not_started"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Post-Launch Polish & Hardening",
+      "status": "not_started",
+      "targetDays": "Step 6 — after TestFlight",
+      "description": "Genuine polish and non-blocking correctness cleanup. Deliberately scheduled AFTER TestFlight: launch-blocking items were promoted to 5D and security duplicates removed in favour of 5A.",
+      "tasks": [
         {
           "name": "Add loading skeletons for all screens",
           "status": "not_started"
@@ -970,43 +1208,7 @@
           "status": "not_started"
         },
         {
-          "name": "Review and tighten all RLS policies",
-          "status": "not_started"
-        },
-        {
-          "name": "Add rate limiting to Edge Functions",
-          "status": "not_started"
-        },
-        {
-          "name": "Input sanitization on Edge Functions",
-          "status": "not_started"
-        },
-        {
-          "name": "Prepare App Store screenshots and metadata",
-          "status": "not_started"
-        },
-        {
-          "name": "Configure EAS Submit with real credentials",
-          "status": "not_started"
-        },
-        {
           "name": "Accessibility pass (labels, contrast, touch targets)",
-          "status": "not_started"
-        },
-        {
-          "name": "Configure Sentry for crash reporting",
-          "status": "not_started"
-        },
-        {
-          "name": "Run npx expo install --check to fix version mismatches (AsyncStorage, jest-expo, @types/jest)",
-          "status": "not_started"
-        },
-        {
-          "name": "Remove all console.log statements",
-          "status": "not_started"
-        },
-        {
-          "name": "Final .env audit — no secrets in source",
           "status": "not_started"
         },
         {
@@ -1015,10 +1217,6 @@
         },
         {
           "name": "Make the check-in 'Approximate location shared' toggle functional or remove it",
-          "status": "not_started"
-        },
-        {
-          "name": "Add a working Terms & Privacy Policy link (App Store review requirement)",
           "status": "not_started"
         },
         {
@@ -1108,23 +1306,7 @@
       ],
       "gateTests": [
         {
-          "name": "Error boundary catches render errors, shows fallback",
-          "status": "not_started"
-        },
-        {
-          "name": "Network offline → graceful error states + retry",
-          "status": "not_started"
-        },
-        {
           "name": "All forms validate with Zod before submission",
-          "status": "not_started"
-        },
-        {
-          "name": "Security: no API keys in source code",
-          "status": "not_started"
-        },
-        {
-          "name": "Security: all RLS policies reviewed",
           "status": "not_started"
         },
         {
@@ -1145,7 +1327,7 @@
       "id": 7,
       "name": "Rich Messaging (Images & Location Sharing)",
       "status": "not_started",
-      "targetDays": "Post-MVP",
+      "targetDays": "Post-MVP (after v1.0)",
       "description": "Share photos from camera roll and exact location pins in conversations. Image/map display in chat bubbles, Storage upload, conversation preview support.",
       "tasks": [
         {
@@ -1268,7 +1450,7 @@
       "id": 8,
       "name": "Call for Help Broadcast",
       "status": "not_started",
-      "targetDays": "Post-MVP",
+      "targetDays": "Post-MVP (after v1.0)",
       "description": "Emergency broadcast feature. Red glowing animated circle + enlarged avatar on map for broadcaster. 1-hour duration, max 2 per day. 50-mile push radius to all users (connected or not). Requires name, phone, email, reason, and preferred contact method to submit.",
       "tasks": [
         {
