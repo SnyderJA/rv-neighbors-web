@@ -97,6 +97,8 @@
     .task-icon.complete { border: 2px solid var(--success); background: var(--primary-extra-light); color: var(--success); }
     .task-icon.complete::after { content: '\2713'; font-weight: 700; }
     .task-item.complete .task-name { text-decoration: line-through; color: var(--text-light); }
+    .ticket { font-family: 'Space Mono', monospace; font-size: 0.7rem; font-weight: 700; color: var(--text-light); background: var(--bg-alt); border: 1px solid var(--border-light); border-radius: 4px; padding: 0.05rem 0.3rem; flex-shrink: 0; min-width: 4.6rem; text-align: center; letter-spacing: -0.02em; }
+    .task-item.complete .ticket, .gate-item.complete .ticket { opacity: 0.55; }
 
     .gate-item { display: flex; align-items: center; gap: 0.6rem; padding: 0.3rem 0; font-size: 0.85rem; font-family: 'Space Mono', monospace; }
     .gate-icon { width: 16px; height: 16px; border-radius: 3px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; border: 2px solid var(--border); background: white; }
@@ -248,8 +250,10 @@
         var pc = phasePct(ph), st = ph.status, bl = st.replace(/_/g,' '), bc = 'badge-'+st.replace(/_/g,'-');
         var dt = ph.tasks.filter(function(t){return t.status==='complete'}).length;
         var dg = ph.gateTests.filter(function(t){return t.status==='complete'}).length;
-        var ti = ph.tasks.map(function(t){return '<li class="task-item '+t.status+'"><span class="task-icon '+t.status+'"></span><span class="task-name">'+t.name+'</span></li>'}).join('');
-        var gi = ph.gateTests.map(function(t){return '<li class="gate-item '+t.status+'"><span class="gate-icon '+t.status+'"></span><span class="gate-name">'+t.name+'</span></li>'}).join('');
+        // Ticket chip is optional — admin-progress.json has no ids and must still render.
+        var tick = function(t){ return t.id ? '<span class="ticket">'+t.id+'</span>' : ''; };
+        var ti = ph.tasks.map(function(t){return '<li class="task-item '+t.status+'"><span class="task-icon '+t.status+'"></span>'+tick(t)+'<span class="task-name">'+t.name+'</span></li>'}).join('');
+        var gi = ph.gateTests.map(function(t){return '<li class="gate-item '+t.status+'"><span class="gate-icon '+t.status+'"></span>'+tick(t)+'<span class="gate-name">'+t.name+'</span></li>'}).join('');
         return '<div class="phase-card open" onclick="this.classList.toggle(\'open\')"><div class="phase-header"><div class="phase-left"><div class="phase-number '+st+'">'+ph.id+'</div><div class="phase-info"><div class="phase-name">'+ph.name+' <span class="phase-target">'+ph.targetDays+'</span></div><div class="phase-desc">'+ph.description+'</div></div></div><div class="phase-right"><span class="phase-badge '+bc+'">'+bl+'</span><div class="phase-mini-bar"><div class="phase-mini-fill '+st+'" style="width:'+pc+'%"></div></div>'+CHEVRON+'</div></div><div class="phase-body" onclick="event.stopPropagation()"><h4>Tasks ('+dt+'/'+ph.tasks.length+')</h4><ul class="task-list">'+ti+'</ul><h4>Gate Tests ('+dg+'/'+ph.gateTests.length+')</h4><ul class="task-list gate-tests">'+gi+'</ul></div></div>';
       }).join('');
     }
