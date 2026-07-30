@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>RV Neighbors — Git Flow Cheat Sheet</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  body{margin:0}
+  img,svg{max-width:100%}
+</style>
+</head>
+<body>
+<style>
+  /* Palette derives from the app's own "Desert Night" system:
+     forest ground #0F2419, amber accent #DF8B29. Neutrals are green-biased,
+     not pure grey, so they sit with the brand rather than beside it. */
+  :root {
+    --ground:    #F4F7F3;
+    --surface:   #FFFFFF;
+    --surface-2: #E9EFE9;
+    --line:      #D3DFD5;
+    --line-soft: #E3EBE4;
+    --text:      #14261C;
+    --text-dim:  #566C5E;
+    --accent:    #9A5A11;
+    --accent-bg: #F7EBDA;
+    --caution:   #8F3B18;
+    --caution-bg:#F9E7DF;
+    --shadow:    0 1px 2px rgba(20,38,28,.06), 0 4px 14px rgba(20,38,28,.05);
+
+    --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground:    #0F2419;
+      --surface:   #16301F;
+      --surface-2: #1C3B27;
+      --line:      #2B5540;
+      --line-soft: #21402D;
+      --text:      #E7F0E8;
+      --text-dim:  #92AB9B;
+      --accent:    #E5952F;
+      --accent-bg: #26361F;
+      --caution:   #E08155;
+      --caution-bg:#33251E;
+      --shadow:    0 1px 2px rgba(0,0,0,.3), 0 4px 14px rgba(0,0,0,.22);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:    #0F2419;
+    --surface:   #16301F;
+    --surface-2: #1C3B27;
+    --line:      #2B5540;
+    --line-soft: #21402D;
+    --text:      #E7F0E8;
+    --text-dim:  #92AB9B;
+    --accent:    #E5952F;
+    --accent-bg: #26361F;
+    --caution:   #E08155;
+    --caution-bg:#33251E;
+    --shadow:    0 1px 2px rgba(0,0,0,.3), 0 4px 14px rgba(0,0,0,.22);
+  }
+  :root[data-theme="light"] {
+    --ground:    #F4F7F3;
+    --surface:   #FFFFFF;
+    --surface-2: #E9EFE9;
+    --line:      #D3DFD5;
+    --line-soft: #E3EBE4;
+    --text:      #14261C;
+    --text-dim:  #566C5E;
+    --accent:    #9A5A11;
+    --accent-bg: #F7EBDA;
+    --caution:   #8F3B18;
+    --caution-bg:#F9E7DF;
+    --shadow:    0 1px 2px rgba(20,38,28,.06), 0 4px 14px rgba(20,38,28,.05);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 940px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+
+  /* ---------- header ---------- */
+  header { display: flex; flex-direction: column; gap: 1.4rem; margin-bottom: 2.75rem; }
+  .eyebrow {
+    font-family: var(--mono); font-size: .72rem; letter-spacing: .13em;
+    text-transform: uppercase; color: var(--accent); margin: 0;
+  }
+  h1 {
+    margin: .35rem 0 0; font-size: clamp(1.75rem, 4.4vw, 2.4rem);
+    letter-spacing: -.022em; line-height: 1.1; text-wrap: balance; font-weight: 700;
+  }
+  .lede { margin: .6rem 0 0; color: var(--text-dim); max-width: 60ch; }
+  .lede code { font-family: var(--mono); font-size: .9em; color: var(--text); }
+
+  .graph {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 10px; padding: 1.1rem 1.25rem; box-shadow: var(--shadow);
+    overflow-x: auto;
+  }
+  .graph svg { display: block; min-width: 460px; width: 100%; height: auto; }
+
+  /* ---------- section headings ---------- */
+  h2 {
+    font-size: .78rem; font-family: var(--mono); font-weight: 700;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--text-dim);
+    margin: 0 0 1rem; padding-bottom: .5rem; border-bottom: 1px solid var(--line-soft);
+  }
+  section { margin-bottom: 2.75rem; }
+
+  /* ---------- the numbered loop ---------- */
+  /* Numbering is used because these genuinely are sequential steps. */
+  ol.steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .3rem; }
+  .step { display: grid; grid-template-columns: 2rem 1fr; gap: .85rem; align-items: start; position: relative; padding-bottom: .3rem; }
+  .step::before {
+    content: ""; position: absolute; left: .97rem; top: 1.85rem; bottom: -.35rem;
+    width: 1px; background: var(--line);
+  }
+  .step:last-child::before { display: none; }
+  .num {
+    font-family: var(--mono); font-size: .78rem; font-weight: 700;
+    width: 2rem; height: 2rem; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--accent-bg); color: var(--accent);
+    border: 1px solid var(--line); position: relative; z-index: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .step-body { padding-top: .16rem; min-width: 0; }
+  .step-label { font-weight: 650; letter-spacing: -.005em; }
+  .step-note { color: var(--text-dim); font-size: .875rem; margin-top: .1rem; }
+
+  /* ---------- commands ---------- */
+  .cmd {
+    display: flex; align-items: center; gap: .6rem; width: 100%;
+    margin-top: .5rem; padding: .55rem .7rem; text-align: left;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 7px;
+    font-family: var(--mono); font-size: .815rem; color: var(--text);
+    cursor: pointer; transition: border-color .15s ease, background .15s ease;
+  }
+  .cmd:hover { border-color: var(--accent); background: var(--surface-2); }
+  .cmd:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .cmd code { flex: 1; overflow-x: auto; white-space: pre; padding-bottom: 1px; }
+  .cmd .copy {
+    flex-shrink: 0; font-size: .62rem; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--text-dim); border: 1px solid var(--line); border-radius: 4px;
+    padding: .12rem .38rem;
+  }
+  .cmd.copied .copy { color: var(--accent); border-color: var(--accent); }
+  .cmd.slash { cursor: default; }
+  .cmd.slash:hover { border-color: var(--line); background: var(--surface); }
+
+  /* ---------- reference cards ---------- */
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
+  .card {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 10px; padding: 1.1rem 1.15rem; box-shadow: var(--shadow); min-width: 0;
+  }
+  .card h3 {
+    margin: 0 0 .7rem; font-size: .95rem; font-weight: 680; letter-spacing: -.01em;
+  }
+  .card p { margin: 0 0 .6rem; color: var(--text-dim); font-size: .875rem; }
+  .card p:last-child { margin-bottom: 0; }
+
+  ul.plain { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .45rem; }
+  ul.plain li { display: flex; gap: .55rem; align-items: baseline; font-size: .875rem; }
+  ul.plain .k { font-family: var(--mono); font-size: .78rem; color: var(--accent); flex-shrink: 0; }
+
+  .filelist { font-family: var(--mono); font-size: .78rem; display: flex; flex-direction: column; gap: .5rem; }
+  .filelist div { display: flex; flex-direction: column; gap: .1rem; }
+  .filelist .why { font-family: var(--sans); font-size: .8rem; color: var(--text-dim); }
+
+  .flow { display: flex; align-items: center; gap: .4rem; flex-wrap: wrap; font-family: var(--mono); font-size: .75rem; }
+  .pill { padding: .16rem .45rem; border-radius: 4px; border: 1px solid var(--line); background: var(--surface-2); }
+  .pill.on { border-color: var(--accent); color: var(--accent); }
+  .arrow { color: var(--text-dim); }
+
+  /* ---------- table ---------- */
+  .scroll { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: .85rem; min-width: 420px; }
+  th, td { text-align: left; padding: .5rem .6rem; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+  th {
+    font-family: var(--mono); font-size: .68rem; letter-spacing: .09em;
+    text-transform: uppercase; color: var(--text-dim); font-weight: 700;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  td .repo { font-family: var(--mono); font-size: .78rem; }
+  .tag {
+    font-family: var(--mono); font-size: .66rem; padding: .1rem .35rem;
+    border-radius: 3px; background: var(--surface-2); border: 1px solid var(--line); color: var(--text-dim);
+  }
+  .tag.warn { color: var(--caution); border-color: var(--caution); background: var(--caution-bg); }
+
+  /* ---------- gotchas ---------- */
+  .gotchas { border-color: var(--caution); background: var(--caution-bg); }
+  .gotchas h3 { color: var(--caution); }
+  .gotchas ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .6rem; }
+  .gotchas li { font-size: .875rem; padding-left: 1rem; position: relative; }
+  .gotchas li::before {
+    content: ""; position: absolute; left: 0; top: .55em;
+    width: 5px; height: 5px; border-radius: 50%; background: var(--caution);
+  }
+  .gotchas strong { font-weight: 660; }
+
+  footer {
+    margin-top: 3rem; padding-top: 1.1rem; border-top: 1px solid var(--line-soft);
+    color: var(--text-dim); font-size: .8rem; display: flex; flex-wrap: wrap; gap: .5rem 1.2rem;
+  }
+  footer a { color: var(--accent); }
+  footer code { font-family: var(--mono); font-size: .95em; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header>
+    <div>
+      <p class="eyebrow">RV Neighbors · Developer Reference</p>
+      <h1>Workflow Cheat Sheet</h1>
+      <p class="lede">
+        Everyday loop: branch, code, review, PR into <code>dev</code>.
+        Production (<code>main</code>) is touched only at release.
+      </p>
+    </div>
+
+    <div class="graph" role="img" aria-label="Branch diagram: feature branches merge into dev; dev merges into main only at release.">
+      <svg viewBox="0 0 660 132" xmlns="http://www.w3.org/2000/svg">
+        <g font-family="ui-monospace, SF Mono, Menlo, monospace" font-size="11">
+          <!-- main -->
+          <line x1="96" y1="24" x2="560" y2="24" stroke="currentColor" stroke-opacity=".22" stroke-width="1.5"/>
+          <path d="M470 76 C 500 76, 505 24, 536 24" fill="none" stroke="currentColor" stroke-opacity=".38" stroke-width="1.5"/>
+          <circle cx="536" cy="24" r="5.5" fill="var(--accent)"/>
+          <text x="88" y="28" text-anchor="end" fill="currentColor" fill-opacity=".72">main</text>
+          <text x="552" y="20" fill="var(--accent)" font-size="10">release only</text>
+
+          <!-- dev -->
+          <line x1="96" y1="76" x2="560" y2="76" stroke="currentColor" stroke-opacity=".35" stroke-width="1.5"/>
+          <circle cx="180" cy="76" r="4.5" fill="currentColor" fill-opacity=".55"/>
+          <circle cx="330" cy="76" r="4.5" fill="currentColor" fill-opacity=".55"/>
+          <circle cx="470" cy="76" r="5.5" fill="currentColor" fill-opacity=".8"/>
+          <text x="88" y="80" text-anchor="end" fill="currentColor" fill-opacity=".72">dev</text>
+
+          <!-- feature branch -->
+          <path d="M230 76 C 258 76, 262 116, 290 116" fill="none" stroke="var(--accent)" stroke-opacity=".55" stroke-width="1.5"/>
+          <path d="M410 116 C 440 116, 444 76, 470 76" fill="none" stroke="var(--accent)" stroke-opacity=".55" stroke-width="1.5"/>
+          <line x1="290" y1="116" x2="410" y2="116" stroke="var(--accent)" stroke-opacity=".55" stroke-width="1.5"/>
+          <circle cx="290" cy="116" r="4.5" fill="var(--accent)"/>
+          <circle cx="410" cy="116" r="4.5" fill="var(--accent)"/>
+          <text x="88" y="120" text-anchor="end" fill="var(--accent)" fill-opacity=".9">branch</text>
+          <text x="290" y="105" fill="currentColor" fill-opacity=".5" font-size="10">5p/dependency-alignment</text>
+        </g>
+      </svg>
+    </div>
+  </header>
+
+  <section>
+    <h2>The loop — every piece of work</h2>
+    <ol class="steps">
+
+      <li class="step">
+        <span class="num">1</span>
+        <div class="step-body">
+          <div class="step-label">Get the latest dev</div>
+          <div class="step-note">So you're not building on stale code.</div>
+          <button class="cmd" type="button"><code>git checkout dev &amp;&amp; git pull</code><span class="copy">copy</span></button>
+        </div>
+      </li>
+
+      <li class="step">
+        <span class="num">2</span>
+        <div class="step-body">
+          <div class="step-label">Make a branch</div>
+          <div class="step-note">A private copy. Nothing here affects <code>dev</code> until you merge.</div>
+          <button class="cmd" type="button"><code>git checkout -b 5p/dependency-alignment</code><span class="copy">copy</span></button>
+        </div>
+      </li>
+
+      <li class="step">
+        <span class="num">3</span>
+        <div class="step-body">
+          <div class="step-label">Write the code</div>
+          <div class="step-note">The part we do together.</div>
+        </div>
+      </li>
+
+      <li class="step">
+        <span class="num">4</span>
+        <div class="step-body">
+          <div class="step-label">Run the tests</div>
+          <button class="cmd" type="button"><code>npx jest</code><span class="copy">copy</span></button>
+        </div>
+      </li>
+
+      <li class="step">
+        <span class="num">5</span>
+        <div class="step-body">
+          <div class="step-label">Update the three tracker files</div>
+          <div class="step-note">Not optional — a hook blocks the commit without them.</div>
+        </div>
+      </li>
+
+      <li class="step">
+        <span class="num">6</span>
+        <div class="step-body">
+          <div class="step-label">Commit</div>
+          <div class="step-note">Commit often. Small commits are easy to undo.</div>
+          <button class="cmd" type="button"><code>git add -A &amp;&amp; git commit -m "Align dependencies to SDK 54"</code><span class="copy">copy</span></button>
+        </div>
+      </li>
+
+      <li class="step">
+        <span class="num">7</span>
+        <div class="step-body">
+          <div class="step-label">Review before anyone else sees it</div>
+          <div class="step-note">Fix what it flags, commit again, repeat until clean. Add <code>/security-review</code> for Phase 5A work.</div>
+          <div class="cmd slash"><code>/code-review</code></div>
+        </div>
+      </li>
+
+      <li class="step">
+        <span class="num">8</span>
+        <div class="step-body">
+          <div class="step-label">Push the branch</div>
+          <button class="cmd" type="button"><code>git push -u origin 5p/dependency-alignment</code><span class="copy">copy</span></button>
+        </div>
+      </li>
+
+      <li class="step">
+        <span class="num">9</span>
+        <div class="step-body">
+          <div class="step-label">Open a PR into dev</div>
+          <div class="step-note">Listing tickets in the body is how code links back to the tracker.</div>
+          <button class="cmd" type="button"><code>gh pr create --base dev --title "5P: dependency alignment" --body "Closes 5P-T01, 5P-T02, 5P-T03"</code><span class="copy">copy</span></button>
+        </div>
+      </li>
+
+      <li class="step">
+        <span class="num">10</span>
+        <div class="step-body">
+          <div class="step-label">Merge and clean up</div>
+          <div class="step-note"><code>--squash</code> collapses work-in-progress commits into one clean commit on <code>dev</code>.</div>
+          <button class="cmd" type="button"><code>gh pr merge --squash --delete-branch</code><span class="copy">copy</span></button>
+        </div>
+      </li>
+
+    </ol>
+  </section>
+
+  <section>
+    <h2>Reference</h2>
+    <div class="grid">
+
+      <div class="card">
+        <h3>The three files every commit needs</h3>
+        <p>A hook blocks <code>git commit</code> if these aren't staged.</p>
+        <div class="filelist">
+          <div>
+            <span>.claude/SESSION_LOG.md</span>
+            <span class="why">what happened, what's next</span>
+          </div>
+          <div>
+            <span>.claude/plans/MASTER_PLAN.md</span>
+            <span class="why">phase statuses</span>
+          </div>
+          <div>
+            <span>.claude/progress.json</span>
+            <span class="why">ticket statuses — feeds the dashboard</span>
+          </div>
+        </div>
+        <p style="margin-top:.85rem">
+          <span class="flow">
+            <span class="pill">not_started</span><span class="arrow">→</span>
+            <span class="pill on">in_progress</span><span class="arrow">→</span>
+            <span class="pill">complete</span>
+          </span>
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Naming</h3>
+        <p><strong>Branches</strong> — phase, then what you're doing:</p>
+        <ul class="plain">
+          <li><span class="k">5p/</span><span>dependency-alignment</span></li>
+          <li><span class="k">5a/</span><span>rls-hardening</span></li>
+          <li><span class="k">5b/</span><span>wire-iap-flow</span></li>
+          <li><span class="k">5c/</span><span>android-device-pass</span></li>
+        </ul>
+        <p style="margin-top:.85rem"><strong>Tickets</strong> — permanent, never renumbered:</p>
+        <ul class="plain">
+          <li><span class="k">5P-T01</span><span>a task (code change)</span></li>
+          <li><span class="k">5C-G03</span><span>a gate test (verification)</span></li>
+        </ul>
+        <p style="margin-top:.7rem">Group several tickets per branch. Don't open one PR per ticket.</p>
+      </div>
+
+      <div class="card">
+        <h3>Sync the live dashboard</h3>
+        <p>The tracker site is a separate repo and needs its own push.</p>
+        <button class="cmd" type="button"><code>cp rv-neighbors-app/.claude/progress.json rv-neighbors-web/public/project-tracker/progress.json</code><span class="copy">copy</span></button>
+        <p style="margin-top:.6rem">Then commit and push <code>rv-neighbors-web</code>. Redeploys in about a minute.</p>
+      </div>
+
+      <div class="card">
+        <h3>Release — rare</h3>
+        <p>Only when shipping. Merging this is what makes code production; everything before it is safe to break.</p>
+        <button class="cmd" type="button"><code>gh pr create --base main --head dev --title "Release: TestFlight build"</code><span class="copy">copy</span></button>
+      </div>
+
+      <div class="card">
+        <h3>Handy commands</h3>
+        <ul class="plain">
+          <li><span class="k">git status -sb</span><span>where am I, ahead or behind</span></li>
+          <li><span class="k">gh pr status</span><span>my open PRs</span></li>
+          <li><span class="k">gh pr checks</span><span>did CI pass</span></li>
+          <li><span class="k">npx expo-doctor</span><span>dependency health</span></li>
+          <li><span class="k">npx tsc --noEmit</span><span>type check</span></li>
+          <li><span class="k">git restore .</span><span>undo uncommitted mess</span></li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>Repos</h3>
+        <div class="scroll">
+          <table>
+            <thead><tr><th>Repo</th><th>Branches</th></tr></thead>
+            <tbody>
+              <tr><td class="repo">rv-neighbors-app</td><td><span class="tag">dev</span> <span class="tag">main</span></td></tr>
+              <tr><td class="repo">rv-neighbors-api</td><td><span class="tag">dev</span> <span class="tag">main</span></td></tr>
+              <tr><td class="repo">rv-neighbors-web</td><td><span class="tag">main only</span></td></tr>
+              <tr><td class="repo">rv-neighbors-admin</td><td><span class="tag">on hold</span></td></tr>
+              <tr><td class="repo">rv-neighbors-mod</td><td><span class="tag warn">never modify</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2>Gotchas</h2>
+    <div class="card gotchas">
+      <h3>Easy to get wrong</h3>
+      <ul>
+        <li><strong>DB changes live in <code>rv-neighbors-api</code>, but the tracker files stay in <code>rv-neighbors-app</code></strong> — update them there even when the code change is in api.</li>
+        <li><strong>The commit hook only fires for Claude.</strong> If you commit in your own terminal it won't stop you forgetting the tracker files.</li>
+        <li><strong><code>rv-neighbors-web</code> breaks the pattern on purpose</strong> — commits go straight to <code>main</code> because that's what Vercel deploys.</li>
+        <li><strong>Ticket IDs won't read in order on screen.</strong> Array order is the priority; the ID is just a permanent handle.</li>
+        <li><strong>Never commit <code>.env</code></strong> or hardcode secrets.</li>
+        <li><strong>Don't mark a gate test complete without exercising it on a device</strong> — that's exactly how Phases 4 and 5 ended up wrongly marked done.</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    <span>Source of truth: <code>rv-neighbors-app/.claude/WORKFLOW.md</code></span>
+    <span>Tracker: <a href="https://www.rvneighborsapp.com/project-tracker/">rvneighborsapp.com/project-tracker</a></span>
+  </footer>
+
+</div>
+
+<script>
+  document.querySelectorAll('button.cmd').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var text = btn.querySelector('code').textContent;
+      var label = btn.querySelector('.copy');
+      var done = function () {
+        btn.classList.add('copied');
+        label.textContent = 'copied';
+        setTimeout(function () {
+          btn.classList.remove('copied');
+          label.textContent = 'copy';
+        }, 1400);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, done);
+      } else {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (e) {}
+        document.body.removeChild(ta);
+        done();
+      }
+    });
+  });
+</script>
+</body>
+</html>
