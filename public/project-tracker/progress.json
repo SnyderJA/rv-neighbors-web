@@ -1,21 +1,23 @@
 {
   "project": "RV Neighbors v2",
   "lastUpdated": "2026-07-29T00:00:00Z",
-  "lastSessionSummary": "Session 11 (2026-07-29): Status review after a ~2 month gap. Session 10's work (useConversations.ts Realtime fix, eas.json dev-simulator profile, log/progress updates) had never been committed — committed it now. 106/106 tests still passing. User acquired a Google Pixel, unblocking Android Cross-Platform Pass. Timeline needs to be rebuilt — all original dates have passed.",
+  "lastSessionSummary": "Session 12 (2026-07-29): Full multi-agent code review of app + backend before resuming dev. Found 3 features marked complete that are not actually wired up (IAP purchase flow, push token registration, background location), a guaranteed zod v4 crash in 2 screens, and multiple critical backend security holes (client-writable membership_tier, spoofable accept_connection_request, unauthenticated Edge Functions acting as an open mail relay, off-the-grid bypass, 2 tables with no RLS). Added Phase 5A (Security Hardening) and 5B (Wire Up Unfinished Features) as launch blockers; reopened the Phase 4/5 gate tests that were marked complete by code inspection rather than device testing.",
   "nextSteps": [
-    "Install new dev client on iOS simulator (eas build:run after build completes) and confirm it's usable",
-    "Device test all Phase 5 screens and services on simulator",
-    "Smoke test the 3 live Edge Functions (push, invite email, support email)",
+    "Phase 5B first: fix the zod crash, then wire the IAP purchase flow (nobody can pay today)",
+    "Phase 5B: mount usePushNotifications and wire or delete backgroundLocation",
+    "Phase 5A: close the critical RLS and Edge Function holes before any real users",
+    "Install the dev client and device test on iOS simulator + the new Google Pixel",
     "Android Cross-Platform Pass — now unblocked, Pixel available",
-    "Start Phase 6: Polish & Production Prep",
-    "Rebuild project timeline with realistic dates"
+    "Then Phase 6: Polish & Production Prep",
+    "Rebuild the project timeline with realistic dates"
   ],
   "openQuestions": [
     "Social auth (Google/Facebook) deferred — needs dev build + provider config",
     "GradientBackground permanently dropped — solid #0F2419 on auth screens",
-    "Push notifications: Edge Function deployed; device-side registration still needs simulator test",
-    "Edge Functions deployed to Supabase (all 3 ACTIVE, v4) — runtime smoke tests pending device install",
-    "All timeline dates below are stale (pre-gap) — kept for history, need to be redone"
+    "All timeline dates below are stale (pre-gap) — kept for history, need to be redone",
+    "Phase 4/5 were marked complete via code inspection; treat any remaining 'code verified' gate test as unproven until device tested",
+    "Decide whether background location ships at all — it is currently dead code and adds an App Store privacy burden",
+    "RevenueCat tier sync must move to a server-side webhook; decide the Edge Function shape"
   ],
   "timeline": {
     "testflight": "2026-04-21",
@@ -31,27 +33,84 @@
       "targetDays": "Days 1-2",
       "description": "New Expo project with Supabase, NativeWind, and CI foundation.",
       "tasks": [
-        { "name": "Create Expo project with TypeScript", "status": "complete" },
-        { "name": "Configure new bundle ID", "status": "complete" },
-        { "name": "Install and configure NativeWind with brand theme", "status": "complete" },
-        { "name": "Copy brand assets (logos, fonts, splash)", "status": "complete" },
-        { "name": "Set up Supabase client with session persistence", "status": "complete" },
-        { "name": "Install core dependencies", "status": "complete" },
-        { "name": "Configure app.json / app.config.js (no hardcoded secrets)", "status": "complete" },
-        { "name": "Set up EAS build profiles", "status": "complete" },
-        { "name": "Set up .gitignore properly", "status": "complete" },
-        { "name": "Install testing: Jest + RNTL + MSW", "status": "complete" },
-        { "name": "Create initial Supabase migration with full schema", "status": "complete" }
+        {
+          "name": "Create Expo project with TypeScript",
+          "status": "complete"
+        },
+        {
+          "name": "Configure new bundle ID",
+          "status": "complete"
+        },
+        {
+          "name": "Install and configure NativeWind with brand theme",
+          "status": "complete"
+        },
+        {
+          "name": "Copy brand assets (logos, fonts, splash)",
+          "status": "complete"
+        },
+        {
+          "name": "Set up Supabase client with session persistence",
+          "status": "complete"
+        },
+        {
+          "name": "Install core dependencies",
+          "status": "complete"
+        },
+        {
+          "name": "Configure app.json / app.config.js (no hardcoded secrets)",
+          "status": "complete"
+        },
+        {
+          "name": "Set up EAS build profiles",
+          "status": "complete"
+        },
+        {
+          "name": "Set up .gitignore properly",
+          "status": "complete"
+        },
+        {
+          "name": "Install testing: Jest + RNTL + MSW",
+          "status": "complete"
+        },
+        {
+          "name": "Create initial Supabase migration with full schema",
+          "status": "complete"
+        }
       ],
       "gateTests": [
-        { "name": "Expo export build succeeds", "status": "complete" },
-        { "name": "EAS dev build compiles for iOS simulator", "status": "complete" },
-        { "name": "Supabase client connects and queries", "status": "complete" },
-        { "name": "NativeWind renders styled component", "status": "complete" },
-        { "name": "Tailwind config has all brand colors/fonts", "status": "complete" },
-        { "name": ".env is gitignored and not tracked", "status": "complete" },
-        { "name": "Jest runs with passing placeholder test", "status": "complete" },
-        { "name": "Deprecation review: Expo SDK, React Native, NativeWind, AsyncStorage, app.config.js, TypeScript", "status": "complete" }
+        {
+          "name": "Expo export build succeeds",
+          "status": "complete"
+        },
+        {
+          "name": "EAS dev build compiles for iOS simulator",
+          "status": "complete"
+        },
+        {
+          "name": "Supabase client connects and queries",
+          "status": "complete"
+        },
+        {
+          "name": "NativeWind renders styled component",
+          "status": "complete"
+        },
+        {
+          "name": "Tailwind config has all brand colors/fonts",
+          "status": "complete"
+        },
+        {
+          "name": ".env is gitignored and not tracked",
+          "status": "complete"
+        },
+        {
+          "name": "Jest runs with passing placeholder test",
+          "status": "complete"
+        },
+        {
+          "name": "Deprecation review: Expo SDK, React Native, NativeWind, AsyncStorage, app.config.js, TypeScript",
+          "status": "complete"
+        }
       ]
     },
     {
@@ -61,30 +120,96 @@
       "targetDays": "Days 3-5",
       "description": "Sign up, log in, complete onboarding, persisted profile with photo uploads.",
       "tasks": [
-        { "name": "Enable Supabase Email/Password + Google + Facebook auth", "status": "complete" },
-        { "name": "Create RLS policies for profiles table", "status": "complete" },
-        { "name": "Create Storage buckets with RLS (profile-photos, rv-photos)", "status": "complete" },
-        { "name": "Build Login screen (email + social)", "status": "complete" },
-        { "name": "Build Signup screen", "status": "complete" },
-        { "name": "Build Forgot Password flow", "status": "complete" },
-        { "name": "Build Onboarding wizard (3 steps + review)", "status": "complete" },
-        { "name": "Build root layout with auth gate", "status": "complete" },
-        { "name": "Create useAuth hook (Supabase session)", "status": "complete" },
-        { "name": "Create useProfile hook (React Query)", "status": "complete" },
-        { "name": "Create Zod schemas for all forms", "status": "complete" }
+        {
+          "name": "Enable Supabase Email/Password + Google + Facebook auth",
+          "status": "complete"
+        },
+        {
+          "name": "Create RLS policies for profiles table",
+          "status": "complete"
+        },
+        {
+          "name": "Create Storage buckets with RLS (profile-photos, rv-photos)",
+          "status": "complete"
+        },
+        {
+          "name": "Build Login screen (email + social)",
+          "status": "complete"
+        },
+        {
+          "name": "Build Signup screen",
+          "status": "complete"
+        },
+        {
+          "name": "Build Forgot Password flow",
+          "status": "complete"
+        },
+        {
+          "name": "Build Onboarding wizard (3 steps + review)",
+          "status": "complete"
+        },
+        {
+          "name": "Build root layout with auth gate",
+          "status": "complete"
+        },
+        {
+          "name": "Create useAuth hook (Supabase session)",
+          "status": "complete"
+        },
+        {
+          "name": "Create useProfile hook (React Query)",
+          "status": "complete"
+        },
+        {
+          "name": "Create Zod schemas for all forms",
+          "status": "complete"
+        }
       ],
       "gateTests": [
-        { "name": "Zod schemas validate correct/incorrect input", "status": "complete" },
-        { "name": "useAuth returns correct states", "status": "complete" },
-        { "name": "Sign up → profile row created in Supabase", "status": "complete" },
-        { "name": "Log in → session persisted to AsyncStorage", "status": "complete" },
-        { "name": "Log out → session cleared, redirect to login", "status": "complete" },
-        { "name": "Onboarding → profile updated with all steps", "status": "complete" },
-        { "name": "Profile photo upload → Storage + URL saved", "status": "complete" },
-        { "name": "RV photo upload → Storage + URL saved", "status": "complete" },
-        { "name": "RLS: user can only read/update own profile", "status": "complete" },
-        { "name": "E2E: full signup → onboarding → home screen", "status": "complete" },
-        { "name": "Deprecation review: Supabase Auth v2 methods, expo-image-picker, expo-secure-store, Zod", "status": "complete" }
+        {
+          "name": "Zod schemas validate correct/incorrect input",
+          "status": "complete"
+        },
+        {
+          "name": "useAuth returns correct states",
+          "status": "complete"
+        },
+        {
+          "name": "Sign up → profile row created in Supabase",
+          "status": "complete"
+        },
+        {
+          "name": "Log in → session persisted to AsyncStorage",
+          "status": "complete"
+        },
+        {
+          "name": "Log out → session cleared, redirect to login",
+          "status": "complete"
+        },
+        {
+          "name": "Onboarding → profile updated with all steps",
+          "status": "complete"
+        },
+        {
+          "name": "Profile photo upload → Storage + URL saved",
+          "status": "complete"
+        },
+        {
+          "name": "RV photo upload → Storage + URL saved",
+          "status": "complete"
+        },
+        {
+          "name": "RLS: user can only read/update own profile",
+          "status": "complete"
+        },
+        {
+          "name": "E2E: full signup → onboarding → home screen",
+          "status": "complete"
+        },
+        {
+          "name": "Deprecation review: Supabase Auth v2 methods, expo-image-picker, expo-secure-store, Zod",
+          "status": "complete"
+        }
       ]
     },
     {
@@ -94,31 +219,100 @@
       "targetDays": "Days 6-9",
       "description": "Discover neighbors on map/list, send/accept connections, check-in locations.",
       "tasks": [
-        { "name": "Create connections + connection_requests tables", "status": "complete" },
-        { "name": "Create close_friends + check_ins tables", "status": "complete" },
-        { "name": "Create DB function: accept_connection_request (atomic)", "status": "complete" },
-        { "name": "Create DB function: get_nearby_users (distance query)", "status": "complete" },
-        { "name": "Build Neighbors List/Map screen with radius filter", "status": "complete" },
-        { "name": "Build Discovery screen (non-connected users)", "status": "complete" },
-        { "name": "Build Friends screen (All / Close / Pending tabs)", "status": "complete" },
-        { "name": "Build User Detail screen with connection actions", "status": "complete" },
-        { "name": "Create useConnections hook", "status": "complete" },
-        { "name": "Create useNeighbors hook with real distance calc", "status": "complete" },
-        { "name": "Create useCheckIn hook", "status": "complete" }
+        {
+          "name": "Create connections + connection_requests tables",
+          "status": "complete"
+        },
+        {
+          "name": "Create close_friends + check_ins tables",
+          "status": "complete"
+        },
+        {
+          "name": "Create DB function: accept_connection_request (atomic)",
+          "status": "complete"
+        },
+        {
+          "name": "Create DB function: get_nearby_users (distance query)",
+          "status": "complete"
+        },
+        {
+          "name": "Build Neighbors List/Map screen with radius filter",
+          "status": "complete"
+        },
+        {
+          "name": "Build Discovery screen (non-connected users)",
+          "status": "complete"
+        },
+        {
+          "name": "Build Friends screen (All / Close / Pending tabs)",
+          "status": "complete"
+        },
+        {
+          "name": "Build User Detail screen with connection actions",
+          "status": "complete"
+        },
+        {
+          "name": "Create useConnections hook",
+          "status": "complete"
+        },
+        {
+          "name": "Create useNeighbors hook with real distance calc",
+          "status": "complete"
+        },
+        {
+          "name": "Create useCheckIn hook",
+          "status": "complete"
+        }
       ],
       "gateTests": [
-        { "name": "Haversine distance calculation is accurate", "status": "complete" },
-        { "name": "Connection status derivation works all states", "status": "complete" },
-        { "name": "Send request → row created, recipient sees it", "status": "complete" },
-        { "name": "Accept request → connection created, bidirectional", "status": "complete" },
-        { "name": "Decline request → no connection created", "status": "complete" },
-        { "name": "Radius filter actually filters by distance", "status": "complete" },
-        { "name": "Discovery only shows non-connected users", "status": "complete" },
-        { "name": "Check-in saves coordinates + location name", "status": "complete" },
-        { "name": "RLS: requests only visible to sender/recipient", "status": "complete" },
-        { "name": "DB function: accept is atomic (no partial state)", "status": "complete" },
-        { "name": "E2E: send request → accept → see in neighbors", "status": "complete" },
-        { "name": "Deprecation review: react-native-maps, expo-location, React Query v5 patterns", "status": "complete" }
+        {
+          "name": "Haversine distance calculation is accurate",
+          "status": "complete"
+        },
+        {
+          "name": "Connection status derivation works all states",
+          "status": "complete"
+        },
+        {
+          "name": "Send request → row created, recipient sees it",
+          "status": "complete"
+        },
+        {
+          "name": "Accept request → connection created, bidirectional",
+          "status": "complete"
+        },
+        {
+          "name": "Decline request → no connection created",
+          "status": "complete"
+        },
+        {
+          "name": "Radius filter actually filters by distance",
+          "status": "complete"
+        },
+        {
+          "name": "Discovery only shows non-connected users",
+          "status": "complete"
+        },
+        {
+          "name": "Check-in saves coordinates + location name",
+          "status": "complete"
+        },
+        {
+          "name": "RLS: requests only visible to sender/recipient",
+          "status": "complete"
+        },
+        {
+          "name": "DB function: accept is atomic (no partial state)",
+          "status": "complete"
+        },
+        {
+          "name": "E2E: send request → accept → see in neighbors",
+          "status": "complete"
+        },
+        {
+          "name": "Deprecation review: react-native-maps, expo-location, React Query v5 patterns",
+          "status": "complete"
+        }
       ]
     },
     {
@@ -128,103 +322,604 @@
       "targetDays": "Days 10-12",
       "description": "Direct and group messaging with real-time delivery and push notifications.",
       "tasks": [
-        { "name": "Create conversations + messages + reads tables", "status": "complete" },
-        { "name": "Create RLS policies for messaging tables", "status": "complete" },
-        { "name": "Create DB functions (create_or_get_direct_conversation, get_conversations_for_user, mark_messages_as_read, create_group_conversation)", "status": "complete" },
-        { "name": "Set up Supabase Realtime subscriptions", "status": "complete" },
-        { "name": "Build Conversations list screen", "status": "complete" },
-        { "name": "Build Chat screen with real-time messages", "status": "complete" },
-        { "name": "Build New Message screen", "status": "complete" },
-        { "name": "Build New Group screen", "status": "complete" },
-        { "name": "Create useConversations hook (React Query + Realtime)", "status": "complete" },
-        { "name": "Create useMessages hook (React Query + Realtime)", "status": "complete" },
-        { "name": "Wire Message button on User Detail screen", "status": "complete" },
-        { "name": "Add unread badge to Messages tab", "status": "complete" }
+        {
+          "name": "Create conversations + messages + reads tables",
+          "status": "complete"
+        },
+        {
+          "name": "Create RLS policies for messaging tables",
+          "status": "complete"
+        },
+        {
+          "name": "Create DB functions (create_or_get_direct_conversation, get_conversations_for_user, mark_messages_as_read, create_group_conversation)",
+          "status": "complete"
+        },
+        {
+          "name": "Set up Supabase Realtime subscriptions",
+          "status": "complete"
+        },
+        {
+          "name": "Build Conversations list screen",
+          "status": "complete"
+        },
+        {
+          "name": "Build Chat screen with real-time messages",
+          "status": "complete"
+        },
+        {
+          "name": "Build New Message screen",
+          "status": "complete"
+        },
+        {
+          "name": "Build New Group screen",
+          "status": "complete"
+        },
+        {
+          "name": "Create useConversations hook (React Query + Realtime)",
+          "status": "complete"
+        },
+        {
+          "name": "Create useMessages hook (React Query + Realtime)",
+          "status": "complete"
+        },
+        {
+          "name": "Wire Message button on User Detail screen",
+          "status": "complete"
+        },
+        {
+          "name": "Add unread badge to Messages tab",
+          "status": "complete"
+        }
       ],
       "gateTests": [
-        { "name": "Message validation (max 500 chars, not empty)", "status": "complete" },
-        { "name": "Create direct conversation → both users see it", "status": "complete" },
-        { "name": "Create group conversation → all participants see it", "status": "complete" },
-        { "name": "Send message → appears for all participants", "status": "complete" },
-        { "name": "Realtime: message appears without refresh", "status": "complete" },
-        { "name": "Unread count increments/resets correctly", "status": "complete" },
-        { "name": "RLS: only see own conversations", "status": "complete" },
-        { "name": "RLS: only send to own conversations", "status": "complete" },
-        { "name": "E2E: send message → recipient sees it", "status": "complete" },
-        { "name": "Deprecation review: Supabase Realtime channel API, expo-notifications, expo-linking", "status": "complete" }
+        {
+          "name": "Message validation (max 500 chars, not empty)",
+          "status": "complete"
+        },
+        {
+          "name": "Create direct conversation → both users see it",
+          "status": "complete"
+        },
+        {
+          "name": "Create group conversation → all participants see it",
+          "status": "complete"
+        },
+        {
+          "name": "Send message → appears for all participants",
+          "status": "complete"
+        },
+        {
+          "name": "Realtime: message appears without refresh",
+          "status": "complete"
+        },
+        {
+          "name": "Unread count increments/resets correctly",
+          "status": "complete"
+        },
+        {
+          "name": "RLS: only see own conversations",
+          "status": "complete"
+        },
+        {
+          "name": "RLS: only send to own conversations",
+          "status": "complete"
+        },
+        {
+          "name": "E2E: send message → recipient sees it",
+          "status": "complete"
+        },
+        {
+          "name": "Deprecation review: Supabase Realtime channel API, expo-notifications, expo-linking",
+          "status": "complete"
+        }
       ]
     },
     {
       "id": 4,
       "name": "Membership, Family & IAP",
-      "status": "complete",
+      "status": "in_progress",
       "targetDays": "Days 13-15",
       "description": "RevenueCat integration, membership tiers, family management with invites.",
       "tasks": [
-        { "name": "Redesign: Profile/Settings tab (match Sleek design)", "status": "complete" },
-        { "name": "Redesign: New Group screen (match Sleek design)", "status": "complete" },
-        { "name": "Redesign: Run full test suite + verify no regressions", "status": "complete" },
-        { "name": "RLS policies + DB functions for families, invites, push_tokens", "status": "complete" },
-        { "name": "Build Membership selection screen (RevenueCat)", "status": "complete" },
-        { "name": "Build Family Crew dashboard screen", "status": "complete" },
-        { "name": "Build Invite member screen", "status": "complete" },
-        { "name": "Add Family Crew + Membership nav to Profile tab", "status": "complete" },
-        { "name": "Create useMembership hook", "status": "complete" },
-        { "name": "Create usePurchases hook (RevenueCat)", "status": "complete" },
-        { "name": "Create useFamilyInvites + useFamilyMembers hooks", "status": "complete" },
-        { "name": "Enforce connection limits (basic=8)", "status": "complete" },
-        { "name": "Build UpgradePrompt modal component", "status": "complete" },
-        { "name": "Configure RevenueCat in App Store Connect", "status": "complete" }
+        {
+          "name": "Redesign: Profile/Settings tab (match Sleek design)",
+          "status": "complete"
+        },
+        {
+          "name": "Redesign: New Group screen (match Sleek design)",
+          "status": "complete"
+        },
+        {
+          "name": "Redesign: Run full test suite + verify no regressions",
+          "status": "complete"
+        },
+        {
+          "name": "RLS policies + DB functions for families, invites, push_tokens",
+          "status": "complete"
+        },
+        {
+          "name": "Build Membership selection screen (RevenueCat)",
+          "status": "in_progress"
+        },
+        {
+          "name": "Build Family Crew dashboard screen",
+          "status": "complete"
+        },
+        {
+          "name": "Build Invite member screen",
+          "status": "complete"
+        },
+        {
+          "name": "Add Family Crew + Membership nav to Profile tab",
+          "status": "complete"
+        },
+        {
+          "name": "Create useMembership hook",
+          "status": "complete"
+        },
+        {
+          "name": "Create usePurchases hook (RevenueCat)",
+          "status": "complete"
+        },
+        {
+          "name": "Create useFamilyInvites + useFamilyMembers hooks",
+          "status": "complete"
+        },
+        {
+          "name": "Enforce connection limits (basic=8)",
+          "status": "in_progress"
+        },
+        {
+          "name": "Build UpgradePrompt modal component",
+          "status": "in_progress"
+        },
+        {
+          "name": "Configure RevenueCat in App Store Connect",
+          "status": "complete"
+        }
       ],
       "gateTests": [
-        { "name": "Connection limit enforcement (basic blocks at 8)", "status": "complete" },
-        { "name": "Family capacity calculation correct per tier", "status": "complete" },
-        { "name": "Purchase → entitlement → Supabase tier updated", "status": "complete" },
-        { "name": "Send invite → invite row created", "status": "complete" },
-        { "name": "Accept invite → member added to family", "status": "complete" },
-        { "name": "Cancel/decline invite → status updated", "status": "complete" },
-        { "name": "RLS: family data only visible to members", "status": "complete" },
-        { "name": "E2E: free user hits 8 connections → upgrade prompt", "status": "complete" },
-        { "name": "Deprecation review: RevenueCat SDK, StoreKit 2 config", "status": "complete" }
+        {
+          "name": "Connection limit enforcement (basic blocks at 8)",
+          "status": "not_started"
+        },
+        {
+          "name": "Family capacity calculation correct per tier",
+          "status": "complete"
+        },
+        {
+          "name": "Purchase → entitlement → Supabase tier updated",
+          "status": "not_started"
+        },
+        {
+          "name": "Send invite → invite row created",
+          "status": "complete"
+        },
+        {
+          "name": "Accept invite → member added to family",
+          "status": "complete"
+        },
+        {
+          "name": "Cancel/decline invite → status updated",
+          "status": "complete"
+        },
+        {
+          "name": "RLS: family data only visible to members",
+          "status": "complete"
+        },
+        {
+          "name": "E2E: free user hits 8 connections → upgrade prompt",
+          "status": "not_started"
+        },
+        {
+          "name": "Deprecation review: RevenueCat SDK, StoreKit 2 config",
+          "status": "complete"
+        }
       ]
     },
     {
       "id": 5,
       "name": "Settings, Location & Background Services",
-      "status": "complete",
+      "status": "in_progress",
       "targetDays": "Days 16-17",
       "description": "Privacy controls, location sharing, off-the-grid, background location, notifications.",
       "tasks": [
-        { "name": "Build Settings home screen", "status": "complete" },
-        { "name": "Build Privacy & Location settings", "status": "complete" },
-        { "name": "Build Notification preferences", "status": "complete" },
-        { "name": "Build Help & Support form", "status": "complete" },
-        { "name": "Build Profile view screen with check-in", "status": "complete" },
-        { "name": "Build Edit Profile screen", "status": "complete" },
-        { "name": "Create Edge Function: send-push-notification", "status": "complete" },
-        { "name": "Create Edge Function: send-invite-email", "status": "complete" },
-        { "name": "Create Edge Function: send-support-email", "status": "complete" },
-        { "name": "Create usePushNotifications hook", "status": "complete" },
-        { "name": "Create background location service", "status": "complete" },
-        { "name": "Create push notification sync service", "status": "complete" },
-        { "name": "Create off-the-grid timer service", "status": "complete" },
-        { "name": "Create useLocationSettings hook", "status": "complete" },
-        { "name": "Create useOffTheGrid hook", "status": "complete" }
+        {
+          "name": "Build Settings home screen",
+          "status": "complete"
+        },
+        {
+          "name": "Build Privacy & Location settings",
+          "status": "complete"
+        },
+        {
+          "name": "Build Notification preferences",
+          "status": "complete"
+        },
+        {
+          "name": "Build Help & Support form",
+          "status": "complete"
+        },
+        {
+          "name": "Build Profile view screen with check-in",
+          "status": "complete"
+        },
+        {
+          "name": "Build Edit Profile screen",
+          "status": "complete"
+        },
+        {
+          "name": "Create Edge Function: send-push-notification",
+          "status": "complete"
+        },
+        {
+          "name": "Create Edge Function: send-invite-email",
+          "status": "complete"
+        },
+        {
+          "name": "Create Edge Function: send-support-email",
+          "status": "complete"
+        },
+        {
+          "name": "Create usePushNotifications hook",
+          "status": "in_progress"
+        },
+        {
+          "name": "Create background location service",
+          "status": "in_progress"
+        },
+        {
+          "name": "Create push notification sync service",
+          "status": "complete"
+        },
+        {
+          "name": "Create off-the-grid timer service",
+          "status": "complete"
+        },
+        {
+          "name": "Create useLocationSettings hook",
+          "status": "complete"
+        },
+        {
+          "name": "Create useOffTheGrid hook",
+          "status": "complete"
+        }
       ],
       "gateTests": [
-        { "name": "Off-the-grid expiry calculation correct", "status": "complete" },
-        { "name": "Radius validation within allowed range", "status": "complete" },
-        { "name": "Toggle location sharing → persisted in Supabase", "status": "complete" },
-        { "name": "Change radius → affects neighbor query visibility", "status": "complete" },
-        { "name": "Off-the-grid → user hidden from queries", "status": "complete" },
-        { "name": "Off-the-grid expires → user visible again", "status": "complete" },
-        { "name": "Push notification sent to message participants", "status": "complete" },
-        { "name": "Background task updates coordinates (with session check)", "status": "complete" },
-        { "name": "Support form → email sent via Edge Function", "status": "complete" },
-        { "name": "Check-in → location saved, visible to connections", "status": "complete" },
-        { "name": "RLS: location settings only editable by owner", "status": "complete" },
-        { "name": "E2E: toggle off-the-grid → hidden from search", "status": "complete" },
-        { "name": "Deprecation review: expo-location background, expo-notifications push tokens, Sentry SDK, expo-updates", "status": "complete" }
+        {
+          "name": "Off-the-grid expiry calculation correct",
+          "status": "complete"
+        },
+        {
+          "name": "Radius validation within allowed range",
+          "status": "complete"
+        },
+        {
+          "name": "Toggle location sharing → persisted in Supabase",
+          "status": "complete"
+        },
+        {
+          "name": "Change radius → affects neighbor query visibility",
+          "status": "complete"
+        },
+        {
+          "name": "Off-the-grid → user hidden from queries",
+          "status": "not_started"
+        },
+        {
+          "name": "Off-the-grid expires → user visible again",
+          "status": "complete"
+        },
+        {
+          "name": "Push notification sent to message participants",
+          "status": "not_started"
+        },
+        {
+          "name": "Background task updates coordinates (with session check)",
+          "status": "not_started"
+        },
+        {
+          "name": "Support form → email sent via Edge Function",
+          "status": "complete"
+        },
+        {
+          "name": "Check-in → location saved, visible to connections",
+          "status": "complete"
+        },
+        {
+          "name": "RLS: location settings only editable by owner",
+          "status": "not_started"
+        },
+        {
+          "name": "E2E: toggle off-the-grid → hidden from search",
+          "status": "complete"
+        },
+        {
+          "name": "Deprecation review: expo-location background, expo-notifications push tokens, Sentry SDK, expo-updates",
+          "status": "complete"
+        }
+      ]
+    },
+    {
+      "id": "5A",
+      "name": "Security Hardening (Launch Blocker)",
+      "status": "not_started",
+      "targetDays": "Blocker",
+      "description": "Fixes for critical RLS, DB function, and Edge Function vulnerabilities found in the Jul 2026 code review. Must ship before any real users.",
+      "tasks": [
+        {
+          "name": "Restrict users UPDATE policy — block client writes to membership_tier, family_id, is_owner, role, email",
+          "status": "not_started"
+        },
+        {
+          "name": "Move RevenueCat tier sync server-side (webhook -> Edge Function with service_role); remove client tier writes",
+          "status": "not_started"
+        },
+        {
+          "name": "Fix accept_connection_request(request_id, caller_id) — derive identity from auth.uid(), drop the spoofable overload",
+          "status": "not_started"
+        },
+        {
+          "name": "Enforce basic-tier 8-connection limit server-side in the overload the client actually calls",
+          "status": "not_started"
+        },
+        {
+          "name": "Require caller authentication in all 3 Edge Functions (verify JWT + authorize the specific action)",
+          "status": "not_started"
+        },
+        {
+          "name": "Add supabase/config.toml with explicit verify_jwt settings for Edge Functions",
+          "status": "not_started"
+        },
+        {
+          "name": "HTML-escape all user input interpolated into Resend templates (send-invite-email, send-support-email)",
+          "status": "not_started"
+        },
+        {
+          "name": "Add rate limiting to all 3 Edge Functions",
+          "status": "not_started"
+        },
+        {
+          "name": "Restrict send-push-notification — verify caller is a real participant and honor user_notification_settings",
+          "status": "not_started"
+        },
+        {
+          "name": "Enable RLS + policies on parental_settings and support_messages (currently no RLS at all)",
+          "status": "not_started"
+        },
+        {
+          "name": "Fix user_location_settings SELECT policy to honor is_off_the_grid, sharing_enabled, share_with_connections",
+          "status": "not_started"
+        },
+        {
+          "name": "Stop returning exact distance alongside jittered coordinates in get_nearby_users (trilateration risk)",
+          "status": "not_started"
+        },
+        {
+          "name": "Validate caller coordinates in get_nearby_users against stored location (prevent location spoofing/sweeping)",
+          "status": "not_started"
+        },
+        {
+          "name": "Tighten open INSERT policies: families, family_invites, conversations, conversation_participants",
+          "status": "not_started"
+        },
+        {
+          "name": "REVOKE EXECUTE on SECURITY DEFINER functions from PUBLIC/anon; grant only to authenticated",
+          "status": "not_started"
+        },
+        {
+          "name": "Restrict user_profiles SELECT — stop exposing phone_number and last_name to every authenticated user",
+          "status": "not_started"
+        },
+        {
+          "name": "Harden handle_new_auth_user trigger against null/duplicate email (currently can hard-fail signup)",
+          "status": "not_started"
+        },
+        {
+          "name": "Add unique constraint on connection_requests(from_user_id, to_user_id) + DELETE policy to cancel",
+          "status": "not_started"
+        }
+      ],
+      "gateTests": [
+        {
+          "name": "Client PATCH of users.membership_tier is rejected by RLS",
+          "status": "not_started"
+        },
+        {
+          "name": "accept_connection_request cannot be invoked with a spoofed caller identity",
+          "status": "not_started"
+        },
+        {
+          "name": "All 3 Edge Functions reject unauthenticated and unauthorized callers",
+          "status": "not_started"
+        },
+        {
+          "name": "send-invite-email cannot be used to mail an arbitrary address",
+          "status": "not_started"
+        },
+        {
+          "name": "HTML/script injected into email fields is escaped in the delivered email",
+          "status": "not_started"
+        },
+        {
+          "name": "Off-the-grid user's coordinates are unreadable by their connections",
+          "status": "not_started"
+        },
+        {
+          "name": "Repeated get_nearby_users calls cannot trilaterate an exact position",
+          "status": "not_started"
+        },
+        {
+          "name": "parental_settings and support_messages deny all cross-user access",
+          "status": "not_started"
+        },
+        {
+          "name": "Basic tier is blocked at 8 connections server-side on both send and accept",
+          "status": "not_started"
+        },
+        {
+          "name": "Anon key alone cannot execute any SECURITY DEFINER function",
+          "status": "not_started"
+        },
+        {
+          "name": "Full RLS audit re-run with a second live test account",
+          "status": "not_started"
+        }
+      ]
+    },
+    {
+      "id": "5B",
+      "name": "Wire Up Unfinished Features & Fix Crashes (Launch Blocker)",
+      "status": "not_started",
+      "targetDays": "Blocker",
+      "description": "Phase 4/5 code exists but was never connected to the UI or app lifecycle: IAP, push registration, and background location are all non-functional. Plus a guaranteed zod v4 crash.",
+      "tasks": [
+        {
+          "name": "Fix zod v4 crash — .error.errors -> .error.issues in edit-profile.tsx:93 and settings/help.tsx:41",
+          "status": "not_started"
+        },
+        {
+          "name": "Wire the purchase flow — connect useOfferings/usePurchasePackage to the Upgrade buttons in membership.tsx (no onPress today)",
+          "status": "not_started"
+        },
+        {
+          "name": "Wire Restore Purchases button to useRestorePurchases",
+          "status": "not_started"
+        },
+        {
+          "name": "Mount usePushNotifications so device tokens actually register (hook currently used by zero screens)",
+          "status": "not_started"
+        },
+        {
+          "name": "Call removePushToken on sign-out, before supabase.auth.signOut() so the RLS delete succeeds",
+          "status": "not_started"
+        },
+        {
+          "name": "Wire services/backgroundLocation.ts into the app, or delete it before store review (imported by nothing today)",
+          "status": "not_started"
+        },
+        {
+          "name": "Initialize RevenueCat after a fresh sign-in, not only when a session exists at cold launch",
+          "status": "not_started"
+        },
+        {
+          "name": "Add Purchases.logIn/logOut so purchases aren't attributed to the previously signed-in user",
+          "status": "not_started"
+        },
+        {
+          "name": "Reconcile entitlements on app launch to recover from purchase-succeeded-but-tier-sync-failed",
+          "status": "not_started"
+        },
+        {
+          "name": "Call queryClient.clear() on sign-out (appears nowhere in the repo today)",
+          "status": "not_started"
+        },
+        {
+          "name": "Scope cache keys to userId — [messages, conversationId], [customer-info], [offerings] are user-agnostic",
+          "status": "not_started"
+        },
+        {
+          "name": "Surface message send failures to the user instead of silently rolling back the bubble",
+          "status": "not_started"
+        },
+        {
+          "name": "Render UpgradePrompt on CONNECTION_LIMIT_REACHED — component is currently dead code and the error is swallowed",
+          "status": "not_started"
+        },
+        {
+          "name": "Disable the Connect button while the request mutation is pending (prevents duplicate requests)",
+          "status": "not_started"
+        },
+        {
+          "name": "Remove the 'show success anyway for MVP' path in settings/help.tsx that reports sent on failure",
+          "status": "not_started"
+        },
+        {
+          "name": "Handle foreign/invalid conversation id — show a not-a-participant state and disable the send box",
+          "status": "not_started"
+        },
+        {
+          "name": "Add loading/error states and a pending_received action to user/[id].tsx",
+          "status": "not_started"
+        },
+        {
+          "name": "Fix cold-start push navigation race — index.tsx replace() clobbers the pushed conversation",
+          "status": "not_started"
+        },
+        {
+          "name": "Handle all notification types on cold start (friend_request, proximity) and gate routing on auth",
+          "status": "not_started"
+        },
+        {
+          "name": "Handle realtime CHANNEL_ERROR/TIMED_OUT/CLOSED with reconnect (only SUBSCRIBED handled today)",
+          "status": "not_started"
+        },
+        {
+          "name": "Mark messages read as they arrive while the conversation is open (badge currently increments while reading)",
+          "status": "not_started"
+        },
+        {
+          "name": "Verify a session was returned after signUp before navigating to onboarding",
+          "status": "not_started"
+        }
+      ],
+      "gateTests": [
+        {
+          "name": "Edit Profile with invalid input shows field errors and does not crash",
+          "status": "not_started"
+        },
+        {
+          "name": "Help form with invalid input shows field errors and does not crash",
+          "status": "not_started"
+        },
+        {
+          "name": "Tap Upgrade -> paywall opens -> purchase completes -> Supabase tier updates",
+          "status": "not_started"
+        },
+        {
+          "name": "Restore Purchases restores an existing entitlement",
+          "status": "not_started"
+        },
+        {
+          "name": "Push token row appears in push_tokens after login",
+          "status": "not_started"
+        },
+        {
+          "name": "Push token is removed from push_tokens on sign-out",
+          "status": "not_started"
+        },
+        {
+          "name": "Sign out then sign in as user B — no user A data visible in any screen",
+          "status": "not_started"
+        },
+        {
+          "name": "Purchase interrupted before tier sync reconciles on next app launch",
+          "status": "not_started"
+        },
+        {
+          "name": "Send a message with networking disabled — user sees a clear failure",
+          "status": "not_started"
+        },
+        {
+          "name": "Basic user at 8 connections sees the UpgradePrompt",
+          "status": "not_started"
+        },
+        {
+          "name": "Double-tap Connect creates exactly one connection_requests row",
+          "status": "not_started"
+        },
+        {
+          "name": "Deep link into a foreign conversation shows a graceful not-found state",
+          "status": "not_started"
+        },
+        {
+          "name": "Cold-start notification tap lands on the correct screen",
+          "status": "not_started"
+        },
+        {
+          "name": "Background location updates coordinates, or the feature is fully removed",
+          "status": "not_started"
+        }
       ]
     },
     {
@@ -234,30 +929,192 @@
       "targetDays": "Days 18-19",
       "description": "Error boundaries, loading states, RLS audit, App Store assets, final QA.",
       "tasks": [
-        { "name": "Add React Error Boundaries (root + per-tab)", "status": "not_started" },
-        { "name": "Add loading skeletons for all screens", "status": "not_started" },
-        { "name": "Add empty states (no connections, messages, etc.)", "status": "not_started" },
-        { "name": "Add pull-to-refresh on all list screens", "status": "not_started" },
-        { "name": "Review and tighten all RLS policies", "status": "not_started" },
-        { "name": "Add rate limiting to Edge Functions", "status": "not_started" },
-        { "name": "Input sanitization on Edge Functions", "status": "not_started" },
-        { "name": "Prepare App Store screenshots and metadata", "status": "not_started" },
-        { "name": "Configure EAS Submit with real credentials", "status": "not_started" },
-        { "name": "Accessibility pass (labels, contrast, touch targets)", "status": "not_started" },
-        { "name": "Configure Sentry for crash reporting", "status": "not_started" },
-        { "name": "Run npx expo install --check to fix version mismatches (AsyncStorage, jest-expo, @types/jest)", "status": "not_started" },
-        { "name": "Remove all console.log statements", "status": "not_started" },
-        { "name": "Final .env audit — no secrets in source", "status": "not_started" }
+        {
+          "name": "Add React Error Boundaries (root + per-tab)",
+          "status": "not_started"
+        },
+        {
+          "name": "Add loading skeletons for all screens",
+          "status": "not_started"
+        },
+        {
+          "name": "Add empty states (no connections, messages, etc.)",
+          "status": "not_started"
+        },
+        {
+          "name": "Add pull-to-refresh on all list screens",
+          "status": "not_started"
+        },
+        {
+          "name": "Review and tighten all RLS policies",
+          "status": "not_started"
+        },
+        {
+          "name": "Add rate limiting to Edge Functions",
+          "status": "not_started"
+        },
+        {
+          "name": "Input sanitization on Edge Functions",
+          "status": "not_started"
+        },
+        {
+          "name": "Prepare App Store screenshots and metadata",
+          "status": "not_started"
+        },
+        {
+          "name": "Configure EAS Submit with real credentials",
+          "status": "not_started"
+        },
+        {
+          "name": "Accessibility pass (labels, contrast, touch targets)",
+          "status": "not_started"
+        },
+        {
+          "name": "Configure Sentry for crash reporting",
+          "status": "not_started"
+        },
+        {
+          "name": "Run npx expo install --check to fix version mismatches (AsyncStorage, jest-expo, @types/jest)",
+          "status": "not_started"
+        },
+        {
+          "name": "Remove all console.log statements",
+          "status": "not_started"
+        },
+        {
+          "name": "Final .env audit — no secrets in source",
+          "status": "not_started"
+        },
+        {
+          "name": "Wire up the decorative search inputs on the map and messages tabs",
+          "status": "not_started"
+        },
+        {
+          "name": "Make the check-in 'Approximate location shared' toggle functional or remove it",
+          "status": "not_started"
+        },
+        {
+          "name": "Add a working Terms & Privacy Policy link (App Store review requirement)",
+          "status": "not_started"
+        },
+        {
+          "name": "Stop edit-profile repopulating from a background refetch while the user is editing",
+          "status": "not_started"
+        },
+        {
+          "name": "Wire or remove dead buttons: More menu, Route, family Settings, Resend invite",
+          "status": "not_started"
+        },
+        {
+          "name": "Remove fake presence — hardcoded 'Active Now' and always-green online dots",
+          "status": "not_started"
+        },
+        {
+          "name": "Fix hardcoded 'N / W' coordinate labels for southern/eastern hemispheres",
+          "status": "not_started"
+        },
+        {
+          "name": "Paginate the messages list and use an inverted FlatList",
+          "status": "not_started"
+        },
+        {
+          "name": "Delete or adopt the 9 unused shared components that screens reimplement inline",
+          "status": "not_started"
+        },
+        {
+          "name": "Round GPS coords out of the useConnections query key to stop cache churn",
+          "status": "not_started"
+        },
+        {
+          "name": "Stop surfacing raw err.message / JSON.stringify to users (new-group)",
+          "status": "not_started"
+        },
+        {
+          "name": "Fix conversations UPDATE policy allowing any participant to rewrite name and type",
+          "status": "not_started"
+        },
+        {
+          "name": "Fix NULL-unsafe comparison in remove_family_member",
+          "status": "not_started"
+        },
+        {
+          "name": "Require conversation membership on message_reads INSERT",
+          "status": "not_started"
+        },
+        {
+          "name": "Require an existing connection for close_friends INSERT",
+          "status": "not_started"
+        },
+        {
+          "name": "Reconcile family capacity math with documented tiers (owner counted inconsistently)",
+          "status": "not_started"
+        },
+        {
+          "name": "Make create_or_get_direct_conversation and accept_family_invite capacity checks atomic",
+          "status": "not_started"
+        },
+        {
+          "name": "Make stranger discovery opt-in; never re-run the share_with_non_friends backfill",
+          "status": "not_started"
+        },
+        {
+          "name": "Persist support_messages rows from send-support-email",
+          "status": "not_started"
+        },
+        {
+          "name": "Move off-the-grid expiry server-side (client clock and foreground dependent today)",
+          "status": "not_started"
+        },
+        {
+          "name": "Invalidate location caches when off-the-grid auto-expires",
+          "status": "not_started"
+        },
+        {
+          "name": "Stop swallowing session-persistence failures in the supabase storage wrapper",
+          "status": "not_started"
+        },
+        {
+          "name": "npm audit cleanup — build-tooling CVEs in eas-cli/tar and shell-quote",
+          "status": "not_started"
+        },
+        {
+          "name": "Reduce useAuth fan-out (~24 duplicate onAuthStateChange subscriptions)",
+          "status": "not_started"
+        }
       ],
       "gateTests": [
-        { "name": "Error boundary catches render errors, shows fallback", "status": "not_started" },
-        { "name": "Network offline → graceful error states + retry", "status": "not_started" },
-        { "name": "All forms validate with Zod before submission", "status": "not_started" },
-        { "name": "Security: no API keys in source code", "status": "not_started" },
-        { "name": "Security: all RLS policies reviewed", "status": "not_started" },
-        { "name": "Performance: app loads to home in <3 seconds", "status": "not_started" },
-        { "name": "Full E2E: signup → onboarding → discover → connect → message → checkin → settings", "status": "not_started" },
-        { "name": "Deprecation review: expo-doctor clean, npm outdated clean, EAS config, splash screen, iOS Privacy Manifest", "status": "not_started" }
+        {
+          "name": "Error boundary catches render errors, shows fallback",
+          "status": "not_started"
+        },
+        {
+          "name": "Network offline → graceful error states + retry",
+          "status": "not_started"
+        },
+        {
+          "name": "All forms validate with Zod before submission",
+          "status": "not_started"
+        },
+        {
+          "name": "Security: no API keys in source code",
+          "status": "not_started"
+        },
+        {
+          "name": "Security: all RLS policies reviewed",
+          "status": "not_started"
+        },
+        {
+          "name": "Performance: app loads to home in <3 seconds",
+          "status": "not_started"
+        },
+        {
+          "name": "Full E2E: signup → onboarding → discover → connect → message → checkin → settings",
+          "status": "not_started"
+        },
+        {
+          "name": "Deprecation review: expo-doctor clean, npm outdated clean, EAS config, splash screen, iOS Privacy Manifest",
+          "status": "not_started"
+        }
       ]
     },
     {
@@ -267,36 +1124,120 @@
       "targetDays": "Post-MVP",
       "description": "Share photos from camera roll and exact location pins in conversations. Image/map display in chat bubbles, Storage upload, conversation preview support.",
       "tasks": [
-        { "name": "DB migration: add image_url and location_lat/location_lng/location_name columns to messages", "status": "not_started" },
-        { "name": "DB migration: alter content constraint to allow empty when image or location present", "status": "not_started" },
-        { "name": "DB migration: create message-images Storage bucket with RLS", "status": "not_started" },
-        { "name": "DB migration: update get_conversations_for_user for rich message previews", "status": "not_started" },
-        { "name": "Update messaging types with image_url, location_lat, location_lng, location_name", "status": "not_started" },
-        { "name": "Update useMessages hook: query, mutation, optimistic update, realtime handler", "status": "not_started" },
-        { "name": "Create useMessageImage hook (camera roll picker + Storage upload)", "status": "not_started" },
-        { "name": "Create useShareLocation hook (get current location + format for message)", "status": "not_started" },
-        { "name": "Update MessageInput: add attachment menu (+) with image and location options", "status": "not_started" },
-        { "name": "Update MessageBubble: render images with tap-to-expand", "status": "not_started" },
-        { "name": "Update MessageBubble: render location as tappable mini map card (opens in Maps)", "status": "not_started" },
-        { "name": "Wire image and location send flows into conversation screen", "status": "not_started" },
-        { "name": "Update sendMessage schema to allow empty content when image or location present", "status": "not_started" },
-        { "name": "Add subtle RV pattern background to chat conversation screen", "status": "not_started" }
+        {
+          "name": "DB migration: add image_url and location_lat/location_lng/location_name columns to messages",
+          "status": "not_started"
+        },
+        {
+          "name": "DB migration: alter content constraint to allow empty when image or location present",
+          "status": "not_started"
+        },
+        {
+          "name": "DB migration: create message-images Storage bucket with RLS",
+          "status": "not_started"
+        },
+        {
+          "name": "DB migration: update get_conversations_for_user for rich message previews",
+          "status": "not_started"
+        },
+        {
+          "name": "Update messaging types with image_url, location_lat, location_lng, location_name",
+          "status": "not_started"
+        },
+        {
+          "name": "Update useMessages hook: query, mutation, optimistic update, realtime handler",
+          "status": "not_started"
+        },
+        {
+          "name": "Create useMessageImage hook (camera roll picker + Storage upload)",
+          "status": "not_started"
+        },
+        {
+          "name": "Create useShareLocation hook (get current location + format for message)",
+          "status": "not_started"
+        },
+        {
+          "name": "Update MessageInput: add attachment menu (+) with image and location options",
+          "status": "not_started"
+        },
+        {
+          "name": "Update MessageBubble: render images with tap-to-expand",
+          "status": "not_started"
+        },
+        {
+          "name": "Update MessageBubble: render location as tappable mini map card (opens in Maps)",
+          "status": "not_started"
+        },
+        {
+          "name": "Wire image and location send flows into conversation screen",
+          "status": "not_started"
+        },
+        {
+          "name": "Update sendMessage schema to allow empty content when image or location present",
+          "status": "not_started"
+        },
+        {
+          "name": "Add subtle RV pattern background to chat conversation screen",
+          "status": "not_started"
+        }
       ],
       "gateTests": [
-        { "name": "Pick image from camera roll → preview shows in input", "status": "not_started" },
-        { "name": "Send image → uploaded to Storage, URL saved in messages table", "status": "not_started" },
-        { "name": "Image appears in chat bubble for sender and recipient", "status": "not_started" },
-        { "name": "Realtime: image message appears without refresh", "status": "not_started" },
-        { "name": "Send image + text together → both render in bubble", "status": "not_started" },
-        { "name": "Share location → lat/lng/name saved in messages table", "status": "not_started" },
-        { "name": "Location appears as mini map card in chat bubble", "status": "not_started" },
-        { "name": "Tap location card → opens in device Maps app", "status": "not_started" },
-        { "name": "Realtime: location message appears without refresh", "status": "not_started" },
-        { "name": "Conversation list shows 'Sent a photo' or 'Shared a location' preview", "status": "not_started" },
-        { "name": "RLS: only conversation participants can view message images", "status": "not_started" },
-        { "name": "Schema validation: empty content rejected when no image or location", "status": "not_started" },
-        { "name": "E2E: share location → recipient sees map card in real-time", "status": "not_started" },
-        { "name": "Deprecation review: expo-image-picker, expo-location, Supabase Storage, react-native-maps static", "status": "not_started" }
+        {
+          "name": "Pick image from camera roll → preview shows in input",
+          "status": "not_started"
+        },
+        {
+          "name": "Send image → uploaded to Storage, URL saved in messages table",
+          "status": "not_started"
+        },
+        {
+          "name": "Image appears in chat bubble for sender and recipient",
+          "status": "not_started"
+        },
+        {
+          "name": "Realtime: image message appears without refresh",
+          "status": "not_started"
+        },
+        {
+          "name": "Send image + text together → both render in bubble",
+          "status": "not_started"
+        },
+        {
+          "name": "Share location → lat/lng/name saved in messages table",
+          "status": "not_started"
+        },
+        {
+          "name": "Location appears as mini map card in chat bubble",
+          "status": "not_started"
+        },
+        {
+          "name": "Tap location card → opens in device Maps app",
+          "status": "not_started"
+        },
+        {
+          "name": "Realtime: location message appears without refresh",
+          "status": "not_started"
+        },
+        {
+          "name": "Conversation list shows 'Sent a photo' or 'Shared a location' preview",
+          "status": "not_started"
+        },
+        {
+          "name": "RLS: only conversation participants can view message images",
+          "status": "not_started"
+        },
+        {
+          "name": "Schema validation: empty content rejected when no image or location",
+          "status": "not_started"
+        },
+        {
+          "name": "E2E: share location → recipient sees map card in real-time",
+          "status": "not_started"
+        },
+        {
+          "name": "Deprecation review: expo-image-picker, expo-location, Supabase Storage, react-native-maps static",
+          "status": "not_started"
+        }
       ]
     },
     {
@@ -306,37 +1247,124 @@
       "targetDays": "Post-MVP",
       "description": "Emergency broadcast feature. Red glowing animated circle + enlarged avatar on map for broadcaster. 1-hour duration, max 2 per day. 50-mile push radius to all users (connected or not). Requires name, phone, email, reason, and preferred contact method to submit.",
       "tasks": [
-        { "name": "DB migration: create help_broadcasts table (user_id, message, latitude, longitude, radius, status, created_at, resolved_at)", "status": "not_started" },
-        { "name": "DB migration: RLS policies for help_broadcasts (anyone nearby can read, only owner can create/resolve)", "status": "not_started" },
-        { "name": "Create DB function: get_active_broadcasts_nearby (returns broadcasts within radius, ignores connection status)", "status": "not_started" },
-        { "name": "Create Edge Function: broadcast-help-push (sends push to all users within radius)", "status": "not_started" },
-        { "name": "Create useHelpBroadcast hook (create, resolve, query active nearby)", "status": "not_started" },
-        { "name": "Build Call for Help form screen (name, phone, email, reason, preferred contact method — all required)", "status": "not_started" },
-        { "name": "Build animated red glow circle + enlarged avatar on map for active broadcaster", "status": "not_started" },
-        { "name": "Build Help Alert banner on map (shows active broadcasts nearby with distance)", "status": "not_started" },
-        { "name": "Build Broadcast Detail screen (broadcaster info, reason, contact methods, distance)", "status": "not_started" },
-        { "name": "Wire Call for Help button into map screen", "status": "not_started" },
-        { "name": "Enforce 1-hour auto-expiry on broadcasts", "status": "not_started" },
-        { "name": "Enforce max 2 broadcasts per user per day", "status": "not_started" },
-        { "name": "Fixed 50-mile push notification radius to all users (connected or not)", "status": "not_started" },
-        { "name": "Add resolve/cancel broadcast flow", "status": "not_started" },
-        { "name": "Zod schemas for broadcast form validation", "status": "not_started" }
+        {
+          "name": "DB migration: create help_broadcasts table (user_id, message, latitude, longitude, radius, status, created_at, resolved_at)",
+          "status": "not_started"
+        },
+        {
+          "name": "DB migration: RLS policies for help_broadcasts (anyone nearby can read, only owner can create/resolve)",
+          "status": "not_started"
+        },
+        {
+          "name": "Create DB function: get_active_broadcasts_nearby (returns broadcasts within radius, ignores connection status)",
+          "status": "not_started"
+        },
+        {
+          "name": "Create Edge Function: broadcast-help-push (sends push to all users within radius)",
+          "status": "not_started"
+        },
+        {
+          "name": "Create useHelpBroadcast hook (create, resolve, query active nearby)",
+          "status": "not_started"
+        },
+        {
+          "name": "Build Call for Help form screen (name, phone, email, reason, preferred contact method — all required)",
+          "status": "not_started"
+        },
+        {
+          "name": "Build animated red glow circle + enlarged avatar on map for active broadcaster",
+          "status": "not_started"
+        },
+        {
+          "name": "Build Help Alert banner on map (shows active broadcasts nearby with distance)",
+          "status": "not_started"
+        },
+        {
+          "name": "Build Broadcast Detail screen (broadcaster info, reason, contact methods, distance)",
+          "status": "not_started"
+        },
+        {
+          "name": "Wire Call for Help button into map screen",
+          "status": "not_started"
+        },
+        {
+          "name": "Enforce 1-hour auto-expiry on broadcasts",
+          "status": "not_started"
+        },
+        {
+          "name": "Enforce max 2 broadcasts per user per day",
+          "status": "not_started"
+        },
+        {
+          "name": "Fixed 50-mile push notification radius to all users (connected or not)",
+          "status": "not_started"
+        },
+        {
+          "name": "Add resolve/cancel broadcast flow",
+          "status": "not_started"
+        },
+        {
+          "name": "Zod schemas for broadcast form validation",
+          "status": "not_started"
+        }
       ],
       "gateTests": [
-        { "name": "Create broadcast → row created with user location and message", "status": "not_started" },
-        { "name": "Broadcast visible to ALL nearby users regardless of connection status", "status": "not_started" },
-        { "name": "Push notification sent to all users within broadcast radius", "status": "not_started" },
-        { "name": "Broadcast appears as alert banner on nearby users' maps", "status": "not_started" },
-        { "name": "Red glow animation renders on map for active broadcast", "status": "not_started" },
-        { "name": "Broadcaster avatar enlarged on map during active broadcast", "status": "not_started" },
-        { "name": "Broadcast auto-expires after 1 hour", "status": "not_started" },
-        { "name": "User blocked from more than 2 broadcasts per day", "status": "not_started" },
-        { "name": "Push sent to all users within 50 miles (ignores connection status)", "status": "not_started" },
-        { "name": "Resolve broadcast → removed from active queries", "status": "not_started" },
-        { "name": "RLS: only broadcast owner can resolve/cancel", "status": "not_started" },
-        { "name": "Form requires name, phone, email, reason, contact method", "status": "not_started" },
-        { "name": "E2E: submit help form → red glow on map + push to nearby users", "status": "not_started" },
-        { "name": "Deprecation review: Supabase Realtime for broadcasts, push API, location queries", "status": "not_started" }
+        {
+          "name": "Create broadcast → row created with user location and message",
+          "status": "not_started"
+        },
+        {
+          "name": "Broadcast visible to ALL nearby users regardless of connection status",
+          "status": "not_started"
+        },
+        {
+          "name": "Push notification sent to all users within broadcast radius",
+          "status": "not_started"
+        },
+        {
+          "name": "Broadcast appears as alert banner on nearby users' maps",
+          "status": "not_started"
+        },
+        {
+          "name": "Red glow animation renders on map for active broadcast",
+          "status": "not_started"
+        },
+        {
+          "name": "Broadcaster avatar enlarged on map during active broadcast",
+          "status": "not_started"
+        },
+        {
+          "name": "Broadcast auto-expires after 1 hour",
+          "status": "not_started"
+        },
+        {
+          "name": "User blocked from more than 2 broadcasts per day",
+          "status": "not_started"
+        },
+        {
+          "name": "Push sent to all users within 50 miles (ignores connection status)",
+          "status": "not_started"
+        },
+        {
+          "name": "Resolve broadcast → removed from active queries",
+          "status": "not_started"
+        },
+        {
+          "name": "RLS: only broadcast owner can resolve/cancel",
+          "status": "not_started"
+        },
+        {
+          "name": "Form requires name, phone, email, reason, contact method",
+          "status": "not_started"
+        },
+        {
+          "name": "E2E: submit help form → red glow on map + push to nearby users",
+          "status": "not_started"
+        },
+        {
+          "name": "Deprecation review: Supabase Realtime for broadcasts, push API, location queries",
+          "status": "not_started"
+        }
       ]
     }
   ]
