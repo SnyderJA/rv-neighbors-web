@@ -1,8 +1,17 @@
 /**
  * HTTP Basic Auth for the internal pages on this otherwise-public site.
  *
- * Protects /project-tracker (which lists unpatched security work in detail)
- * and /gitflow. The marketing site stays completely public.
+ * Protects /gitflow. The marketing site stays completely public.
+ *
+ * /project-tracker was protected here until 2026-08-13, because it published
+ * detailed descriptions of unpatched security work. It no longer does: the
+ * tracker was rebuilt as an investor-facing view fed by tracker.json, which
+ * carries phase-level rollups and curated labels only, and the detailed
+ * progress.json/admin-progress.json feeds were removed from this repo. It is
+ * intentionally public so milestones can be shared by link.
+ *
+ * If detailed work items are ever published here again, re-add
+ * "/project-tracker" and "/project-tracker/:path*" to the matcher below.
  *
  * The password is read from Vercel environment variables and is NEVER stored
  * in this repo — this repo is public.
@@ -68,8 +77,6 @@ export default function middleware(request: Request) {
 
 export const config = {
   matcher: [
-    "/project-tracker",
-    "/project-tracker/:path*",
     "/gitflow",
     "/gitflow/:path*",
   ],

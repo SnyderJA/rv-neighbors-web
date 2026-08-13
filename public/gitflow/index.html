@@ -378,7 +378,7 @@
           </div>
           <div>
             <span>.claude/progress.json</span>
-            <span class="why">ticket statuses — feeds the dashboard</span>
+            <span class="why">regenerate — never hand-edit</span>
           </div>
         </div>
         <p style="margin-top:.85rem">
@@ -409,9 +409,11 @@
 
       <div class="card">
         <h3>Sync the live dashboard</h3>
-        <p>The tracker site is a separate repo and needs its own push.</p>
-        <button class="cmd" type="button"><code>cp rv-neighbors-app/.claude/progress.json rv-neighbors-web/public/project-tracker/progress.json</code><span class="copy">copy</span></button>
-        <p style="margin-top:.6rem">Then commit and push <code>rv-neighbors-web</code>. Redeploys in about a minute.</p>
+        <p>Both feeds are generated from the Storybloq ledger — never hand-edited.</p>
+        <button class="cmd" type="button"><code>node rv-neighbors-app/.claude/progress-from-story.js</code><span class="copy">copy</span></button>
+        <button class="cmd" type="button"><code>node rv-neighbors-app/.claude/tracker-from-story.js</code><span class="copy">copy</span></button>
+        <p style="margin-top:.6rem">The second writes the public investor tracker straight into <code>rv-neighbors-web</code>. Commit and push that repo; it redeploys in about a minute.</p>
+        <p style="margin-top:.6rem"><strong>Public repo — no task detail.</strong> The tracker publishes phase-level rollups only. Internal work items stay in Storybloq.</p>
       </div>
 
       <div class="card">

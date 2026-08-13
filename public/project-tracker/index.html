@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RV Neighbors — Project Tracker</title>
+  <title>RV Neighbors — Build Progress</title>
+  <meta name="description" content="RV Neighbors development progress and release milestones." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
@@ -15,250 +16,259 @@
       --bg: #F6F7F5; --bg-alt: #F0F1EE; --card: #FFFFFF;
       --text: #111B14; --text-secondary: #4A5550; --text-light: #8A9490;
       --border: #E4E6E2; --border-light: #EDEEEB;
-      --success: #2E7D52; --error: #C0392B; --warning: #E07B2A;
-      --shadow: 0 1px 4px rgba(0,0,0,0.08); --shadow-md: 0 4px 12px rgba(0,0,0,0.10);
-      --radius-sm: 10px; --radius-md: 14px; --radius-lg: 16px; --radius-pill: 20px;
+      --success: #2E7D52; --warning: #E07B2A;
+      --shadow: 0 1px 4px rgba(0,0,0,0.08); --shadow-md: 0 4px 14px rgba(0,0,0,0.10);
+      --radius-sm: 10px; --radius-md: 14px; --radius-lg: 18px; --radius-pill: 20px;
+      --wrap: 1080px;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'DM Sans', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    body { font-family: 'DM Sans', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 1.5rem; }
 
-    .header { background: linear-gradient(160deg, var(--primary-dark) 0%, var(--primary) 50%, var(--primary-mid) 100%); color: white; padding: 2.5rem 1.5rem 2rem; }
-    .header-inner { max-width: 1100px; margin: 0 auto; }
-    .header h1 { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; margin-bottom: 0.25rem; }
-    .header .subtitle { opacity: 0.8; font-size: 0.95rem; }
-    .header .last-updated { margin-top: 1rem; font-size: 0.8rem; opacity: 0.6; font-family: 'Space Mono', monospace; }
+    /* ---------- header ---------- */
+    .header { background: linear-gradient(160deg, var(--primary-dark) 0%, var(--primary) 55%, var(--primary-mid) 100%); color: #fff; padding: 3rem 0 4.5rem; }
+    .header h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 2.75rem); line-height: 1.15; margin-bottom: 0.5rem; }
+    .header .tagline { opacity: 0.82; font-size: 1.02rem; max-width: 46ch; }
+    .header .updated { margin-top: 1.5rem; font-size: 0.75rem; opacity: 0.55; font-family: 'Space Mono', monospace; letter-spacing: 0.02em; }
 
-    .overall-progress { max-width: 1100px; margin: -1.25rem auto 0; padding: 0 1.5rem; }
-    .overall-card { background: var(--card); border-radius: var(--radius-lg); padding: 1.25rem 1.5rem; box-shadow: var(--shadow-md); }
-    .overall-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.9rem; }
-    .overall-pct { font-family: 'Space Mono', monospace; color: var(--primary-light); font-weight: 700; }
-    .progress-bar { width: 100%; height: 10px; background: var(--border-light); border-radius: 5px; overflow: hidden; }
-    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--primary-light)); border-radius: 5px; transition: width 0.6s ease; }
-    .stats-bar { display: flex; gap: 1.5rem; margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-light); flex-wrap: wrap; }
-    .stats-bar strong { color: var(--text-secondary); }
+    /* ---------- headline stat ---------- */
+    .hero { margin-top: -3rem; }
+    .hero-card { background: var(--card); border-radius: var(--radius-lg); padding: 1.75rem; box-shadow: var(--shadow-md); display: grid; grid-template-columns: 1.6fr 1fr; gap: 2rem; align-items: center; }
+    @media (max-width: 760px) { .hero-card { grid-template-columns: 1fr; gap: 1.5rem; } }
+    .hero-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.09em; color: var(--text-light); font-weight: 700; }
+    .hero-pct { font-family: 'Space Mono', monospace; font-size: 2.6rem; font-weight: 700; color: var(--primary); line-height: 1.1; margin: 0.25rem 0 0.85rem; }
+    .hero-pct span { font-size: 1rem; color: var(--text-light); margin-left: 0.4rem; }
+    .bar { width: 100%; height: 12px; background: var(--border-light); border-radius: 6px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 6px; background: linear-gradient(90deg, var(--primary), var(--primary-light)); transition: width .7s cubic-bezier(.4,0,.2,1); }
+    .hero-note { font-size: 0.85rem; color: var(--text-light); margin-top: 0.75rem; }
+    .next-milestone { background: var(--accent-extra-light); border-radius: var(--radius-md); padding: 1.1rem 1.25rem; border-left: 3px solid var(--accent); }
+    .next-milestone .hero-label { color: var(--accent); }
+    .next-date { font-family: 'Space Mono', monospace; font-weight: 700; font-size: 1.35rem; margin-top: 0.2rem; color: var(--primary-dark); }
+    .next-name { font-size: 0.9rem; color: var(--text-secondary); font-weight: 600; }
+    .next-away { font-size: 0.8rem; color: var(--text-light); margin-top: 0.15rem; }
 
-    .timeline-section { max-width: 1100px; margin: 1.5rem auto; padding: 0 1.5rem; }
-    .timeline-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem; }
-    .timeline-card { background: var(--card); border-radius: var(--radius-sm); padding: 1rem 1.25rem; box-shadow: var(--shadow); border-left: 3px solid var(--border); }
-    .timeline-card.active { border-left-color: var(--accent); }
-    .timeline-card.done { border-left-color: var(--success); }
-    .timeline-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-light); font-weight: 600; }
-    .timeline-date { font-family: 'Space Mono', monospace; font-weight: 700; font-size: 0.9rem; margin-top: 0.15rem; }
-    .days-away { font-size: 0.75rem; color: var(--text-light); margin-top: 0.15rem; }
-    .date-range { font-family: 'Space Mono', monospace; font-size: 0.75rem; color: var(--text-light); margin-top: 0.1rem; }
+    /* ---------- sections ---------- */
+    section { margin-top: 3rem; }
+    .sec-head { margin-bottom: 1.1rem; }
+    .sec-head h2 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--primary-dark); }
+    .sec-head p { font-size: 0.92rem; color: var(--text-light); margin-top: 0.2rem; max-width: 62ch; }
 
-    .info-row { max-width: 1100px; margin: 1.5rem auto; padding: 0 1.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    @media (max-width: 700px) { .info-row { grid-template-columns: 1fr; } }
-    .info-card { background: var(--card); border-radius: var(--radius-md); padding: 1.25rem 1.5rem; box-shadow: var(--shadow); }
-    .info-card h3 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-light); margin-bottom: 0.75rem; font-weight: 600; }
-    .info-card p { color: var(--text-secondary); font-size: 0.9rem; }
-    .info-card ul { list-style: none; }
-    .info-card li { color: var(--text-secondary); font-size: 0.88rem; padding: 0.3rem 0 0.3rem 1.25rem; position: relative; }
-    .info-card li::before { content: ''; position: absolute; left: 0; top: 0.65rem; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
-    .info-card.questions li::before { background: var(--warning); }
+    /* ---------- capability grid ---------- */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; }
+    .cap { background: var(--card); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 1.25rem 1.35rem; box-shadow: var(--shadow); }
+    .cap-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.75rem; }
+    .cap-name { font-weight: 700; font-size: 1rem; }
+    .cap-blurb { font-size: 0.85rem; color: var(--text-light); margin: 0.3rem 0 0.9rem; }
+    .cap .bar { height: 7px; }
+    .cap .bar-fill.complete { background: linear-gradient(90deg, var(--success), var(--primary-light)); }
+    .cap .bar-fill.in_progress { background: linear-gradient(90deg, var(--accent), var(--accent-light)); }
+    .cap .bar-fill.not_started { background: var(--border); }
+    .pill { padding: 0.22rem 0.7rem; border-radius: var(--radius-pill); font-size: 0.66rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; flex-shrink: 0; }
+    .pill.complete { background: var(--primary-extra-light); color: var(--success); }
+    .pill.in_progress { background: var(--accent-extra-light); color: var(--accent); }
+    .pill.not_started { background: var(--bg-alt); color: var(--text-light); }
+    .cap-pct { font-family: 'Space Mono', monospace; font-size: 0.75rem; color: var(--text-light); margin-top: 0.4rem; text-align: right; }
 
-    .phases-section { max-width: 1100px; margin: 1.5rem auto 3rem; padding: 0 1.5rem; }
-    .phases-section > h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-bottom: 1rem; color: var(--primary-dark); }
+    /* ---------- readiness ---------- */
+    .readiness-card { background: var(--card); border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 1.6rem 1.75rem; box-shadow: var(--shadow); }
+    .readiness-top { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: 0.6rem; flex-wrap: wrap; }
+    .readiness-top strong { font-size: 1.05rem; }
+    .readiness-top .pct { font-family: 'Space Mono', monospace; font-weight: 700; color: var(--accent); }
+    .readiness-card > .bar { height: 12px; }
+    .readiness-card > .bar .bar-fill { background: linear-gradient(90deg, var(--accent), var(--accent-light)); }
+    .tracks { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0.9rem; margin-top: 1.6rem; }
+    .track { border-top: 2px solid var(--border-light); padding-top: 0.7rem; }
+    .track.in_progress { border-top-color: var(--accent); }
+    .track.complete { border-top-color: var(--success); }
+    .track-name { font-weight: 700; font-size: 0.88rem; }
+    .track-blurb { font-size: 0.78rem; color: var(--text-light); margin-top: 0.15rem; }
 
-    .phase-card { background: var(--card); border-radius: var(--radius-lg); box-shadow: var(--shadow); margin-bottom: 1rem; overflow: hidden; border: 1px solid var(--border-light); }
-    .phase-header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem; cursor: pointer; user-select: none; gap: 1rem; transition: background 0.15s; }
-    .phase-header:hover { background: var(--bg); }
-    .phase-left { display: flex; align-items: center; gap: 1rem; flex: 1; min-width: 0; }
-    .phase-number { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; flex-shrink: 0; font-family: 'Space Mono', monospace; }
-    .phase-number.not_started { background: var(--border-light); color: var(--text-light); }
-    .phase-number.in_progress { background: var(--accent-extra-light); color: var(--accent); }
-    .phase-number.complete { background: var(--primary-extra-light); color: var(--success); }
-    .phase-info { flex: 1; min-width: 0; }
-    .phase-name { font-weight: 700; font-size: 1rem; }
-    .phase-target { font-size: 0.75rem; color: var(--text-light); font-weight: 400; margin-left: 0.5rem; font-family: 'Space Mono', monospace; }
-    .phase-desc { font-size: 0.8rem; color: var(--text-light); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .phase-right { display: flex; align-items: center; gap: 1rem; flex-shrink: 0; }
-    .phase-badge { padding: 0.25rem 0.75rem; border-radius: var(--radius-pill); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
-    .badge-not-started { background: var(--bg-alt); color: var(--text-light); }
-    .badge-in-progress { background: var(--accent-extra-light); color: var(--accent); }
-    .badge-complete { background: var(--primary-extra-light); color: var(--success); }
-    .phase-mini-bar { width: 80px; height: 6px; background: var(--border-light); border-radius: 3px; overflow: hidden; }
-    .phase-mini-fill { height: 100%; border-radius: 3px; transition: width 0.5s ease; }
-    .phase-mini-fill.not_started { background: var(--border); }
-    .phase-mini-fill.in_progress { background: var(--accent); }
-    .phase-mini-fill.complete { background: var(--success); }
-    .chevron { width: 20px; height: 20px; color: var(--text-light); transition: transform 0.2s; flex-shrink: 0; }
-    .phase-card.open .chevron { transform: rotate(180deg); }
-    .phase-body { display: none; padding: 0 1.5rem 1.25rem; border-top: 1px solid var(--border-light); }
-    .phase-card.open .phase-body { display: block; }
-    .phase-body h4 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-light); margin-top: 1rem; margin-bottom: 0.5rem; font-weight: 600; }
+    /* ---------- milestones ---------- */
+    .timeline { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 0.85rem; }
+    .ms { background: var(--card); border-radius: var(--radius-sm); padding: 1rem 1.15rem; box-shadow: var(--shadow); border-left: 3px solid var(--border); }
+    .ms.next { border-left-color: var(--accent); background: linear-gradient(180deg, var(--accent-extra-light), var(--card) 60%); }
+    .ms.past { border-left-color: var(--success); opacity: 0.72; }
+    .ms-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-light); font-weight: 700; }
+    .ms-date { font-family: 'Space Mono', monospace; font-weight: 700; font-size: 0.92rem; margin-top: 0.2rem; }
+    .ms-sub { font-size: 0.74rem; color: var(--text-light); margin-top: 0.15rem; font-family: 'Space Mono', monospace; }
 
-    .task-list { list-style: none; }
-    .task-item { display: flex; align-items: center; gap: 0.6rem; padding: 0.35rem 0; font-size: 0.88rem; color: var(--text-secondary); }
-    .task-icon { width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; }
-    .task-icon.not_started { border: 2px solid var(--border); background: white; }
-    .task-icon.in_progress { border: 2px solid var(--accent); background: var(--accent-extra-light); color: var(--accent); }
-    .task-icon.in_progress::after { content: '~'; font-weight: 700; }
-    .task-icon.complete { border: 2px solid var(--success); background: var(--primary-extra-light); color: var(--success); }
-    .task-icon.complete::after { content: '\2713'; font-weight: 700; }
-    .task-item.complete .task-name { text-decoration: line-through; color: var(--text-light); }
-    .ticket { font-family: 'Space Mono', monospace; font-size: 0.7rem; font-weight: 700; color: var(--text-light); background: var(--bg-alt); border: 1px solid var(--border-light); border-radius: 4px; padding: 0.05rem 0.3rem; flex-shrink: 0; min-width: 4.6rem; text-align: center; letter-spacing: -0.02em; }
-    .task-item.complete .ticket, .gate-item.complete .ticket { opacity: 0.55; }
+    /* ---------- roadmap ---------- */
+    .road { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }
+    .road-card { background: var(--card); border: 1px dashed var(--border); border-radius: var(--radius-md); padding: 1.2rem 1.35rem; }
+    .road-timing { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.07em; font-weight: 700; color: var(--accent); }
+    .road-name { font-weight: 700; margin-top: 0.25rem; }
+    .road-blurb { font-size: 0.85rem; color: var(--text-light); margin-top: 0.25rem; }
 
-    .gate-item { display: flex; align-items: center; gap: 0.6rem; padding: 0.3rem 0; font-size: 0.85rem; font-family: 'Space Mono', monospace; }
-    .gate-icon { width: 16px; height: 16px; border-radius: 3px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; border: 2px solid var(--border); background: white; }
-    .gate-icon.complete { border-color: var(--success); background: var(--primary-extra-light); color: var(--success); }
-    .gate-icon.complete::after { content: '\2713'; font-weight: 700; }
-    .gate-item.complete .gate-name { text-decoration: line-through; color: var(--text-light); }
-
-    .project-switcher { max-width: 1100px; margin: 1rem auto 2rem; padding: 0 1.5rem; display: flex; gap: 0.5rem; }
-    .project-tab { padding: 0.5rem 1.25rem; border-radius: var(--radius-pill); font-size: 0.85rem; font-weight: 600; cursor: pointer; border: 2px solid var(--border); background: var(--card); color: var(--text-secondary); transition: all 0.2s; }
-    .project-tab:hover { border-color: var(--primary-light); color: var(--primary); }
-    .project-tab.active { background: var(--primary); border-color: var(--primary); color: white; }
-
-    .footer { text-align: center; padding: 2rem; font-size: 0.8rem; color: var(--text-light); font-family: 'Space Mono', monospace; }
-    @media (max-width: 600px) { .header h1 { font-size: 1.5rem; } .phase-desc { display: none; } .phase-mini-bar { width: 50px; } }
+    footer { margin: 3.5rem 0 2.5rem; font-size: 0.78rem; color: var(--text-light); text-align: center; }
+    .err { background: #fdecea; color: #a3271b; padding: 1rem 1.25rem; border-radius: var(--radius-md); margin-top: 2rem; font-size: 0.9rem; }
   </style>
 </head>
 <body>
-  <div class="header">
-    <div class="header-inner">
-      <h1 id="projectTitle">RV Neighbors v2</h1>
-      <div class="subtitle" id="projectSubtitle">Full Rewrite Project Tracker</div>
-      <div class="last-updated" id="lastUpdated"></div>
+  <header class="header">
+    <div class="wrap">
+      <h1 id="project">RV Neighbors</h1>
+      <p class="tagline" id="tagline"></p>
+      <p class="updated" id="updated"></p>
     </div>
-  </div>
+  </header>
 
-  <div class="project-switcher">
-    <div class="project-tab active" onclick="switchProject('progress.json', this)">Mobile App</div>
-    <div class="project-tab" onclick="switchProject('admin-progress.json', this)">Admin Portal</div>
-  </div>
-
-  <div class="overall-progress">
-    <div class="overall-card">
-      <div class="overall-label">
-        <span>Overall Progress</span>
-        <span class="overall-pct" id="overallPct">0%</span>
+  <div class="wrap">
+    <div class="hero">
+      <div class="hero-card">
+        <div>
+          <div class="hero-label">Progress to v1.0</div>
+          <div class="hero-pct" id="mvpPct">—<span id="mvpCount"></span></div>
+          <div class="bar"><div class="bar-fill" id="mvpBar" style="width:0"></div></div>
+          <p class="hero-note">Core product capabilities are built and running against a production backend. The remaining work is release hardening and store submission.</p>
+        </div>
+        <div class="next-milestone" id="nextMilestone"></div>
       </div>
-      <div class="progress-bar">
-        <div class="progress-fill" id="overallFill" style="width: 0%"></div>
+    </div>
+
+    <section id="capabilitiesSection">
+      <div class="sec-head"><h2 id="capHeading"></h2><p id="capIntro"></p></div>
+      <div class="grid" id="capabilities"></div>
+    </section>
+
+    <section id="readinessSection">
+      <div class="sec-head"><h2 id="readyHeading"></h2><p id="readyIntro"></p></div>
+      <div class="readiness-card">
+        <div class="readiness-top">
+          <strong id="readyBlurb"></strong>
+          <span class="pct" id="readyPct"></span>
+        </div>
+        <div class="bar"><div class="bar-fill" id="readyBar" style="width:0"></div></div>
+        <div class="tracks" id="tracks"></div>
       </div>
-      <div class="stats-bar" id="statsBar"></div>
-    </div>
+    </section>
+
+    <section>
+      <div class="sec-head"><h2>Release Milestones</h2><p>Target dates for testing, submission, and public availability.</p></div>
+      <div class="timeline" id="timeline"></div>
+    </section>
+
+    <section id="roadmapSection">
+      <div class="sec-head"><h2 id="roadHeading"></h2><p id="roadIntro"></p></div>
+      <div class="road" id="roadmap"></div>
+    </section>
+
+    <footer>RV Neighbors · progress generated from the live development ledger</footer>
+    <div id="error"></div>
   </div>
 
-  <div class="timeline-section"><div class="timeline-row" id="timeline"></div></div>
+<script>
+const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, c =>
+  ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
 
-  <div class="info-row">
-    <div class="info-card">
-      <h3>Last Session</h3>
-      <p id="sessionSummary"></p>
-    </div>
-    <div class="info-card">
-      <h3>Next Steps</h3>
-      <ul id="nextSteps"></ul>
-    </div>
-  </div>
+const fmtDate = (iso) => {
+  const [y, m, d] = String(iso).split('-').map(Number);
+  if (!y || !m || !d) return esc(iso);
+  return new Date(y, m - 1, d).toLocaleDateString('en-US',
+    { year: 'numeric', month: 'short', day: 'numeric' });
+};
 
-  <div class="info-row" id="questionsRow" style="display:none;">
-    <div class="info-card questions" style="grid-column: 1 / -1;">
-      <h3>Open Questions</h3>
-      <ul id="openQuestions"></ul>
-    </div>
-  </div>
+const dayDiff = (iso) => {
+  const [y, m, d] = String(iso).split('-').map(Number);
+  if (!y || !m || !d) return null;
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  return Math.round((new Date(y, m - 1, d) - today) / 86400000);
+};
 
-  <div class="phases-section">
-    <h2>Build Phases</h2>
-    <div id="phases"></div>
-  </div>
+const awayText = (n) =>
+  n === null ? '' : n === 0 ? 'today' : n > 0 ? n + ' day' + (n === 1 ? '' : 's') + ' away' : 'complete';
 
-  <div class="footer">Auto-updated on every commit &bull; Powered by Claude Code</div>
+fetch('tracker.json', { cache: 'no-store' })
+  .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+  .then(render)
+  .catch(err => {
+    document.getElementById('error').innerHTML =
+      '<div class="err">Could not load tracker data: ' + esc(err.message) + '</div>';
+  });
 
-  <script>
-    var CHEVRON = '<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>';
-    var currentFile = 'progress.json';
+function render(d) {
+  document.getElementById('project').textContent = d.project || 'RV Neighbors';
+  document.getElementById('tagline').textContent = d.tagline || '';
+  document.title = (d.project || 'RV Neighbors') + ' — Build Progress';
+  if (d.lastUpdated) {
+    document.getElementById('updated').textContent =
+      'Last updated ' + new Date(d.lastUpdated).toLocaleDateString('en-US',
+        { year: 'numeric', month: 'long', day: 'numeric' });
+  }
 
-    function daysUntil(d) {
-      var t = new Date(d + 'T00:00:00'), n = new Date(); n.setHours(0,0,0,0);
-      var diff = Math.ceil((t - n) / 864e5);
-      return diff === 0 ? 'Today' : diff === 1 ? 'Tomorrow' : diff < 0 ? Math.abs(diff) + 'd ago' : diff + ' days away';
-    }
-    function fmtDate(iso) { return new Date(iso).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric', hour:'numeric', minute:'2-digit' }); }
-    function phasePct(p) { var t = p.tasks.length + p.gateTests.length; return t ? Math.round((p.tasks.concat(p.gateTests).filter(function(x){return x.status==='complete'}).length / t) * 100) : 0; }
+  // headline
+  const mvp = d.mvp || { percent: 0 };
+  document.getElementById('mvpPct').firstChild.textContent = mvp.percent + '%';
+  document.getElementById('mvpCount').textContent =
+    mvp.total ? mvp.complete + ' of ' + mvp.total + ' items' : '';
+  requestAnimationFrame(() => {
+    document.getElementById('mvpBar').style.width = mvp.percent + '%';
+  });
 
-    function switchProject(file, tab) {
-      currentFile = file;
-      document.querySelectorAll('.project-tab').forEach(function(t) { t.classList.remove('active'); });
-      tab.classList.add('active');
-      loadProject(file);
-    }
+  // next milestone
+  const ms = Array.isArray(d.milestones) ? d.milestones : [];
+  const upcoming = ms.filter(m => (dayDiff(m.date) ?? -1) >= 0);
+  const next = upcoming[0];
+  document.getElementById('nextMilestone').innerHTML = next
+    ? '<div class="hero-label">Next Milestone</div>' +
+      '<div class="next-name">' + esc(next.label) + '</div>' +
+      '<div class="next-date">' + fmtDate(next.date) + '</div>' +
+      '<div class="next-away">' + esc(awayText(dayDiff(next.date))) + '</div>'
+    : '<div class="hero-label">Milestones</div><div class="next-name">All target dates passed</div>';
 
-    function loadProject(file) {
-      fetch('/project-tracker/' + file + '?t=' + Date.now()).then(function(r){return r.json()}).then(render).catch(function(e){
-        document.getElementById('phases').innerHTML = '<p style="color:var(--error);padding:2rem;">Failed to load ' + file + '.</p>';
-      });
-    }
+  // sections copy
+  const sec = d.sections || {};
+  const put = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v || ''; };
+  put('capHeading', (sec.capabilities || {}).heading || 'Product Capabilities');
+  put('capIntro', (sec.capabilities || {}).intro);
+  put('readyHeading', (sec.readiness || {}).heading || 'Launch Readiness');
+  put('readyIntro', (sec.readiness || {}).intro);
+  put('readyBlurb', (sec.readiness || {}).blurb);
+  put('roadHeading', (sec.roadmap || {}).heading || 'After Launch');
+  put('roadIntro', (sec.roadmap || {}).intro);
 
-    function render(data) {
-      document.getElementById('projectTitle').textContent = data.project;
-      document.getElementById('projectSubtitle').textContent = data.project === 'RV Neighbors Admin Portal' ? 'Admin Dashboard Project Tracker' : 'Full Rewrite Project Tracker';
-      document.getElementById('lastUpdated').textContent = 'Last updated: ' + fmtDate(data.lastUpdated);
+  // capabilities
+  const label = { complete: 'Complete', in_progress: 'In Progress', not_started: 'Planned' };
+  document.getElementById('capabilities').innerHTML = (d.capabilities || []).map(c =>
+    '<div class="cap">' +
+      '<div class="cap-top"><div class="cap-name">' + esc(c.label) + '</div>' +
+      '<span class="pill ' + esc(c.status) + '">' + esc(label[c.status] || c.status) + '</span></div>' +
+      '<div class="cap-blurb">' + esc(c.blurb) + '</div>' +
+      '<div class="bar"><div class="bar-fill ' + esc(c.status) + '" style="width:' + Number(c.percent) + '%"></div></div>' +
+      '<div class="cap-pct">' + Number(c.percent) + '%</div>' +
+    '</div>').join('');
 
-      var allT = [], allG = [];
-      data.phases.forEach(function(p) { allT = allT.concat(p.tasks); allG = allG.concat(p.gateTests); });
-      var total = allT.length + allG.length;
-      var done = allT.concat(allG).filter(function(x){return x.status==='complete'}).length;
-      var inProg = allT.filter(function(x){return x.status==='in_progress'}).length;
-      var pct = total ? Math.round(done/total*100) : 0;
-      document.getElementById('overallPct').textContent = pct + '% (' + done + '/' + total + ')';
-      document.getElementById('overallFill').style.width = pct + '%';
-      document.getElementById('statsBar').innerHTML = '<span><strong>' + allT.length + '</strong> tasks</span><span><strong>' + allG.length + '</strong> gate tests</span><span><strong>' + done + '</strong> complete</span><span><strong>' + inProg + '</strong> in progress</span><span><strong>' + (total-done-inProg) + '</strong> remaining</span>';
+  // readiness
+  const ready = d.readiness || { percent: 0, tracks: [] };
+  document.getElementById('readyPct').textContent = ready.percent + '% complete';
+  requestAnimationFrame(() => {
+    document.getElementById('readyBar').style.width = ready.percent + '%';
+  });
+  document.getElementById('tracks').innerHTML = (ready.tracks || []).map(t =>
+    '<div class="track ' + esc(t.status) + '">' +
+      '<div class="track-name">' + esc(t.label) + '</div>' +
+      '<div class="track-blurb">' + esc(t.blurb) + '</div>' +
+    '</div>').join('');
 
-      // Timeline: prefer the milestones array; fall back to the older timeline object shapes.
-      var timelineEl = document.getElementById('timeline');
-      if (data.milestones && data.milestones.length) {
-        timelineEl.parentElement.style.display = '';
-        timelineEl.innerHTML = data.milestones.map(function(m) {
-          var dd = daysUntil(m.endDate || m.date);
-          var cls = dd.indexOf('ago') !== -1 ? 'done' : 'active';
-          var range = m.endDate ? '<div class="date-range">through ' + m.endDate + '</div>' : '';
-          return '<div class="timeline-card '+cls+'"><div class="timeline-label">'+m.label+'</div><div class="timeline-date">'+m.date+'</div>'+range+'<div class="days-away">'+dd+'</div></div>';
-        }).join('');
-      } else if (data.timeline && data.timeline.testflight) {
-        timelineEl.parentElement.style.display = '';
-        var ms = [{l:'TestFlight',d:data.timeline.testflight},{l:'Testing',d:data.timeline.friendsTesting.split(' to ')[0]},{l:'Defect Fix',d:data.timeline.defectResolution.split(' to ')[0]},{l:'Production',d:data.timeline.production}];
-        timelineEl.innerHTML = ms.map(function(m) {
-          var dd = daysUntil(m.d), cls = dd.includes('ago') ? 'done' : 'active';
-          return '<div class="timeline-card '+cls+'"><div class="timeline-label">'+m.l+'</div><div class="timeline-date">'+m.d+'</div><div class="days-away">'+dd+'</div></div>';
-        }).join('');
-      } else if (data.timeline) {
-        timelineEl.parentElement.style.display = '';
-        var items = Object.keys(data.timeline).map(function(k) {
-          var label = k.replace(/([A-Z])/g, ' $1').replace(/^./, function(s){return s.toUpperCase()});
-          return '<div class="timeline-card active"><div class="timeline-label">' + label + '</div><div class="timeline-date" style="font-size:0.8rem">' + data.timeline[k] + '</div></div>';
-        });
-        timelineEl.innerHTML = items.join('');
-      } else {
-        timelineEl.parentElement.style.display = 'none';
-      }
+  // milestones
+  document.getElementById('timeline').innerHTML = ms.map(m => {
+    const n = dayDiff(m.date);
+    const cls = n === null ? '' : n < 0 ? 'past' : (next && m.label === next.label ? 'next' : '');
+    return '<div class="ms ' + cls + '">' +
+      '<div class="ms-label">' + esc(m.label) + '</div>' +
+      '<div class="ms-date">' + fmtDate(m.date) + '</div>' +
+      (m.endDate ? '<div class="ms-sub">through ' + fmtDate(m.endDate) + '</div>' : '') +
+      '<div class="ms-sub">' + esc(awayText(n)) + '</div>' +
+    '</div>';
+  }).join('');
 
-      document.getElementById('sessionSummary').textContent = data.lastSessionSummary;
-      document.getElementById('nextSteps').innerHTML = data.nextSteps.map(function(s){return '<li>'+s+'</li>'}).join('');
-      if (data.openQuestions && data.openQuestions.length) {
-        document.getElementById('questionsRow').style.display = '';
-        document.getElementById('openQuestions').innerHTML = data.openQuestions.map(function(q){return '<li>'+q+'</li>'}).join('');
-      } else {
-        document.getElementById('questionsRow').style.display = 'none';
-      }
-
-      document.getElementById('phases').innerHTML = data.phases.map(function(ph) {
-        var pc = phasePct(ph), st = ph.status, bl = st.replace(/_/g,' '), bc = 'badge-'+st.replace(/_/g,'-');
-        var dt = ph.tasks.filter(function(t){return t.status==='complete'}).length;
-        var dg = ph.gateTests.filter(function(t){return t.status==='complete'}).length;
-        // Ticket chip is optional — admin-progress.json has no ids and must still render.
-        var tick = function(t){ return t.id ? '<span class="ticket">'+t.id+'</span>' : ''; };
-        var ti = ph.tasks.map(function(t){return '<li class="task-item '+t.status+'"><span class="task-icon '+t.status+'"></span>'+tick(t)+'<span class="task-name">'+t.name+'</span></li>'}).join('');
-        var gi = ph.gateTests.map(function(t){return '<li class="gate-item '+t.status+'"><span class="gate-icon '+t.status+'"></span>'+tick(t)+'<span class="gate-name">'+t.name+'</span></li>'}).join('');
-        return '<div class="phase-card open" onclick="this.classList.toggle(\'open\')"><div class="phase-header"><div class="phase-left"><div class="phase-number '+st+'">'+ph.id+'</div><div class="phase-info"><div class="phase-name">'+ph.name+' <span class="phase-target">'+ph.targetDays+'</span></div><div class="phase-desc">'+ph.description+'</div></div></div><div class="phase-right"><span class="phase-badge '+bc+'">'+bl+'</span><div class="phase-mini-bar"><div class="phase-mini-fill '+st+'" style="width:'+pc+'%"></div></div>'+CHEVRON+'</div></div><div class="phase-body" onclick="event.stopPropagation()"><h4>Tasks ('+dt+'/'+ph.tasks.length+')</h4><ul class="task-list">'+ti+'</ul><h4>Gate Tests ('+dg+'/'+ph.gateTests.length+')</h4><ul class="task-list gate-tests">'+gi+'</ul></div></div>';
-      }).join('');
-    }
-
-    loadProject(currentFile);
-  </script>
+  // roadmap
+  document.getElementById('roadmap').innerHTML = (d.roadmap || []).map(r =>
+    '<div class="road-card">' +
+      (r.timing ? '<div class="road-timing">' + esc(r.timing) + '</div>' : '') +
+      '<div class="road-name">' + esc(r.label) + '</div>' +
+      '<div class="road-blurb">' + esc(r.blurb) + '</div>' +
+    '</div>').join('');
+}
+</script>
 </body>
 </html>

@@ -1,0 +1,153 @@
+{
+  "project": "RV Neighbors v2",
+  "tagline": "Building the social network for RV camping communities",
+  "lastUpdated": "2026-08-13T21:16:20Z",
+  "mvp": {
+    "complete": 125,
+    "total": 260,
+    "percent": 48
+  },
+  "milestones": [
+    {
+      "label": "iOS Beta — TestFlight",
+      "date": "2026-09-01"
+    },
+    {
+      "label": "Android Beta — Google Play",
+      "date": "2026-09-05"
+    },
+    {
+      "label": "Beta Testing",
+      "date": "2026-09-08",
+      "endDate": "2026-10-05"
+    },
+    {
+      "label": "Stabilization",
+      "date": "2026-10-10",
+      "endDate": "2026-10-25"
+    },
+    {
+      "label": "Release Validation",
+      "date": "2026-10-29"
+    },
+    {
+      "label": "Public Launch",
+      "date": "2026-10-30"
+    },
+    {
+      "label": "Version 1.1",
+      "date": "2026-11-15"
+    }
+  ],
+  "sections": {
+    "capabilities": {
+      "heading": "Product Capabilities",
+      "intro": "Core app functionality, built and integrated against a production Supabase backend."
+    },
+    "readiness": {
+      "heading": "Launch Readiness",
+      "intro": "Pre-release engineering: hardening, verification, and store submission ahead of TestFlight.",
+      "blurb": "The remaining track between a feature-complete build and a public release."
+    },
+    "roadmap": {
+      "heading": "After Launch",
+      "intro": "Planned once v1.0 is in production."
+    }
+  },
+  "capabilities": [
+    {
+      "label": "Platform Foundation",
+      "blurb": "App architecture, database schema, and build pipeline.",
+      "status": "complete",
+      "percent": 100
+    },
+    {
+      "label": "Accounts & Profiles",
+      "blurb": "Sign-up, onboarding, and rich member profiles with photo uploads.",
+      "status": "complete",
+      "percent": 100
+    },
+    {
+      "label": "Neighbor Discovery",
+      "blurb": "Find nearby RVers on a live map, connect, and share check-ins.",
+      "status": "complete",
+      "percent": 100
+    },
+    {
+      "label": "Real-Time Messaging",
+      "blurb": "Direct and group conversations with instant delivery.",
+      "status": "complete",
+      "percent": 100
+    },
+    {
+      "label": "Memberships & Billing",
+      "blurb": "Subscription tiers, family plans, and in-app purchases.",
+      "status": "in_progress",
+      "percent": 74
+    },
+    {
+      "label": "Privacy & Location Controls",
+      "blurb": "Granular location sharing, visibility settings, and notifications.",
+      "status": "in_progress",
+      "percent": 79
+    }
+  ],
+  "readiness": {
+    "percent": 0,
+    "tracks": [
+      {
+        "label": "Foundation",
+        "blurb": "Dependency and test-harness alignment.",
+        "status": "not_started",
+        "percent": 0
+      },
+      {
+        "label": "Security",
+        "blurb": "Server-side trust boundary and access controls.",
+        "status": "not_started",
+        "percent": 0
+      },
+      {
+        "label": "Integration",
+        "blurb": "End-to-end integration of billing, notifications, and location services.",
+        "status": "not_started",
+        "percent": 0
+      },
+      {
+        "label": "Device Validation",
+        "blurb": "Full test pass on iOS and Android hardware.",
+        "status": "not_started",
+        "percent": 0
+      },
+      {
+        "label": "Store Readiness",
+        "blurb": "App Store and Google Play submission, plus production monitoring.",
+        "status": "not_started",
+        "percent": 0
+      }
+    ]
+  },
+  "roadmap": [
+    {
+      "label": "Polish & Hardening",
+      "blurb": "Refinement pass informed by the first wave of real usage.",
+      "status": "not_started",
+      "percent": 0,
+      "timing": "Post-launch"
+    },
+    {
+      "label": "Rich Messaging",
+      "blurb": "Photo sharing and location pins inside conversations.",
+      "status": "not_started",
+      "percent": 0,
+      "timing": "v1.1"
+    },
+    {
+      "label": "Call for Help",
+      "blurb": "Emergency broadcast to nearby neighbors — a category-defining safety feature.",
+      "status": "not_started",
+      "percent": 0,
+      "timing": "v1.1"
+    }
+  ]
+}
