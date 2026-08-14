@@ -48,6 +48,9 @@
   .logo-cell{border:1px solid var(--border);border-radius:18px;padding:26px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;min-height:180px}
   .logo-cell svg{width:100%;height:auto;max-height:96px}
   .logo-cell .cap{font-family:'Space Mono',monospace;font-size:.7rem;color:var(--muted-fg);text-align:center}
+  /* The caption colour has to follow the cell's ground, not the page's — sage
+     on cream or on amber is close to illegible. */
+  .logo-cell.on-light .cap,.logo-cell.on-amber .cap{color:#0f2419;opacity:.66}
   .on-light{background:#F5F5F0}
   .on-dark{background:#0f2419}
   .on-card{background:var(--card)}
