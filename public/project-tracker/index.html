@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>RV Neighbors — Build Progress</title>
   <meta name="description" content="RV Neighbors development progress and release milestones." />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
@@ -27,7 +30,11 @@
 
     /* ---------- header ---------- */
     .header { background: linear-gradient(160deg, var(--primary-dark) 0%, var(--primary) 55%, var(--primary-mid) 100%); color: #fff; padding: 3rem 0 4.5rem; }
-    .header h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 2.75rem); line-height: 1.15; margin-bottom: 0.5rem; }
+    .header .brand { display: block; height: 84px; width: auto; margin-bottom: 1.25rem; }
+    @media (max-width: 560px) { .header .brand { height: 62px; } }
+    /* The lockup already carries the name, so the heading is for assistive
+       tech and search engines rather than the page's visual hierarchy. */
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
     .header .tagline { opacity: 0.82; font-size: 1.02rem; max-width: 46ch; }
     .header .updated { margin-top: 1.5rem; font-size: 0.75rem; opacity: 0.55; font-family: 'Space Mono', monospace; letter-spacing: 0.02em; }
 
@@ -106,7 +113,8 @@
 <body>
   <header class="header">
     <div class="wrap">
-      <h1 id="project">RV Neighbors</h1>
+      <img class="brand" src="/rvn-logo-full-reversed.svg" alt="RV Neighbors" />
+      <h1 id="project" class="sr-only">RV Neighbors</h1>
       <p class="tagline" id="tagline"></p>
       <p class="updated" id="updated"></p>
     </div>
