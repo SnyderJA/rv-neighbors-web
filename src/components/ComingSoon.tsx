@@ -233,8 +233,11 @@ export default function ComingSoon() {
             </p>
           </div>
 
-          {/* Feature cards grid */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {/* Feature cards grid — 2x2. There are four cards, so the old
+              lg:grid-cols-3 laid out three and left the fourth alone on a
+              row of its own. Capped narrower than the 6xl container so the
+              two columns do not stretch to ~550px each. */}
+          <div className="grid sm:grid-cols-2 gap-5 max-w-3xl mx-auto">
             {features.map((f) => (
               <div
                 key={f.title}
