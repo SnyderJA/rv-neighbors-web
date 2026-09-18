@@ -132,16 +132,21 @@ export default function ComingSoon() {
             mockups, the centre one of which showed a messaging screen — a
             feature that is not in the app. */}
         <div className="flex justify-center mb-16 animate-fade-in-up animation-delay-400">
-          {/* No PhoneMockup: the image is already a complete phone screen,
-              with its own status bar and dynamic island. Wrapping it in the
-              mockup put a frame around a picture of a frame, and its fixed
-              520px screen height cropped ~105px off the bottom — the tab bar.
-              Rendered at its own aspect ratio instead, so nothing is cut. */}
+          {/* No PhoneMockup: the device frame is part of the image. Wrapping
+              it would put a frame around a picture of a frame, and the
+              mockup's fixed 520px screen cropped the bottom off — the Nearby
+              Neighbors row and the tab bar, the part that shows what the app
+              does. Rendered at its own aspect ratio so nothing is cut.
+
+              The PNG has an alpha channel and the corners outside the phone
+              are transparent, so this takes drop-shadow (which follows the
+              alpha) rather than shadow-2xl, and no rounding or ring — those
+              would trace a rectangle around a phone-shaped image. */}
           <div className="w-60 sm:w-64 lg:w-72">
             <img
-              src="/heroMainHead.png"
+              src="/iphoneHeroImage.png"
               alt="The RV Neighbors map, showing nearby RVers and how far away they are"
-              className="w-full h-auto rounded-[2.5rem] shadow-2xl ring-1 ring-white/10"
+              className="w-full h-auto drop-shadow-2xl"
             />
           </div>
         </div>
