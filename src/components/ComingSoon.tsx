@@ -17,28 +17,6 @@ const features = [
     icon: (
       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
-          d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-      </svg>
-    ),
-    iconBg: 'bg-accent/20 text-accent-light',
-    title: 'Connect & Chat',
-    description: 'Send messages, share campsite tips, and build connections that last beyond the campground.',
-  },
-  {
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
-          d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
-      </svg>
-    ),
-    iconBg: 'bg-secondary/20 text-secondary-light',
-    title: 'Travel as a Family',
-    description: 'Add your crew under one account. Family profiles are perfect for convoys and meetups.',
-  },
-  {
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
           d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
       </svg>
     ),
@@ -65,8 +43,8 @@ const features = [
       </svg>
     ),
     iconBg: 'bg-accent/20 text-accent-light',
-    title: 'Smart Check-ins',
-    description: 'Auto or manual location updates — whatever fits your style. Stay visible without the effort.',
+    title: 'Know When Friends Are Close',
+    description: 'Get a heads up when someone you have connected with rolls into your area — within a distance you choose.',
   },
 ]
 
@@ -74,11 +52,32 @@ export default function ComingSoon() {
   const [email, setEmail] = useState('')
   const [submitted, setSubmitted] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [failed, setFailed] = useState(false)
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (email) {
+    if (!email) return
+    setFailed(false)
+    try {
+      // Previously this set a flag, cleared the field and said "You're on the
+      // list!" — with no request anywhere. Every signup was discarded.
+      const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/rest/v1/waitlist`, {
+        method: 'POST',
+        headers: {
+          apikey: import.meta.env.VITE_SUPABASE_ANON_KEY,
+          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          'Content-Type': 'application/json',
+          Prefer: 'return=minimal',
+        },
+        body: JSON.stringify({ email: email.trim().toLowerCase() }),
+      })
+      // 409 means the address is already on the list, which is a success from
+      // the visitor's point of view.
+      if (!res.ok && res.status !== 409) throw new Error(String(res.status))
       setSubmitted(true)
       setEmail('')
+    } catch {
+      setFailed(true)
     }
   }
 
@@ -129,26 +128,17 @@ export default function ComingSoon() {
           Discover who's nearby, make real friends, and build community on the road.
         </p>
 
-        {/* Phone mockups */}
-        <div className="flex justify-center gap-4 sm:gap-6 items-end mb-16 animate-fade-in-up animation-delay-400">
-          {/* Back phone */}
-          <div className="hidden sm:block w-40 lg:w-48 translate-y-6 rotate-[-6deg] opacity-80">
-            <PhoneMockup screenHeight={340}>
-              <img src="/screenshots/screenshots-map.png" alt="Neighbors map" className="w-full h-full object-cover object-top" />
-            </PhoneMockup>
-          </div>
-
-          {/* Center phone (hero) */}
-          <div className="w-48 sm:w-52 lg:w-56 z-10">
-            <PhoneMockup screenHeight={380}>
-              <img src="/screenshots/screenshots-messages.png" alt="Private Messages" className="w-full h-full object-cover object-top" />
-            </PhoneMockup>
-          </div>
-
-          {/* Right phone */}
-          <div className="hidden sm:block w-40 lg:w-48 translate-y-6 rotate-[6deg] opacity-80">
-            <PhoneMockup screenHeight={340}>
-              <img src="/screenshots/screenshots-profile.png" alt="RV Profile" className="w-full h-full object-cover object-top" />
+        {/* One screenshot of what the app actually does. This replaced three
+            mockups, the centre one of which showed a messaging screen — a
+            feature that is not in the app. */}
+        <div className="flex justify-center mb-16 animate-fade-in-up animation-delay-400">
+          <div className="w-56 sm:w-64 lg:w-72">
+            <PhoneMockup screenHeight={520}>
+              <img
+                src="/heroSiteImage.png"
+                alt="The RV Neighbors map, showing nearby RVers and how far away they are"
+                className="w-full h-full object-cover object-top"
+              />
             </PhoneMockup>
           </div>
         </div>
@@ -184,6 +174,15 @@ export default function ComingSoon() {
                   Notify Me
                 </button>
               </form>
+              {failed && (
+                <p className="text-accent-light text-sm mt-3">
+                  That didn&rsquo;t go through — please try again, or email{' '}
+                  <a href="mailto:support@rvneighborsapp.com" className="underline">
+                    support@rvneighborsapp.com
+                  </a>
+                  .
+                </p>
+              )}
             </>
           )}
         </div>

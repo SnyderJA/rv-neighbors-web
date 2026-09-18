@@ -8,7 +8,6 @@ export default function Footer() {
           <p className="text-sm">&copy; {year} RV Neighbors. All rights reserved.</p>
           <nav className="flex gap-6 text-sm">
             <a href="/privacy" className="hover:text-white transition-colors">Privacy Policy</a>
-            <a href="/terms" className="hover:text-white transition-colors">Terms of Use</a>
             <a href="mailto:support@rvneighborsapp.com" className="hover:text-white transition-colors">Contact</a>
           </nav>
         </div>
