@@ -37,20 +37,10 @@ export default {
         'sage-light': '#A8C9B6',
         cream:        '#F5F5F0', // app `foreground`
 
-        // Legacy token names, retargeted onto the brand rather than deleted,
-        // so the unrendered components still compile and are not left
-        // carrying the old off-brand palette.
-        primary:   '#2D5A42',
-        'primary-light': '#3A8A55',
-        'primary-dark':  '#0F2419',
-        secondary: '#DF8B29',
-        'secondary-light': '#F0A76A',
-        accent:    '#DA9902',
-        'accent-light': '#F5A623',
-        slate:     '#7AA28E', // was a blue; now sage
-        bg:        '#F5F5F0',
-        'bg-alt':  '#EDEBE2',
-        border:    '#2A4F3A',
+        // The old palette's token names are gone with the components that used
+        // them (Hero, Features, HowItWorks, Screenshots, DownloadCTA,
+        // AppStoreBadges were all unreachable from App.tsx). Nothing is left
+        // carrying a name that describes a colour it no longer is.
       },
       fontFamily: {
         sans: ['"Inter"', 'system-ui', 'sans-serif'],

@@ -11,7 +11,7 @@ export default function Navbar() {
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      scrolled ? 'bg-primary-dark/95 backdrop-blur shadow-lg' : 'bg-transparent'
+      scrolled ? 'bg-ink/95 backdrop-blur shadow-lg' : 'bg-transparent'
     }`}>
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
         <a href="#">
