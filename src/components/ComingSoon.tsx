@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { SUPABASE_FUNCTIONS_URL } from '../config'
 
 const features = [
   {
@@ -51,35 +52,39 @@ const features = [
 export default function ComingSoon() {
   const [email, setEmail] = useState('')
   const [submitted, setSubmitted] = useState(false)
-
-  const [failed, setFailed] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!email) return
-    setFailed(false)
+    if (!email || submitting) return
+    setError(null)
+    setSubmitting(true)
     try {
-      // Previously this set a flag, cleared the field and said "You're on the
-      // list!" — with no request anywhere. Every signup was discarded.
-      const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/rest/v1/waitlist`, {
+      // Posts to an Edge Function rather than straight at the REST API, so the
+      // browser needs no Supabase credentials at all. See src/config.ts for
+      // why that matters.
+      const res = await fetch(`${SUPABASE_FUNCTIONS_URL}/join-waitlist`, {
         method: 'POST',
-        headers: {
-          apikey: import.meta.env.VITE_SUPABASE_ANON_KEY,
-          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-          'Content-Type': 'application/json',
-          Prefer: 'return=minimal',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: email.trim().toLowerCase() }),
       })
-      // 409 means the address is already on the list, which is a success from
-      // the visitor's point of view.
-      if (!res.ok && res.status !== 409) throw new Error(String(res.status))
+      if (!res.ok) {
+        // The function explains itself for a bad address or a flood of
+        // signups; those are worth repeating rather than flattening into
+        // "something went wrong".
+        const body = await res.json().catch(() => null)
+        throw new Error(body?.error ?? 'Request failed')
+      }
       setSubmitted(true)
       setEmail('')
-    } catch {
-      setFailed(true)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Request failed')
+    } finally {
+      setSubmitting(false)
     }
   }
+
 
   return (
     <section className="relative bg-hero-gradient">
@@ -159,7 +164,7 @@ export default function ComingSoon() {
                 <svg className="w-5 h-5 text-gold-light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
-                <span className="text-white font-semibold">You're on the list!</span>
+                <span className="text-cream font-semibold">You're on the list!</span>
               </div>
               <p className="text-sage-light/80 text-sm">We'll let you know as soon as we launch.</p>
             </div>
@@ -177,14 +182,15 @@ export default function ComingSoon() {
                 />
                 <button
                   type="submit"
-                  className="bg-gold hover:bg-gold-light text-ink text-sm font-bold px-6 py-3 rounded-full transition-all hover:shadow-lg hover:shadow-gold/30 shrink-0"
+                  disabled={submitting}
+                  className="bg-gold hover:bg-gold-light text-ink text-sm font-bold px-6 py-3 rounded-full transition-all hover:shadow-lg hover:shadow-gold/30 shrink-0 disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  Notify Me
+                  {submitting ? 'Adding…' : 'Notify Me'}
                 </button>
               </form>
-              {failed && (
+              {error && (
                 <p className="text-amber-light text-sm mt-3">
-                  That didn&rsquo;t go through — please try again, or email{' '}
+                  {error} If it keeps happening, email{' '}
                   <a href="mailto:support@rvneighborsapp.com" className="underline">
                     support@rvneighborsapp.com
                   </a>
