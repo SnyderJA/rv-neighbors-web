@@ -120,7 +120,7 @@ export default function ComingSoon() {
         </div>
 
         {/* Heading */}
-        <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-cream leading-[1.05] text-balance mb-6 animate-fade-in-up">
+        <h1 className="font-heading text-5xl sm:text-6xl lg:text-7xl font-extrabold text-cream leading-[1.05] text-balance mb-6 animate-fade-in-up">
           Your RV Community<br />
           <span className="bg-gradient-to-r from-gold-light via-gold to-amber bg-clip-text text-transparent">
             is Almost Here
@@ -231,7 +231,7 @@ export default function ComingSoon() {
           {/* Section heading */}
           <div className="text-center mb-16">
             <p className="text-gold-light font-semibold text-sm uppercase tracking-widest mb-3">What's Coming</p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-cream mb-4">
+            <h2 className="font-heading text-3xl sm:text-4xl font-extrabold text-cream mb-4">
               Features headed your way
             </h2>
             <p className="text-sage-light/85 text-lg max-w-xl mx-auto">
@@ -252,7 +252,7 @@ export default function ComingSoon() {
                 <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${f.iconBg}`}>
                   {f.icon}
                 </div>
-                <h3 className="text-cream font-bold text-lg mb-2">{f.title}</h3>
+                <h3 className="font-heading text-cream font-bold text-lg mb-2">{f.title}</h3>
                 <p className="text-sage-light/85 text-sm leading-relaxed">{f.description}</p>
               </div>
             ))}

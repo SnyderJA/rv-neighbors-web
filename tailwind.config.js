@@ -43,7 +43,9 @@ export default {
         // carrying a name that describes a colour it no longer is.
       },
       fontFamily: {
-        sans: ['"Inter"', 'system-ui', 'sans-serif'],
+        // The app's faces: Figtree for body, Space Grotesk for headings.
+        sans: ['"Figtree"', 'system-ui', 'sans-serif'],
+        heading: ['"Space Grotesk"', '"Figtree"', 'system-ui', 'sans-serif'],
       },
       backgroundImage: {
         // Dark forest, not the old gradient that climbed to #3D7A52 and left
