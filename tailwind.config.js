@@ -4,25 +4,62 @@ export default {
   theme: {
     extend: {
       colors: {
-        // From the app's constants/colors.ts
-        primary:   '#2D5A3D',
-        'primary-light': '#3D7A52',
-        'primary-dark':  '#1E3D2A',
-        secondary: '#8B6F47',
-        'secondary-light': '#A68B63',
-        accent:    '#E8734A',
-        'accent-light': '#F09070',
-        slate:     '#4A6FA5',
-        bg:        '#FDF8F0',
-        'bg-alt':  '#F5EDE0',
-        border:    '#E8E0D4',
+        // "Desert Night" — the same palette the app uses
+        // (rv-neighbors-app/tailwind.config.js), anchored on the logo gold.
+        // Keep the two in sync: the site and the app should not look like
+        // different products.
+        //
+        // The site previously ran a palette of its own with accent #E8734A
+        // (a salmon orange) and slate #4A6FA5 (a blue that appears nowhere
+        // in the brand). The logo is gold — #DA9902 in both
+        // rvn-logo-full-reversed.svg and favicon.svg, and the single most
+        // used colour in the brand kit.
+
+        // Grounds, darkest to lightest
+        ink:        '#0F2419',  // page ground; app `background`
+        'ink-deep': '#0A1A12',  // footer, wells
+        surface:    '#163324',  // app `card`
+        'surface-deep': '#0E2117', // cards, which sit *below* the ground
+        'surface-raised': '#1C422E', // app `input`
+        line:       '#2A4F3A',  // app `border`
+
+        // Brand gold — the logo colour
+        gold:         '#DA9902',
+        'gold-light': '#F5A623', // app `accent`
+
+        // Warm amber, the secondary warm hue
+        amber:         '#DF8B29', // app `primary`
+        'amber-light': '#F0A76A',
+
+        // Greens and neutrals
+        forest:       '#2D5A42', // app `secondary`
+        sage:         '#7AA28E', // app muted foreground
+        'sage-light': '#A8C9B6',
+        cream:        '#F5F5F0', // app `foreground`
+
+        // Legacy token names, retargeted onto the brand rather than deleted,
+        // so the unrendered components still compile and are not left
+        // carrying the old off-brand palette.
+        primary:   '#2D5A42',
+        'primary-light': '#3A8A55',
+        'primary-dark':  '#0F2419',
+        secondary: '#DF8B29',
+        'secondary-light': '#F0A76A',
+        accent:    '#DA9902',
+        'accent-light': '#F5A623',
+        slate:     '#7AA28E', // was a blue; now sage
+        bg:        '#F5F5F0',
+        'bg-alt':  '#EDEBE2',
+        border:    '#2A4F3A',
       },
       fontFamily: {
         sans: ['"Inter"', 'system-ui', 'sans-serif'],
       },
       backgroundImage: {
-        'hero-gradient': 'linear-gradient(135deg, #1E3D2A 0%, #2D5A3D 50%, #3D7A52 100%)',
-        'cta-gradient':  'linear-gradient(135deg, #1E3D2A 0%, #2D5A3D 100%)',
+        // Dark forest, not the old gradient that climbed to #3D7A52 and left
+        // cards lighter than the ground they sat on.
+        'hero-gradient': 'linear-gradient(165deg, #0F2419 0%, #142B1D 55%, #18351F 100%)',
+        'cta-gradient':  'linear-gradient(135deg, #0A1A12 0%, #163324 100%)',
       },
     },
   },
