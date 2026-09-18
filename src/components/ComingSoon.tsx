@@ -135,7 +135,7 @@ export default function ComingSoon() {
           <div className="w-56 sm:w-64 lg:w-72">
             <PhoneMockup screenHeight={520}>
               <img
-                src="/heroSiteImage.png"
+                src="/heroMainHead.png"
                 alt="The RV Neighbors map, showing nearby RVers and how far away they are"
                 className="w-full h-full object-cover object-top"
               />
