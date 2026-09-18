@@ -132,14 +132,17 @@ export default function ComingSoon() {
             mockups, the centre one of which showed a messaging screen — a
             feature that is not in the app. */}
         <div className="flex justify-center mb-16 animate-fade-in-up animation-delay-400">
-          <div className="w-56 sm:w-64 lg:w-72">
-            <PhoneMockup screenHeight={520}>
-              <img
-                src="/heroMainHead.png"
-                alt="The RV Neighbors map, showing nearby RVers and how far away they are"
-                className="w-full h-full object-cover object-top"
-              />
-            </PhoneMockup>
+          {/* No PhoneMockup: the image is already a complete phone screen,
+              with its own status bar and dynamic island. Wrapping it in the
+              mockup put a frame around a picture of a frame, and its fixed
+              520px screen height cropped ~105px off the bottom — the tab bar.
+              Rendered at its own aspect ratio instead, so nothing is cut. */}
+          <div className="w-60 sm:w-64 lg:w-72">
+            <img
+              src="/heroMainHead.png"
+              alt="The RV Neighbors map, showing nearby RVers and how far away they are"
+              className="w-full h-auto rounded-[2.5rem] shadow-2xl ring-1 ring-white/10"
+            />
           </div>
         </div>
 
@@ -243,20 +246,5 @@ export default function ComingSoon() {
         </div>
       </div>
     </section>
-  )
-}
-
-function PhoneMockup({ children, screenHeight = 380 }: { children: React.ReactNode; screenHeight?: number }) {
-  return (
-    <div className="relative group">
-      <div className="relative bg-gray-900 rounded-[2.5rem] p-2 shadow-2xl ring-1 ring-white/10 transition-transform duration-500 group-hover:scale-[1.02]">
-        {/* Notch */}
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 w-16 h-4 bg-gray-900 rounded-full z-10" />
-        {/* Screen */}
-        <div className="bg-white rounded-[2rem] overflow-hidden" style={{ height: screenHeight }}>
-          {children}
-        </div>
-      </div>
-    </div>
   )
 }
