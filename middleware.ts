@@ -3,15 +3,15 @@
  *
  * Protects /gitflow. The marketing site stays completely public.
  *
- * /project-tracker was protected here until 2026-08-13, because it published
- * detailed descriptions of unpatched security work. It no longer does: the
- * tracker was rebuilt as an investor-facing view fed by tracker.json, which
- * carries phase-level rollups and curated labels only, and the detailed
- * progress.json/admin-progress.json feeds were removed from this repo. It is
- * intentionally public so milestones can be shared by link.
+ * /project-tracker used to live here and was protected for a time, because it
+ * published detailed descriptions of unpatched security work. It was removed
+ * entirely on 2026-09-18 — progress now lives only in the private Storybloq
+ * ledger, and nothing about the plan is published from this repo.
  *
- * If detailed work items are ever published here again, re-add
- * "/project-tracker" and "/project-tracker/:path*" to the matcher below.
+ * The rule that made it dangerous still applies to anything added here: this
+ * repo is public and so is the site. Never publish ticket titles, gate-test
+ * names or defect descriptions. Naming unpatched work on a live app hands an
+ * attacker a remediation checklist.
  *
  * The password is read from Vercel environment variables and is NEVER stored
  * in this repo — this repo is public.

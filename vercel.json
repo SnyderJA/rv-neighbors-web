@@ -1,10 +1,28 @@
 {
   "rewrites": [
-    { "source": "/design-preview", "destination": "/design-preview.html" },
-    { "source": "/brand-kit", "destination": "/brand-kit.html" },
-    { "source": "/UtahTrip", "destination": "/UtahTrip/index.html" },
-    { "source": "/project-tracker", "destination": "/project-tracker/index.html" },
-    { "source": "/gitflow", "destination": "/gitflow/index.html" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/design-preview",
+      "destination": "/design-preview.html"
+    },
+    {
+      "source": "/brand-kit",
+      "destination": "/brand-kit.html"
+    },
+    {
+      "source": "/UtahTrip",
+      "destination": "/UtahTrip/index.html"
+    },
+    {
+      "source": "/gitflow",
+      "destination": "/gitflow/index.html"
+    },
+    {
+      "source": "/influence",
+      "destination": "/influence/index.html"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ]
 }
