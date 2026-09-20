@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <!-- noindex on purpose. The beta link has a hard cap of 100 testers; if this
+       page ranks, strangers fill the slots and the people actually invited
+       find it full. This is a page you text to someone, not one they find. -->
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Join the RV Neighbors beta</title>
+  <link rel="icon" href="/favicon.svg" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <meta name="description" content="How to install the RV Neighbors beta on your iPhone." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #0F2419; --card: #163324; --line: #2A4F3A;
+      --cream: #F5F5F0; --sage: #7AA28E; --soft: #A8C9B6;
+      --gold: #DA9902; --amber: #DF8B29;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--ink); color: var(--cream);
+      font-family: "Figtree", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 16px; line-height: 1.6;
+      padding: calc(32px + env(safe-area-inset-top)) calc(20px + env(safe-area-inset-right))
+               calc(48px + env(safe-area-inset-bottom)) calc(20px + env(safe-area-inset-left));
+    }
+    .wrap { max-width: 560px; margin: 0 auto; }
+    header { text-align: center; margin-bottom: 36px; }
+    header img { width: 190px; height: auto; }
+    h1 { font-family: "Space Grotesk", sans-serif; font-size: 27px; line-height: 1.25; margin: 22px 0 10px; }
+    .lede { color: var(--soft); margin: 0; }
+
+    /* Shown or hidden by the script below, never both. */
+    [hidden] { display: none !important; }
+
+    .panel {
+      background: var(--card); border: 1px solid var(--line);
+      border-radius: 20px; padding: 24px 20px; margin-bottom: 20px;
+    }
+    .panel h2 { font-family: "Space Grotesk", sans-serif; font-size: 18px; margin: 0 0 8px; }
+    .panel p { color: var(--soft); margin: 0 0 14px; font-size: 15px; }
+
+    ol.steps { list-style: none; counter-reset: s; margin: 0; padding: 0; }
+    ol.steps > li {
+      counter-increment: s; position: relative;
+      padding: 0 0 26px 52px; border-left: 2px solid var(--line); margin-left: 17px;
+    }
+    ol.steps > li:last-child { border-left-color: transparent; padding-bottom: 4px; }
+    ol.steps > li::before {
+      content: counter(s); position: absolute; left: -18px; top: -3px;
+      width: 34px; height: 34px; border-radius: 50%;
+      background: var(--ink); border: 2px solid var(--gold); color: var(--gold);
+      font-family: "Space Grotesk", sans-serif; font-size: 15px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    ol.steps h3 { font-size: 16px; margin: 0 0 5px; font-weight: 600; }
+    ol.steps p { color: var(--soft); font-size: 14.5px; margin: 0 0 12px; }
+
+    .btn {
+      display: flex; align-items: center; justify-content: center; gap: 9px;
+      min-height: 52px; padding: 14px 20px; border-radius: 14px;
+      font-weight: 700; font-size: 16px; text-decoration: none; width: 100%;
+    }
+    .btn-primary { background: var(--amber); color: #0F2419; }
+    .btn-outline { border: 2px solid var(--amber); color: var(--amber); background: rgba(223,139,41,0.08); }
+
+    .qr { text-align: center; }
+    .qr img { width: 208px; height: 208px; border-radius: 14px; display: block; margin: 4px auto 14px; background: var(--cream); padding: 10px; }
+    .url {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 15px;
+      background: var(--ink); border: 1px solid var(--line); border-radius: 10px;
+      padding: 12px 14px; color: var(--cream); word-break: break-all; text-align: center;
+    }
+
+    details { border-top: 1px solid var(--line); padding: 14px 0 2px; }
+    details summary { cursor: pointer; font-weight: 600; font-size: 15px; list-style: none; }
+    details summary::-webkit-details-marker { display: none; }
+    details summary::after { content: " +"; color: var(--gold); }
+    details[open] summary::after { content: " –"; }
+    details p { color: var(--soft); font-size: 14.5px; margin: 10px 0 4px; }
+
+    footer { text-align: center; color: var(--sage); font-size: 13.5px; margin-top: 30px; }
+    a { color: var(--amber); }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <img src="/rvn-logo-full-reversed.svg" alt="RV Neighbors" />
+    <h1>You're invited to try RV Neighbors</h1>
+    <p class="lede">It takes about two minutes. You'll need an iPhone.</p>
+  </header>
+
+  <!-- Shown only when the visitor is NOT on an iPhone or iPad. Without this,
+       someone on a laptop taps a link that cannot work and concludes the beta
+       is broken. -->
+  <section class="panel" id="desktop" hidden>
+    <h2>Open this page on your iPhone</h2>
+    <p>The beta installs on the phone itself, so this page has to be open there. Scan this with your iPhone camera:</p>
+    <div class="qr">
+      <img src="/testflight/qr.svg" alt="QR code that opens the TestFlight invitation" />
+      <p style="margin-bottom:10px">Or type this into Safari on your iPhone:</p>
+      <div class="url">rvneighborsapp.com/testflight</div>
+    </div>
+  </section>
+
+  <!-- The real instructions. Shown on iPhone; also shown on anything we cannot
+       identify, because wrong instructions beat no instructions. -->
+  <section id="steps" hidden>
+    <ol class="steps">
+
+      <li>
+        <h3>Install TestFlight</h3>
+        <p>Apple's free app for trying apps before they're in the App Store. RV Neighbors installs through it.</p>
+        <a class="btn btn-outline" href="https://apps.apple.com/app/testflight/id899247664">Get TestFlight</a>
+      </li>
+
+      <li>
+        <h3>Come back and tap Join</h3>
+        <p>This opens TestFlight and asks you to accept the invitation. Tap <strong>Accept</strong>.</p>
+        <a class="btn btn-primary" href="https://testflight.apple.com/join/8wDCsGP8">Join the beta</a>
+      </li>
+
+      <li>
+        <h3>Tap Install</h3>
+        <p>RV Neighbors lands on your home screen like any other app. The icon is dark green with a gold pin.</p>
+      </li>
+
+      <li>
+        <h3>Open it and create an account</h3>
+        <p>Tap <strong>Join Your Neighbors</strong> on the first screen. You'll get an email to confirm your address.</p>
+      </li>
+
+    </ol>
+  </section>
+
+  <section class="panel">
+    <details>
+      <summary>Is TestFlight safe?</summary>
+      <p>It's made by Apple and it's how every iPhone app gets tested before release. It's free, and it doesn't ask for payment details.</p>
+    </details>
+    <details>
+      <summary>What does "beta" mean here?</summary>
+      <p>The app works, but you're seeing it before everyone else, so there will be rough edges. If something looks wrong, that's worth telling us about — that's the point of you being here.</p>
+    </details>
+    <details>
+      <summary>The link says the beta is full</summary>
+      <p>There are 100 places and they're first come, first served. Email us and we'll sort it out.</p>
+    </details>
+    <details>
+      <summary>I'm on Android</summary>
+      <p>Not yet, sorry. The Android version is coming and we'll send you a link when it's ready.</p>
+    </details>
+    <details>
+      <summary>How do I get updates?</summary>
+      <p>TestFlight tells you when there's a new version. Open TestFlight and tap Update — you won't need this page again.</p>
+    </details>
+  </section>
+
+  <footer>
+    Stuck on any of this? <a href="mailto:support@rvneighborsapp.com">support@rvneighborsapp.com</a>
+  </footer>
+
+</div>
+
+<script>
+  // Which panel to show. Deliberately fails toward the instructions: if the
+  // platform cannot be identified, showing the steps is recoverable, while
+  // telling an iPhone user to go and find an iPhone is not.
+  (function () {
+    var ua = navigator.userAgent || "";
+    var isApple = /iPhone|iPod|iPad/.test(ua) ||
+      // iPadOS 13+ reports itself as a Mac; the touch points give it away.
+      (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+    document.getElementById(isApple ? "steps" : "desktop").hidden = false;
+  })();
+</script>
+
+<noscript>
+  <style>#steps { display: block !important; }</style>
+</noscript>
+
+</body>
+</html>

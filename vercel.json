@@ -17,6 +17,10 @@
       "destination": "/privacy/index.html"
     },
     {
+      "source": "/testflight",
+      "destination": "/testflight/index.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
