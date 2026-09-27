@@ -21,6 +21,10 @@
       "destination": "/testflight/index.html"
     },
     {
+      "source": "/webdemo",
+      "destination": "/webdemo/index.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- Unlisted, not gated. Easy to send to a partner, hard to stumble on. -->
+<meta name="robots" content="noindex, nofollow">
+<title>RV Neighbors — Interactive Demo</title>
+<link rel="icon" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+:root{
+  --ground:#0F2419; --surface:#163324; --surface-2:#1B3D2B;
+  --line:#2A4F3A; --line-2:#3C6B4E;
+  --ink:#F5F5F0; --ink-2:#A8C9B6; --ink-3:#7AA28E;
+  --amber:#DF8B29; --amber-ink:#0F2419; --gold:#DA9902;
+  --sea:#1C4C63; --land:#4E7A47; --land-2:#6E9455;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--ground);color:var(--ink);
+  font-family:"Figtree",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;
+  padding:28px 16px calc(40px + env(safe-area-inset-bottom,0px))}
+h1,h2,h3,h4{font-family:"Space Grotesk",sans-serif;margin:0;text-wrap:balance}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.wrap{max-width:1040px;margin:0 auto}
+
+/* ── demo chrome ─────────────────────────────────────────── */
+.top{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+.top img{height:36px}
+.top .tag{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--amber);font-weight:700;
+  border:1px solid rgba(223,139,41,.5);border-radius:999px;padding:3px 10px}
+.lede{color:var(--ink-2);max-width:66ch;margin:0 0 20px;font-size:14.5px}
+
+.stage{display:grid;grid-template-columns:330px 1fr;gap:32px;align-items:start}
+
+.nav{display:flex;flex-direction:column;gap:5px;margin-bottom:18px}
+.nav .h{font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3);font-weight:700;
+  padding:0 6px 4px}
+.nav button{font:inherit;font-size:13.5px;font-weight:600;text-align:left;cursor:pointer;color:var(--ink-2);
+  background:none;border:1px solid transparent;border-radius:10px;padding:9px 12px;
+  display:flex;align-items:center;justify-content:space-between;gap:10px}
+.nav button:hover{background:var(--surface)}
+.nav button[aria-current="true"]{background:var(--surface);border-color:var(--amber);color:var(--ink)}
+.nav .badge{font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;font-weight:700;
+  color:var(--gold);border:1px solid rgba(218,153,2,.45);border-radius:999px;padding:1px 7px}
+
+.caption{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.caption h3{font-size:15.5px;margin-bottom:6px}
+.caption p{margin:0 0 8px;font-size:13.5px;color:var(--ink-2);max-width:62ch}
+.caption p:last-child{margin-bottom:0}
+.caption .concept{color:var(--gold);font-weight:600}
+
+/* ── phone ───────────────────────────────────────────────── */
+.phone{width:330px;height:690px;border-radius:46px;border:10px solid #161A18;background:var(--ground);
+  position:relative;overflow:hidden;box-shadow:0 30px 70px -34px #000;flex:none}
+.notch{position:absolute;top:9px;left:50%;transform:translateX(-50%);width:104px;height:28px;
+  border-radius:15px;background:#0A0C0B;z-index:40}
+.scr{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden}
+.scr::-webkit-scrollbar{width:0}
+.pad{padding:56px 18px 96px}
+
+/* ── shared app bits ─────────────────────────────────────── */
+.tabbar{position:absolute;left:14px;right:14px;bottom:16px;height:62px;border-radius:22px;z-index:30;
+  background:rgba(22,51,36,.94);border:1px solid var(--line);display:flex;align-items:center;
+  justify-content:space-around;backdrop-filter:blur(10px)}
+.tabbar button{background:none;border:0;cursor:pointer;padding:8px 18px;color:var(--ink-3)}
+.tabbar button[aria-current="true"]{color:var(--amber)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px}
+.btn{display:block;width:100%;text-align:center;font:inherit;font-weight:700;font-size:14.5px;cursor:pointer;
+  border-radius:15px;padding:14px;border:1px solid var(--amber);background:var(--amber);color:var(--amber-ink)}
+.btn.ghost{background:none;color:var(--amber);}
+.btn.quiet{background:none;color:var(--ink-2);border-color:var(--line-2)}
+.av{border-radius:50%;display:grid;place-items:center;font-family:"Space Grotesk",sans-serif;
+  font-weight:700;color:#fff;flex:none}
+.pill{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:3px 10px;font-size:11px;
+  font-weight:600;background:var(--surface-2);border:1px solid var(--line);color:var(--ink-2)}
+
+/* ── map ─────────────────────────────────────────────────── */
+.mapwrap{position:absolute;inset:0;background:var(--sea)}
+.mapwrap svg{width:100%;height:100%;display:block}
+.city{position:absolute;font-size:9px;color:rgba(255,255,255,.72);letter-spacing:.03em;pointer-events:none}
+.city::before{content:"";position:absolute;left:-7px;top:4px;width:3px;height:3px;border-radius:50%;
+  background:rgba(255,255,255,.8)}
+.pin{position:absolute;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;
+  font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:12px;color:#fff;cursor:pointer;
+  border:2.5px solid rgba(255,255,255,.6);transition:opacity .22s,transform .22s,filter .22s;z-index:12}
+.pin.me{border-color:var(--amber);box-shadow:0 0 0 4px rgba(223,139,41,.28)}
+.pin[data-dim="1"]{opacity:.12;filter:grayscale(1);transform:scale(.8)}
+.searchbar{position:absolute;top:52px;left:16px;right:16px;z-index:20;display:flex;gap:10px;align-items:center}
+.searchbar .f{flex:1;background:rgba(15,36,25,.82);border:1px solid var(--line);border-radius:999px;
+  padding:11px 16px;font-size:13px;color:var(--ink-3);backdrop-filter:blur(8px)}
+.radios{position:absolute;top:104px;left:0;right:0;z-index:20;display:flex;gap:8px;padding:0 16px;
+  overflow-x:auto}
+.radios::-webkit-scrollbar{height:0}
+.radios button{font:inherit;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;
+  background:rgba(22,51,36,.85);border:1px solid rgba(42,79,58,.6);color:var(--ink-3);
+  border-radius:999px;padding:8px 15px}
+.radios button[aria-pressed="true"]{background:var(--amber);border-color:var(--amber);color:var(--amber-ink)}
+.fab{position:absolute;width:52px;height:52px;border-radius:17px;bottom:270px;z-index:22;cursor:pointer;
+  background:rgba(22,51,36,.92);border:2px solid rgba(42,79,58,.6);display:grid;place-items:center}
+.fab.l{left:16px} .fab.r{right:16px}
+.fab[data-on="1"]{background:var(--amber);border-color:var(--amber)}
+.sheet{position:absolute;left:0;right:0;bottom:0;z-index:25;background:var(--ground);
+  border-top:1px solid var(--line);border-radius:24px 24px 0 0;padding:12px 0 92px}
+.sheet .grab{width:44px;height:4px;border-radius:2px;background:var(--line-2);margin:0 auto 12px}
+.sheet .hrow{display:flex;align-items:center;justify-content:space-between;padding:0 18px 12px}
+.sheet h3{font-size:18px;display:flex;align-items:center;gap:9px}
+.sheet .n{background:var(--surface-2);border-radius:999px;padding:1px 9px;font-size:11px;font-family:"Figtree";
+  font-weight:700;color:var(--ink-2)}
+.sheet .all{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);font-weight:700;cursor:pointer}
+.cards{display:flex;gap:11px;padding:0 18px;overflow-x:auto}
+.cards::-webkit-scrollbar{height:0}
+.ncard{width:132px;flex:none;cursor:pointer}
+.ncard .ph{height:84px;border-radius:13px;position:relative;overflow:hidden;border:1px solid var(--line)}
+.ncard .ph .av{position:absolute;left:7px;top:7px;width:30px;height:30px;font-size:11px;border:2px solid rgba(255,255,255,.7)}
+.ncard .nm{font-weight:700;font-size:13px;margin-top:7px}
+.ncard .sb{font-size:10.5px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.05em}
+
+/* ── profile ─────────────────────────────────────────────── */
+.phead{display:flex;flex-direction:column;align-items:center;padding-top:6px}
+.glow{width:112px;height:112px;border-radius:50%;display:grid;place-items:center;font-size:34px;
+  font-family:"Space Grotesk",sans-serif;font-weight:700;color:#fff;
+  box-shadow:0 0 0 3px var(--amber),0 0 34px rgba(223,139,41,.34)}
+.stats{display:flex;gap:26px;margin-top:16px}
+.stats .s{text-align:center}
+.stats b{font-family:"Space Grotesk",sans-serif;font-size:18px;display:block}
+.stats span{font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
+.sect{margin-top:26px}
+.sect .lbl{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:700;margin-bottom:9px}
+.rig{display:flex;gap:13px;padding:14px}
+.rig .img{width:78px;height:78px;border-radius:13px;flex:none;overflow:hidden;border:1px solid var(--line)}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{font-size:11.5px;font-weight:600;border-radius:999px;padding:5px 11px;background:var(--surface);
+  border:1px solid var(--line);color:var(--ink-2)}
+.chip.on{background:rgba(223,139,41,.16);border-color:rgba(223,139,41,.45);color:var(--amber)}
+
+/* ── passport ────────────────────────────────────────────── */
+.ppbar{height:7px;border-radius:99px;background:var(--surface-2);overflow:hidden;margin:11px 0 8px}
+.ppbar i{display:block;height:100%;background:linear-gradient(90deg,var(--amber),#E8B45A)}
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.park{border-radius:14px;overflow:hidden;border:1px solid var(--line);background:var(--surface);
+  cursor:pointer;text-align:left;font:inherit;color:inherit;padding:0}
+.park .sc{height:78px;position:relative;overflow:hidden}
+.park .mt{padding:8px 10px 10px}
+.park h4{font-size:12px;line-height:1.25}
+.park .lc{font-size:10px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em}
+.park[data-v="0"]{border-style:dashed;border-color:var(--line-2);opacity:.6}
+.park[data-v="0"] .sc{filter:grayscale(1) brightness(.62)}
+.stamp{position:absolute;right:5px;top:5px;width:46px;height:46px;border-radius:50%;border:2px solid #C6612B;
+  color:#C6612B;display:grid;place-items:center;text-align:center;transform:rotate(-13deg);
+  background:rgba(15,36,25,.35)}
+.stamp span{font-family:"IBM Plex Mono",monospace;font-size:7px;line-height:1.15}
+
+/* ── rows ────────────────────────────────────────────────── */
+.row{display:flex;align-items:center;gap:12px;padding:13px 14px;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}
+.row .nm{font-weight:700;font-size:14px}
+.row .sb{font-size:11.5px;color:var(--ink-3)}
+.row .act{margin-left:auto}
+.mini{font:inherit;font-size:11.5px;font-weight:700;cursor:pointer;border-radius:999px;padding:6px 13px;
+  background:var(--amber);border:1px solid var(--amber);color:var(--amber-ink)}
+.mini.q{background:none;border-color:var(--line-2);color:var(--ink-2)}
+.toggle{width:46px;height:27px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line);
+  position:relative;cursor:pointer;flex:none}
+.toggle i{position:absolute;top:2px;left:2px;width:21px;height:21px;border-radius:50%;background:var(--ink-3);
+  transition:.18s}
+.toggle[data-on="1"]{background:var(--amber);border-color:var(--amber)}
+.toggle[data-on="1"] i{left:22px;background:#fff}
+
+.note{border-left:3px solid var(--gold);background:rgba(218,153,2,.09);border-radius:0 12px 12px 0;
+  padding:11px 13px;font-size:12px;color:var(--ink-2);margin-top:14px}
+.note b{color:var(--gold)}
+
+footer{margin-top:34px;border-top:1px solid var(--line);padding-top:18px;font-size:13px;color:var(--ink-3);max-width:74ch}
+footer a{color:var(--amber)}
+
+@media (max-width:880px){
+  .stage{grid-template-columns:1fr;justify-items:center}
+  .side{width:100%;max-width:330px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top">
+    <img src="/rvn-logo-full-reversed.svg" alt="RV Neighbors">
+    <span class="tag">Interactive demo</span>
+  </div>
+  <p class="lede">
+    A working walkthrough of the app, running entirely in this page. Everyone shown is invented.
+    Screens marked <span style="color:var(--gold);font-weight:600">Concept</span> are not built yet.
+  </p>
+
+  <div class="stage">
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="scr" id="scr"></div>
+    </div>
+
+    <div class="side">
+      <nav class="nav" id="nav">
+        <div class="h">Built and shipping</div>
+        <button data-s="signin">Sign in</button>
+        <button data-s="map" aria-current="true">The map</button>
+        <button data-s="neighbor">A neighbour</button>
+        <button data-s="profile">Your profile</button>
+        <button data-s="crew">Connections</button>
+        <button data-s="privacy">Privacy settings</button>
+        <div class="h" style="margin-top:12px">Not built yet</div>
+        <button data-s="passport">Park Passport <span class="badge">Concept</span></button>
+      </nav>
+      <div class="caption" id="cap"></div>
+    </div>
+  </div>
+
+  <footer>
+    Every person, photo, location and figure on this page is invented — nothing here is a real user.
+    Questions: <a href="mailto:support@rvneighborsapp.com">support@rvneighborsapp.com</a>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var PEOPLE = [
+    { id:"mv", n:"Marisol Vega",  s:"Marisol V.", rig:"Class C Motorhome",  loc:"Sedona, AZ",     d:"38 mi", c:"#B4553F", st:"connected", bio:"Full-timing since 2023. Chasing good coffee and quiet trailheads.", ints:["Hiking","Photography","Boondocking","Cooking"], x:92,  y:322 },
+    { id:"dw", n:"Dale Whitcomb", s:"Dale W.",    rig:"Fifth Wheel",         loc:"Moab, UT",       d:"212 mi", c:"#D98A2B", st:"none",      bio:"Retired in 2019 and haven't stopped since. Happy to share a fire.", ints:["Campfires","Fishing","Scenic Drives"], x:116, y:262 },
+    { id:"pr", n:"Priya Raman",   s:"Priya R.",   rig:"Airstream",           loc:"Bend, OR",       d:"780 mi", c:"#4E6E9E", st:"none",      bio:"Remote work Monday to Thursday. Border collie rides shotgun.", ints:["Biking","Technology","Animals"], x:56,  y:200 },
+    { id:"tb", n:"Tom Brennan",   s:"Tom B.",     rig:"Bus Conversion",      loc:"Asheville, NC",  d:"1,640 mi", c:"#8A7A4B", st:"connected", bio:"Converted the bus myself over two winters. Still finding rattles.", ints:["DIY","Woodworking","Music"], x:238, y:300 },
+    { id:"jh", n:"Janet Hollis",  s:"Janet H.",   rig:"Class A Motorhome",   loc:"Bar Harbor, ME", d:"2,410 mi", c:"#6B8F6B", st:"none",      bio:"Coastal and desert camping mostly. Birdwatcher, terrible at reversing.", ints:["Bird Watching","Reading"], x:258, y:194 },
+    { id:"ro", n:"Reuben Ortiz",  s:"Reuben O.",  rig:"Teardrop Trailer",    loc:"Big Bend, TX",   d:"580 mi", c:"#A85C6B", st:"none",      bio:"Small rig, big miles. Off-grid whenever I can manage it.", ints:["Off-Roading","Astronomy"], x:176, y:326 }
+  ];
+  var ME = { n:"Sam Ellery", ini:"SE", rig:"Toy Hauler", loc:"Tucson, AZ", c:"#C06A3E" };
+  var PARKS = [
+    { n:"Zion", s:"Utah", v:"2026", sky:"#3A5C7A", land:"#B4693C" },
+    { n:"Arches", s:"Utah", v:"2025", sky:"#4A5E82", land:"#A9552F" },
+    { n:"Grand Canyon", s:"Arizona", v:"2025", sky:"#4E6285", land:"#8E5638" },
+    { n:"Great Smoky Mtns", s:"Tennessee", v:"2024", sky:"#456170", land:"#3E5B45" },
+    { n:"Yellowstone", s:"Wyoming", v:null, sky:"#3E5E77", land:"#4A6046" },
+    { n:"Acadia", s:"Maine", v:null, sky:"#3B5468", land:"#3A5343" }
+  ];
+
+  var CAPS = {
+    signin: ["Signing in", "<p>No social login. Apple, Google and Facebook are shown as coming soon because App Store rule 4.8 requires a privacy-preserving option alongside them, and that is a deliberate decision rather than an oversight.</p>"],
+    map: ["The map", "<p>Everyone is shown <b>nationwide by default</b>. Testers were spread across the country and a local radius meant nobody could see anybody.</p><p>Every pin is <b>deliberately offset</b> from the person's real position — six to twelve miles, stable per viewer, so repeated looks cannot average it away. Nobody ever sees an exact campsite.</p><p>Tap the right-hand button to filter the map to people you have connected with.</p>"],
+    neighbor: ["Someone else's profile", "<p>Rig, location, interests, and one action. Distance is computed from the offset position, not the real one.</p><p>There is no overflow menu here yet — report, block and share are specified but not built, so nothing is shown that does nothing.</p>"],
+    profile: ["Your own profile", "<p>The rig card leads, because in this community the rig is how people introduce themselves. The Park Passport count sits below it.</p>"],
+    crew: ["Connections", "<p>Requests and accepted connections. Free accounts get eight; premium removes the cap.</p>"],
+    privacy: ["Privacy settings", "<p>Three audiences, three radii. Connections and close friends can always find you at least as far away as strangers can, so widening the bottom one widens all three.</p><p>People you trust are placed <b>more precisely</b> — a close friend sees a smaller offset than a stranger does.</p>"],
+    passport: ["Park Passport", "<p class='concept'>Concept — not built.</p><p>Track which of the 63 US national parks you have visited, with one photo, a date and a short reflection for each. Unvisited parks are empty slots rather than absences.</p><p>The count on your profile is the hook: a number that only goes up and reads in half a second.</p>"]
+  };
+
+  var scr = document.getElementById("scr"), cap = document.getElementById("cap");
+  var view = "map", radius = "Nationwide", connOnly = false, who = "mv", tab = "map";
+
+  function av(txt, c, size, extra) {
+    return '<div class="av" style="width:' + size + 'px;height:' + size + 'px;background:' + c +
+      ';font-size:' + Math.round(size * .36) + 'px;' + (extra || "") + '">' + txt + "</div>";
+  }
+  function ini(n) { return n.split(" ").map(function (w) { return w[0]; }).join("").slice(0, 2); }
+  function scene(p, h) {
+    return '<svg viewBox="0 0 200 ' + h + '" preserveAspectRatio="none" style="width:100%;height:100%;display:block">' +
+      '<rect width="200" height="' + h + '" fill="' + p.sky + '"/>' +
+      '<circle cx="150" cy="' + h * .28 + '" r="' + h * .12 + '" fill="#E8C98A" opacity=".85"/>' +
+      '<path d="M0 ' + h + ' L0 ' + h * .62 + ' L44 ' + h * .3 + ' L80 ' + h * .64 + ' L114 ' + h * .38 +
+      ' L154 ' + h * .7 + ' L200 ' + h * .5 + ' L200 ' + h + ' Z" fill="' + p.land + '"/>' +
+      '<path d="M0 ' + h + ' L0 ' + h * .86 + ' L62 ' + h * .74 + ' L132 ' + h * .9 + ' L200 ' + h * .78 +
+      ' L200 ' + h + ' Z" fill="#1E3A2A" opacity=".75"/></svg>';
+  }
+  function rigArt(c, h) {
+    return '<svg viewBox="0 0 120 ' + h + '" preserveAspectRatio="none" style="width:100%;height:100%">' +
+      '<rect width="120" height="' + h + '" fill="#274434"/>' +
+      '<rect x="14" y="' + h * .34 + '" width="74" height="' + h * .34 + '" rx="5" fill="' + c + '"/>' +
+      '<rect x="88" y="' + h * .44 + '" width="18" height="' + h * .24 + '" rx="3" fill="' + c + '" opacity=".75"/>' +
+      '<circle cx="34" cy="' + h * .72 + '" r="' + h * .07 + '" fill="#12241A"/>' +
+      '<circle cx="72" cy="' + h * .72 + '" r="' + h * .07 + '" fill="#12241A"/></svg>';
+  }
+  function tabbar(active) {
+    var t = [["map","Map"],["crew","Crew"],["profile","You"]];
+    return '<div class="tabbar">' + t.map(function (x) {
+      return '<button data-tab="' + x[0] + '" aria-current="' + (x[0] === active) + '">' +
+        '<div style="font-size:11px;font-weight:700">' + x[1] + "</div></button>";
+    }).join("") + "</div>";
+  }
+
+  /* ── screens ─────────────────────────────────────────── */
+  function signin() {
+    return '<div class="pad" style="display:flex;flex-direction:column;justify-content:center;min-height:100%">' +
+      '<img src="/rvn-logo-full-reversed.svg" alt="RV Neighbors" style="width:190px;margin:0 auto 14px;display:block">' +
+      '<p style="text-align:center;color:var(--ink-2);font-size:13.5px;margin:0 0 26px">Connecting the nomadic community,<br>one mile at a time.</p>' +
+      '<div style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:700;margin-bottom:6px">Email address</div>' +
+      '<div class="card" style="padding:13px 15px;font-size:13.5px;color:var(--ink-2);margin-bottom:14px">sam@example.com</div>' +
+      '<div style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:700;margin-bottom:6px">Password</div>' +
+      '<div class="card" style="padding:13px 15px;font-size:13.5px;color:var(--ink-3);margin-bottom:20px">••••••••</div>' +
+      '<button class="btn" data-go="map">Sign In</button>' +
+      '<button class="btn ghost" style="margin-top:11px;border-width:2px" data-go="map">Join Your Neighbors</button>' +
+      '<div style="text-align:center;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin:26px 0 12px">Coming soon</div>' +
+      '<div style="display:flex;gap:8px">' +
+      ["Apple","Google","Facebook"].map(function (s) {
+        return '<div class="card" style="flex:1;text-align:center;padding:11px 0;font-size:11.5px;color:var(--ink-3)">' + s + "</div>";
+      }).join("") + "</div></div>";
+  }
+
+  function map() {
+    var shown = PEOPLE.filter(function (p) { return !connOnly || p.st === "connected"; });
+    var cities = [["Seattle",50,186],["Denver",148,280],["Chicago",232,248],["Atlanta",250,332],["Dallas",166,340]];
+    return '<div class="mapwrap">' +
+      '<svg viewBox="0 0 330 690" preserveAspectRatio="none">' +
+      '<rect width="330" height="690" fill="' + "var(--sea)" + '"/>' +
+      '<path d="M18 168 L86 150 L150 158 L214 146 L286 162 L320 200 L316 300 L300 372 L282 430 L246 452 L196 444 L150 456 L104 432 L62 388 L34 320 L20 246 Z" fill="var(--land)"/>' +
+      '<path d="M40 250 Q160 228 300 258" stroke="var(--land-2)" stroke-width="2.5" fill="none" opacity=".55"/>' +
+      '<path d="M46 330 Q160 308 296 336" stroke="var(--land-2)" stroke-width="2.5" fill="none" opacity=".45"/>' +
+      '<path d="M120 160 L134 300 L150 452" stroke="var(--land-2)" stroke-width="2" fill="none" opacity=".4"/>' +
+      "</svg>" +
+      cities.map(function (c) { return '<div class="city" style="left:' + (c[1] + 8) + 'px;top:' + c[2] + 'px">' + c[0] + "</div>"; }).join("") +
+      "</div>" +
+      '<div class="searchbar"><div class="f">Search neighbors…</div>' + av("SE", ME.c, 40, "border:2px solid rgba(255,255,255,.35)") + "</div>" +
+      '<div class="radios">' +
+      ["Nationwide","200 mi","75 mi","30 mi","15 mi"].map(function (r) {
+        return '<button data-r="' + r + '" aria-pressed="' + (r === radius) + '">' + r + "</button>";
+      }).join("") + "</div>" +
+      shown.map(function (p) {
+        return '<div class="pin" data-who="' + p.id + '" style="left:' + p.x + 'px;top:' + p.y + 'px;background:' + p.c + '">' + ini(p.n) + "</div>";
+      }).join("") +
+      '<div class="pin me" style="left:126px;top:338px;background:' + ME.c + '">SE</div>' +
+      '<div class="fab l" title="Centre on me"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F5F5F0" stroke-width="2"><circle cx="12" cy="12" r="3.2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></div>' +
+      '<div class="fab r" id="cf" data-on="' + (connOnly ? 1 : 0) + '"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="' + (connOnly ? "#0F2419" : "#F5F5F0") + '" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg></div>' +
+      '<div class="sheet"><div class="grab"></div><div class="hrow">' +
+      "<h3>" + (connOnly ? "Your Connections" : "Nearby Neighbors") + '<span class="n">' + shown.length + "</span></h3>" +
+      '<span class="all">See all ›</span></div>' +
+      '<div class="cards">' + shown.map(function (p) {
+        return '<div class="ncard" data-who="' + p.id + '"><div class="ph">' + rigArt(p.c, 84) + av(ini(p.n), p.c, 30, "position:absolute;left:7px;top:7px;border:2px solid rgba(255,255,255,.7)") +
+          '</div><div class="nm">' + p.s + '</div><div class="sb">' + p.rig.split(" ")[0] + " · " + p.d + "</div></div>";
+      }).join("") + "</div></div>" + tabbar("map");
+  }
+
+  function neighbor() {
+    var p = PEOPLE.find(function (x) { return x.id === who; });
+    return '<div class="pad">' +
+      '<button class="btn quiet" style="width:auto;padding:7px 13px;font-size:12px" data-go="map">‹ Map</button>' +
+      '<div class="phead" style="margin-top:14px">' + av(ini(p.n), p.c, 112, "box-shadow:0 0 0 3px var(--amber),0 0 34px rgba(223,139,41,.3)") +
+      '<h2 style="font-size:22px;margin-top:14px">' + p.n + "</h2>" +
+      '<div class="pill" style="margin-top:7px">◉ ' + p.loc + " · " + p.d + "</div>" +
+      '<div class="stats"><div class="s"><b>' + p.ints.length + "</b><span>Interests</span></div>" +
+      '<div class="s"><b>' + (p.st === "connected" ? "Yes" : "—") + "</b><span>Connected</span></div>" +
+      '<div class="s"><b>7</b><span>Parks</span></div></div></div>' +
+      '<div class="sect"><div class="lbl">About</div><p style="font-size:13.5px;color:var(--ink-2);margin:0">' + p.bio + "</p></div>" +
+      '<div class="sect"><div class="lbl">Their rig</div><div class="card rig">' +
+      '<div class="img">' + rigArt(p.c, 78) + '</div><div><div style="font-weight:700;font-size:14px">' + p.rig + "</div>" +
+      '<div style="font-size:12px;color:var(--ink-3);margin-top:3px">Their own photo, or a stock illustration for the type</div></div></div></div>' +
+      '<div class="sect"><div class="lbl">Interests</div><div class="chips">' +
+      p.ints.map(function (i) { return '<span class="chip">' + i + "</span>"; }).join("") + "</div></div>" +
+      '<div style="margin-top:24px">' + (p.st === "connected"
+        ? '<button class="btn quiet">Remove connection</button>'
+        : '<button class="btn">Connect</button>') + "</div>" +
+      '<div class="note"><b>Note:</b> the distance shown is measured to the offset pin, not the real position.</div>' +
+      "</div>" + tabbar("map");
+  }
+
+  function profile() {
+    var visited = PARKS.filter(function (p) { return p.v; }).length;
+    return '<div class="pad"><div class="phead">' + av("SE", ME.c, 112, "box-shadow:0 0 0 3px var(--amber),0 0 34px rgba(223,139,41,.3)") +
+      '<h2 style="font-size:22px;margin-top:14px">' + ME.n + "</h2>" +
+      '<div class="pill" style="margin-top:7px">◉ ' + ME.loc + "</div>" +
+      '<div class="stats"><div class="s"><b>2</b><span>Connections</span></div>' +
+      '<div class="s"><b>6</b><span>Interests</span></div><div class="s"><b>12</b><span>Parks</span></div></div></div>' +
+      '<div class="sect"><div class="lbl">Your rig</div><div class="card rig">' +
+      '<div class="img">' + rigArt(ME.c, 78) + '</div><div><div style="font-weight:700;font-size:14px">' + ME.rig + "</div>" +
+      '<div style="font-size:12px;color:var(--ink-3);margin-top:3px">2021 Grand Design · 34 ft</div></div></div></div>' +
+      '<div class="sect"><div class="lbl">National Park Passport <span class="badge" style="color:var(--gold);border:1px solid rgba(218,153,2,.45);border-radius:999px;padding:1px 7px;font-size:9px;margin-left:6px">Concept</span></div>' +
+      '<div class="card" style="padding:15px"><div style="display:flex;align-items:baseline;gap:7px">' +
+      '<b style="font-family:\'Space Grotesk\';font-size:25px">12</b><span style="font-size:12.5px;color:var(--ink-3)">of 63 parks visited</span></div>' +
+      '<div class="ppbar"><i style="width:19%"></i></div>' +
+      '<div style="font-size:12px;color:var(--ink-3)">19% complete · last stamped Zion</div>' +
+      '<button class="btn quiet" style="margin-top:13px" data-go="passport">View visited parks</button></div></div>' +
+      '<div class="sect"><div class="lbl">Interests</div><div class="chips">' +
+      ["Boondocking","Hiking","Astronomy","DIY","Campfires","Fishing"].map(function (i) { return '<span class="chip on">' + i + "</span>"; }).join("") +
+      "</div></div>" +
+      '<div class="sect"><button class="btn quiet" data-go="privacy">Privacy settings</button></div>' +
+      "</div>" + tabbar("profile");
+  }
+
+  function crew() {
+    return '<div class="pad"><h2 style="font-size:22px;margin-bottom:4px">Your Crew</h2>' +
+      '<p style="font-size:12.5px;color:var(--ink-3);margin:0 0 18px">2 of 8 connections used on the free plan</p>' +
+      '<div class="lbl" style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:700;margin-bottom:9px">Request waiting</div>' +
+      '<div class="card" style="margin-bottom:22px"><div class="row">' + av("DW", "#D98A2B", 42) +
+      '<div><div class="nm">Dale Whitcomb</div><div class="sb">Fifth Wheel · Moab, UT</div></div>' +
+      '<div class="act" style="display:flex;gap:7px"><button class="mini">Accept</button><button class="mini q">Ignore</button></div></div></div>' +
+      '<div class="lbl" style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:700;margin-bottom:9px">Connected</div>' +
+      '<div class="card">' + PEOPLE.filter(function (p) { return p.st === "connected"; }).map(function (p) {
+        return '<div class="row" data-who="' + p.id + '" style="cursor:pointer">' + av(ini(p.n), p.c, 42) +
+          '<div><div class="nm">' + p.n + '</div><div class="sb">' + p.rig + " · " + p.loc + "</div></div>" +
+          '<div class="act" style="color:var(--ink-3)">›</div></div>';
+      }).join("") + "</div>" +
+      '<div class="note"><b>Free plan:</b> eight connections. Premium removes the cap and adds a Family Crew.</div>' +
+      "</div>" + tabbar("crew");
+  }
+
+  function privacy() {
+    var rows = [["Close friends","5 mi"],["Connections","30 mi"],["Everyone else","Nationwide"]];
+    return '<div class="pad">' +
+      '<button class="btn quiet" style="width:auto;padding:7px 13px;font-size:12px" data-go="profile">‹ Profile</button>' +
+      '<h2 style="font-size:21px;margin:16px 0 4px">Privacy</h2>' +
+      '<p style="font-size:12.5px;color:var(--ink-3);margin:0 0 20px">Who can see you, and how precisely.</p>' +
+      '<div class="card" style="margin-bottom:18px">' +
+      '<div class="row"><div><div class="nm">Share my location</div><div class="sb">Turn off to disappear entirely</div></div>' +
+      '<div class="act"><div class="toggle" data-on="1"><i></i></div></div></div>' +
+      '<div class="row"><div><div class="nm">Stealth Mode</div><div class="sb">Hide temporarily, then come back</div></div>' +
+      '<div class="act"><div class="toggle" data-on="0"><i></i></div></div></div></div>' +
+      '<div class="lbl" style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:700;margin-bottom:9px">Visibility radius</div>' +
+      '<div class="card">' + rows.map(function (r) {
+        return '<div class="row"><div><div class="nm">' + r[0] + '</div></div><div class="act pill">' + r[1] + "</div></div>";
+      }).join("") + "</div>" +
+      '<div class="note"><b>How the pin works:</b> your position is always shown offset from where you really are. People you trust are placed more precisely — a close friend sees a smaller offset than a stranger does. Connections can always find you at least as far away as strangers can, so widening the bottom one widens all three.</div>' +
+      "</div>" + tabbar("profile");
+  }
+
+  function passport() {
+    return '<div class="pad">' +
+      '<button class="btn quiet" style="width:auto;padding:7px 13px;font-size:12px" data-go="profile">‹ Profile</button>' +
+      '<h2 style="font-size:21px;margin:16px 0 3px">Park Passport</h2>' +
+      '<p style="font-size:12.5px;color:var(--gold);margin:0 0 16px;font-weight:600">Concept — not built yet</p>' +
+      '<div class="card" style="padding:15px;margin-bottom:16px">' +
+      '<div style="display:flex;align-items:baseline;gap:7px"><b style="font-family:\'Space Grotesk\';font-size:25px">12</b>' +
+      '<span style="font-size:12.5px;color:var(--ink-3)">of 63 parks visited</span></div>' +
+      '<div class="ppbar"><i style="width:19%"></i></div>' +
+      '<div style="font-size:12px;color:var(--ink-3)">19% complete</div></div>' +
+      '<div class="pgrid">' + PARKS.map(function (p) {
+        return '<div class="park" data-v="' + (p.v ? 1 : 0) + '"><div class="sc">' + scene(p, 78) +
+          (p.v ? '<div class="stamp"><span>VISITED<br>' + p.v + "</span></div>" : "") + "</div>" +
+          '<div class="mt"><h4>' + p.n + '</h4><div class="lc">' + p.s + "</div></div></div>";
+      }).join("") + "</div>" +
+      '<div class="note"><b>Empty slots, not absences.</b> All 63 are always present, so the collection reads as something to complete.</div>' +
+      "</div>" + tabbar("profile");
+  }
+
+  var VIEWS = { signin:signin, map:map, neighbor:neighbor, profile:profile, crew:crew, privacy:privacy, passport:passport };
+
+  function render() {
+    scr.innerHTML = VIEWS[view]();
+    scr.scrollTop = 0;
+    var key = view === "neighbor" ? "neighbor" : view;
+    var c = CAPS[key] || CAPS.map;
+    cap.innerHTML = "<h3>" + c[0] + "</h3>" + c[1];
+    document.querySelectorAll("#nav button").forEach(function (b) {
+      b.setAttribute("aria-current", String(b.dataset.s === view));
+    });
+  }
+
+  document.getElementById("nav").addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return;
+    view = b.dataset.s; render();
+  });
+
+  scr.addEventListener("click", function (e) {
+    var go = e.target.closest("[data-go]");
+    if (go) { view = go.dataset.go; render(); return; }
+    var w = e.target.closest("[data-who]");
+    if (w) { who = w.dataset.who; view = "neighbor"; render(); return; }
+    var r = e.target.closest("[data-r]");
+    if (r) { radius = r.dataset.r; render(); return; }
+    if (e.target.closest("#cf")) { connOnly = !connOnly; render(); return; }
+    var t = e.target.closest("[data-tab]");
+    if (t) { view = t.dataset.tab === "crew" ? "crew" : t.dataset.tab; render(); return; }
+    var tg = e.target.closest(".toggle");
+    if (tg) { tg.dataset.on = tg.dataset.on === "1" ? "0" : "1"; }
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
