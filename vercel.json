@@ -17,6 +17,10 @@
       "destination": "/privacy/index.html"
     },
     {
+      "source": "/terms",
+      "destination": "/terms/index.html"
+    },
+    {
       "source": "/testflight",
       "destination": "/testflight/index.html"
     },
