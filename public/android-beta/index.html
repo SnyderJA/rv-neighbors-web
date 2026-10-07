@@ -146,10 +146,17 @@
   </section>
 
   <!-- Shown when all 25 seats are taken. -->
+  <!-- Shown when all 25 seats are taken. Note the second paragraph: the
+       endpoint deliberately answers the same way for every address once the
+       beta is full, so that asking it cannot reveal who holds a place. That
+       means somebody who already HAS a seat sees this panel too, and their
+       link is still emailed to them. Without saying so, that reads as a
+       contradiction and they email us instead of checking their inbox. -->
   <section class="panel" id="full" hidden>
     <h2>This round is full</h2>
     <p>All 25 places are taken. You're on the launch list, so you'll hear from us when the app reaches the Play Store.</p>
-    <p>If you were expecting a place, email us and we'll sort it out.</p>
+    <p><strong>Already had a place?</strong> Your link is on its way to you as usual — check your email.</p>
+    <p>If you were expecting a place and nothing arrives, email us and we'll sort it out.</p>
   </section>
 
   <h2 style="font-family:'Space Grotesk',sans-serif;font-size:18px;margin:32px 0 16px">Installing it</h2>
