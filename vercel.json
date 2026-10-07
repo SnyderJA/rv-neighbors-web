@@ -29,6 +29,14 @@
       "destination": "/webdemo/index.html"
     },
     {
+      "source": "/android-beta",
+      "destination": "/android-beta/index.html"
+    },
+    {
+      "source": "/get-android-build",
+      "destination": "https://tybihehzpnggjcfnadxd.supabase.co/functions/v1/get-android-build"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
