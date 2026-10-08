@@ -166,19 +166,25 @@
 
       <li>
         <h3>Open the email on your Android phone</h3>
-        <p>Tap <strong>Download the app</strong>. Your browser saves a file ending in <strong>.apk</strong> — that's the app itself.</p>
+        <p>Tap <strong>Download the app</strong>. Your browser saves a <strong>.zip</strong> file.</p>
+      </li>
+
+      <!-- The zip is not packaging neatness, it is a workaround. Chrome on
+           Android currently never finishes downloading a .apk — the transfer
+           completes and the file is left permanently unpublished, so it shows
+           100% forever and never reaches Downloads. A zip is not an APK, so it
+           sidesteps the scanner that causes it. See the FAQ entry below, which
+           explains this to testers in their own terms. -->
+      <li>
+        <h3>Unzip it</h3>
+        <p>Open your <strong>Files</strong> app, go to <strong>Downloads</strong> and tap the .zip. Android extracts it and you get <strong>rv-neighbors-beta.apk</strong> — that's the app itself.</p>
       </li>
 
       <li>
-        <h3>Open the downloaded file</h3>
-        <p>Tap <strong>Open</strong> in the download notification, or find it in your Files app under Downloads.</p>
-      </li>
-
-      <li>
-        <h3>Allow your browser to install it</h3>
-        <p>Android will stop you the first time, with something like:</p>
+        <h3>Allow your Files app to install it</h3>
+        <p>Tap the extracted <strong>.apk</strong>. Android will stop you the first time, with something like:</p>
         <p class="quote">For your security, your phone isn't allowed to install unknown apps from this source.</p>
-        <p>Tap <strong>Settings</strong>, turn on <strong>Allow from this source</strong>, then press back and open the file again. You only do this once.</p>
+        <p>Tap <strong>Settings</strong>, turn on <strong>Allow from this source</strong>, then press back and tap the file again. You only do this once.</p>
       </li>
 
       <li>
@@ -198,6 +204,14 @@
     <details>
       <summary>Is this safe to install?</summary>
       <p>It's our own app, signed by us, and it's the same build that will go to the Play Store. The warnings you'll see are Android being cautious about anything that didn't come from the Play Store — they're about where the file came from, not what's in it. If you'd rather wait for the Play Store version, that's completely fine; tell us and we'll let you know when it's there.</p>
+    </details>
+    <details>
+      <summary>Why is it a zip instead of the app?</summary>
+      <p>Chrome on Android currently has a bug where app files never finish downloading — the progress bar sits at 100% forever and the file never appears. Putting the app in a zip avoids it entirely. It costs you one extra tap to extract, and it's the difference between the download working and not.</p>
+    </details>
+    <details>
+      <summary>My download is stuck at 100%</summary>
+      <p>That's the Chrome bug above, and it means you downloaded the app file directly rather than the zip. Cancel it, open your link again, and you should get a <strong>.zip</strong>. If you're still getting an app file, email us.</p>
     </details>
     <details>
       <summary>Why not just use the Play Store?</summary>
