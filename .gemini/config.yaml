@@ -1,0 +1,39 @@
+# Gemini Code Assist — repository behaviour
+#
+# WHY THIS EXISTS: Gemini was running on defaults, which review a pull request
+# when it opens AND again on every push. On 2026-10-07 that consumed the whole
+# daily quota before midday, because iterating on an open PR — push a fix,
+# push another — triggered a fresh review each time. The reviews were good;
+# there were simply too many of them, and most reviewed code that was about to
+# change again.
+#
+# So reviews become something we ASK FOR when a pull request is actually ready,
+# rather than something that fires at every intermediate state.
+#
+# NOT `code_review.disable: true`. That stops Gemini acting on pull requests at
+# all, which would take on-demand reviews with it. The narrower flag below
+# turns off only the automatic review when a PR opens.
+#
+# WHAT IS STILL UNVERIFIED, and why this landed in rv-neighbors-web first:
+# Google's schema documents the on-open review but says nothing about
+# re-reviews on push, and does not document a comment trigger at all. Whether
+# pushes still trigger reviews, and whether a review can still be requested by
+# comment once this is set, are being established on this repository before the
+# same config goes anywhere near rv-neighbors-api or rv-neighbors-app.
+#
+# Schema: https://docs.cloud.google.com/gemini/docs/code-review/customize-repo-review
+
+code_review:
+  # Gemini may still act on pull requests — we want on-demand reviews.
+  disable: false
+
+  pull_request_opened:
+    # The automatic review. This is the one that was firing unasked.
+    code_review: false
+
+    # A summary on open is cheap and useful context for a human reviewer, and
+    # is not the thing that was consuming quota. Left off for now so this
+    # change tests exactly one variable; revisit once the trigger behaviour
+    # above is understood.
+    summary: false
+    help: false
