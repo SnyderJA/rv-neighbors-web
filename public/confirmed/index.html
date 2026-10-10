@@ -38,12 +38,62 @@
       <path d="M20 33.5 L28.5 42 L44 25" stroke="#DA9902" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
 
-    <h1>Email confirmed</h1>
-    <p>Your account is ready. Open RV Neighbors on your phone and sign in.</p>
-    <p class="hint">
+    <h1 id="title">Email confirmed</h1>
+    <p id="body">Your account is ready. Open RV Neighbors on your phone and sign in.</p>
+    <p class="hint" id="hint">
       You can close this page. Trouble signing in?
       <a href="mailto:support@rvneighborsapp.com">support@rvneighborsapp.com</a>
     </p>
   </div>
+
+  <script>
+    /*
+      THIS PAGE IS WHERE EVERY MISDIRECTED RECOVERY LINK ENDS UP.
+      ───────────────────────────────────────────────────────────────────────
+      It is the project's Site URL, which Supabase substitutes whenever a link
+      carries no redirect_to or carries one that is not on the allow-list. The
+      substitution is silent: the link works, the token is spent, and the
+      person arrives here and is told their email is confirmed.
+
+      For a confirmation that is true. For a PASSWORD RESET it is a dead end
+      wearing a tick — the token is now used up and nothing said so. That is
+      ISS-008's shape, and on 2026-10-10 it cost an hour: the Supabase
+      dashboard's own reset button sends no redirect_to, so every reset sent
+      from there lands here.
+
+      The fix for the senders is to set redirect_to, and that is done. This is
+      the backstop for the ones nobody controls: a recovery link that arrives
+      here now says what it is and where to finish, instead of claiming
+      success.
+
+      Supabase puts the type in the URL FRAGMENT, which never reaches the
+      server — so this has to be read in the browser, and that is the only
+      reason there is script on a static page.
+    */
+    (function () {
+      var h = new URLSearchParams(location.hash.replace(/^#/, ""));
+      var q = new URLSearchParams(location.search);
+      var type = h.get("type") || q.get("type");
+      var err = h.get("error_description") || q.get("error_description");
+
+      if (err) {
+        document.getElementById("title").textContent = "That link did not work";
+        document.getElementById("body").textContent = decodeURIComponent(err.replace(/\+/g, " "));
+        return;
+      }
+
+      if (type !== "recovery") return;
+
+      document.getElementById("title").textContent = "This is a password reset";
+      document.getElementById("body").innerHTML =
+        "You followed a reset link, but it sent you here instead of somewhere you can " +
+        "set a new password. Nothing has changed on your account.";
+      document.getElementById("hint").innerHTML =
+        "Open RV Neighbors on your phone and use <b>Forgot password</b> there, which sends a " +
+        "link that works. If you are an administrator, ask an owner to send one from the " +
+        "operations console. Still stuck? " +
+        '<a href="mailto:support@rvneighborsapp.com">support@rvneighborsapp.com</a>';
+    })();
+  </script>
 </body>
 </html>
