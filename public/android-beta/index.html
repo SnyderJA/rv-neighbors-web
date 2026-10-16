@@ -3,14 +3,13 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <!-- noindex, for the same reason /testflight is: there are 25 places. If this
-       page ranks, strangers take the seats and the people actually invited find
-       it full. This is a page you send to someone, not one they find. -->
+  <!-- noindex, for the same reason /testflight is: places are limited. This is
+       a page you send to someone, not one they find. -->
   <meta name="robots" content="noindex, nofollow" />
   <title>Try RV Neighbors on Android</title>
   <link rel="icon" href="/favicon.svg" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-  <meta name="description" content="How to install the RV Neighbors beta on your Android phone." />
+  <meta name="description" content="Request an invite to the RV Neighbors Android beta on Google Play." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet" />
@@ -83,17 +82,6 @@
     ol.steps p { color: var(--soft); font-size: 14.5px; margin: 0 0 12px; }
     ol.steps p:last-child { margin-bottom: 0; }
 
-    .quote {
-      border-left: 3px solid var(--gold); padding: 2px 0 2px 12px;
-      margin: 10px 0; color: var(--cream); font-size: 14px; font-style: italic;
-    }
-
-    .url {
-      font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 15px;
-      background: var(--ink); border: 1px solid var(--line); border-radius: 10px;
-      padding: 12px 14px; color: var(--cream); word-break: break-all; text-align: center;
-    }
-
     details { border-top: 1px solid var(--line); padding: 14px 0 2px; }
     details summary { cursor: pointer; font-weight: 600; font-size: 15px; list-style: none; }
     details summary::-webkit-details-marker { display: none; }
@@ -111,90 +99,67 @@
   <header>
     <img src="/rvn-logo-full-reversed.svg" alt="RV Neighbors" />
     <h1>Try RV Neighbors on Android</h1>
-    <p class="lede">We're testing with a small group before the Play Store. Takes about five minutes.</p>
+    <p class="lede">We're testing with a small group on Google Play before the public release.</p>
   </header>
 
-  <!-- Shown when the visitor is NOT on Android. They can still ask for the
-       link from a laptop — the email is what matters, and it will be waiting
-       on their phone. So this informs rather than blocks, and the form below
-       stays usable. -->
+  <!-- Shown when the visitor is NOT on Android. They can still request an
+       invite from a laptop: what matters is the Google account, not the
+       device they ask from. So this informs rather than blocks. -->
   <section class="panel" id="not-android" hidden>
     <h2>You'll need an Android phone</h2>
-    <p>The app installs on the phone itself. You can ask for your link here, but open the email on your Android phone when it arrives — or just go straight there:</p>
-    <div class="url">rvneighborsapp.com/android-beta</div>
+    <p>The beta installs from the Google Play Store on an Android phone. You can request your invite from here. Just use the Google account that's signed in to the Play Store on that phone.</p>
   </section>
 
   <section class="panel" id="form-panel">
-    <h2>Get your download link</h2>
-    <p>We'll email you a link to install the app. One link per person, and it keeps working, so you can reinstall whenever you need to.</p>
+    <h2>Request an invite</h2>
+    <p>Enter the email address of the <strong>Google account your Play Store uses</strong>. We'll add it to our testers list and email you an invite once you're added.</p>
+    <p>Not sure which one? On your phone, open the Play Store and tap your profile picture. The address is shown under your name.</p>
     <form id="form" novalidate>
-      <label for="email">Email address</label>
+      <label for="email">Google account email (the one your Play Store uses)</label>
       <input id="email" name="email" type="email" inputmode="email"
              autocomplete="email" autocapitalize="off" spellcheck="false"
-             placeholder="hello@rvnomad.com" required />
+             placeholder="you@gmail.com" required />
       <p class="msg msg-error" id="error" hidden></p>
-      <button class="btn btn-primary" id="submit" type="submit" style="margin-top:14px">Email me the link</button>
+      <button class="btn btn-primary" id="submit" type="submit" style="margin-top:14px">Request an invite</button>
     </form>
     <p style="margin-top:14px;font-size:13.5px">We'll also add you to the launch list so you hear when the app is out properly. You can unsubscribe from that at any time.</p>
   </section>
 
-  <!-- Replaces the form once the function has accepted the address. -->
+  <!-- Replaces the form once the request has been accepted. Nothing is
+       emailed at this point, so the page itself is the confirmation. -->
   <section class="panel" id="sent" hidden>
-    <h2>Check your email</h2>
-    <p>Your download link is on its way to <strong id="sent-to"></strong>. Open it on your Android phone and follow the steps below.</p>
-    <p>Nothing after a few minutes? Check spam, then email us.</p>
+    <h2>Request received</h2>
+    <p><strong>Thanks! We'll email you an invite once you're added.</strong></p>
+    <p>The invite goes to <strong id="sent-to"></strong>. Open it on your Android phone when it arrives and follow the steps below.</p>
   </section>
 
-  <!-- Shown when all 25 seats are taken. -->
-  <!-- Shown when all 25 seats are taken. Note the second paragraph: the
-       endpoint deliberately answers the same way for every address once the
-       beta is full, so that asking it cannot reveal who holds a place. That
-       means somebody who already HAS a seat sees this panel too, and their
-       link is still emailed to them. Without saying so, that reads as a
-       contradiction and they email us instead of checking their inbox. -->
+  <!-- Shown when every place is taken. The answer is the same for every
+       address once the beta is full, so somebody who already asked sees this
+       too; the second paragraph is for them. -->
   <section class="panel" id="full" hidden>
     <h2>This round is full</h2>
-    <p>All 25 places are taken. You're on the launch list, so you'll hear from us when the app reaches the Play Store.</p>
-    <p><strong>Already had a place?</strong> Your link is on its way to you as usual — check your email.</p>
-    <p>If you were expecting a place and nothing arrives, email us and we'll sort it out.</p>
+    <p>All the places in this round are taken. You're on the launch list, so you'll hear from us when the app reaches the Play Store.</p>
+    <p><strong>Already asked for an invite?</strong> Your request is still with us, and we'll email you an invite once you're added.</p>
   </section>
 
-  <h2 style="font-family:'Space Grotesk',sans-serif;font-size:18px;margin:32px 0 16px">Installing it</h2>
+  <h2 style="font-family:'Space Grotesk',sans-serif;font-size:18px;margin:32px 0 16px">What happens next</h2>
 
   <section>
     <ol class="steps">
 
       <li>
-        <h3>Open the email on your Android phone</h3>
-        <p>Tap <strong>Download the app</strong>. Your browser saves a <strong>.zip</strong> file.</p>
-      </li>
-
-      <!-- The zip is not packaging neatness, it is a workaround. Chrome on
-           Android currently never finishes downloading a .apk — the transfer
-           completes and the file is left permanently unpublished, so it shows
-           100% forever and never reaches Downloads. A zip is not an APK, so it
-           sidesteps the scanner that causes it. See the FAQ entry below, which
-           explains this to testers in their own terms. -->
-      <li>
-        <h3>Unzip it</h3>
-        <p>Open your <strong>Files</strong> app, go to <strong>Downloads</strong> and tap the .zip. Android asks "Extract?" — tap <strong>Extract</strong>.</p>
-        <!-- Walked on a Pixel 8 on 2026-10-08: Files by Google puts the
-             contents in a FOLDER named after the zip, not loose in Downloads.
-             Saying "you get rv-neighbors-beta.apk" sent people looking in the
-             wrong place. -->
-        <p>You'll get a new folder called <strong>rv-neighbors-beta</strong>. Open it — <strong>rv-neighbors-beta.apk</strong> is inside, and that's the app itself.</p>
+        <h3>We add you to the testers list</h3>
+        <p>Once you're added, we'll email you an invite. It isn't instant, because a person adds each tester.</p>
       </li>
 
       <li>
-        <h3>Allow your Files app to install it</h3>
-        <p>Tap the extracted <strong>.apk</strong>. Android will stop you the first time, with something like:</p>
-        <p class="quote">For your security, your phone isn't allowed to install unknown apps from this source.</p>
-        <p>Tap <strong>Settings</strong>, turn on <strong>Allow from this source</strong>, then press back and tap the file again. You only do this once.</p>
+        <h3>Accept the invite on your Android phone</h3>
+        <p>Open the invite email on your phone and tap the link. Make sure you're signed in to the same Google account you gave us, then accept the invitation.</p>
       </li>
 
       <li>
-        <h3>Tap Install</h3>
-        <p>Google may offer to scan the app first, or warn that it doesn't recognise the developer. That's expected for an app that isn't on the Play Store yet — choose <strong>Install anyway</strong> or <strong>More details &rarr; Install anyway</strong>.</p>
+        <h3>Install from Google Play</h3>
+        <p>The link takes you to RV Neighbors on the Play Store. Tap <strong>Install</strong>, like any other app.</p>
       </li>
 
       <li>
@@ -207,28 +172,20 @@
 
   <section class="panel">
     <details>
-      <summary>Is this safe to install?</summary>
-      <p>It's our own app, signed by us, and it's the same build that will go to the Play Store. The warnings you'll see are Android being cautious about anything that didn't come from the Play Store — they're about where the file came from, not what's in it. If you'd rather wait for the Play Store version, that's completely fine; tell us and we'll let you know when it's there.</p>
+      <summary>Which email should I use?</summary>
+      <p>The Google account that's signed in to the Play Store on your phone. If you have more than one Google account, use the one the Play Store uses. An invite for a different address won't let you install.</p>
     </details>
     <details>
-      <summary>Why is it a zip instead of the app?</summary>
-      <p>Chrome on Android currently has a bug where app files never finish downloading — the progress bar sits at 100% forever and the file never appears. Putting the app in a zip avoids it entirely. It costs you one extra tap to extract, and it's the difference between the download working and not.</p>
-    </details>
-    <details>
-      <summary>My download is stuck at 100%</summary>
-      <p>That's the Chrome bug above, and it means you downloaded the app file directly rather than the zip. Cancel it, open your link again, and you should get a <strong>.zip</strong>. If you're still getting an app file, email us.</p>
-    </details>
-    <details>
-      <summary>Why not just use the Play Store?</summary>
-      <p>Google requires us to finish an identity verification before we can publish, and that's with them at the moment. Rather than hold up testing, we're sending the app directly.</p>
+      <summary>I installed an earlier test version from a download link</summary>
+      <p>Thanks for testing early. Uninstall that version first, then install from Google Play once your invite arrives. Your account isn't stored on the phone, so just sign in again.</p>
     </details>
     <details>
       <summary>What does "beta" mean here?</summary>
-      <p>The app works, but you're seeing it before everyone else, so there will be rough edges. If something looks wrong, that's worth telling us about — that's the point of you being here.</p>
+      <p>The app works, but you're seeing it before everyone else, so there will be rough edges. If something looks wrong, that's worth telling us about. That's the point of you being here.</p>
     </details>
     <details>
       <summary>How do I get the next version?</summary>
-      <p>Tap your original link again and install over the top. Your account and settings stay as they are. We'll email you when there's something new.</p>
+      <p>Updates arrive through the Play Store, the same way as for any other app.</p>
     </details>
     <details>
       <summary>I use an iPhone</summary>
@@ -241,7 +198,7 @@
   </section>
 
   <footer>
-    Stuck on any of this? <a href="mailto:support@rvneighborsapp.com">support@rvneighborsapp.com</a>
+    Questions? <a href="mailto:support@rvneighborsapp.com">support@rvneighborsapp.com</a>
   </footer>
 
 </div>
@@ -249,7 +206,6 @@
 <script>
   (function () {
     // Public by design: this endpoint needs no credentials from the browser.
-    // See rv-neighbors-api/supabase/functions/request-android-build.
     var ENDPOINT = "https://tybihehzpnggjcfnadxd.supabase.co/functions/v1/request-android-build";
 
     // Fails toward showing nothing: an unidentified device is far more likely
@@ -268,15 +224,15 @@
       error.textContent = message;
       error.hidden = false;
       submit.disabled = false;
-      submit.textContent = "Email me the link";
+      submit.textContent = "Request an invite";
     }
 
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       var value = (email.value || "").trim().toLowerCase();
 
-      // Checked here only to save a round trip. The function validates the
-      // address again, and the table has a check constraint under that.
+      // Checked here only to save a round trip. The server validates the
+      // address again.
       if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(value)) {
         fail("That doesn't look like an email address.");
         email.focus();
