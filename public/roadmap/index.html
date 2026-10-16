@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- noindex: a page for invited testers, reached by a link and an access code,
+     never through search. It is deliberately not linked from the site. -->
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>RV Neighbors Roadmap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Playfair+Display:ital,wght@1,500&family=Space+Grotesk:wght@500;700&display=swap">
+<style>
+/* Layout: a single trip log down the page — one milepost per build, grouped into legs of the journey. Brand: "Desert Night". */
+:root {
+  --bg: #f6f4ec;
+  --surface: #ffffff;
+  --fg: #16261d;
+  --muted: #5b6b61;
+  --line: #d9dccf;
+  --accent: #b86a14;
+  --sage: #2d5a42;
+  --chip-bg: #e7efe9;
+  --done: #2d7a4a;
+  --next-bg: #fbecd6;
+  --display: "Space Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --body: "Figtree", "Helvetica Neue", Arial, sans-serif;
+  --serif: "Playfair Display", Georgia, serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f2419; --surface: #15301f; --fg: #f5f5f0; --muted: #a9b8ad; --line: #28463a;
+    --accent: #df8b29; --sage: #8fc2a3; --chip-bg: #1d3d2b; --done: #7fd19c; --next-bg: #3a2a12;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f2419; --surface: #15301f; --fg: #f5f5f0; --muted: #a9b8ad; --line: #28463a;
+  --accent: #df8b29; --sage: #8fc2a3; --chip-bg: #1d3d2b; --done: #7fd19c; --next-bg: #3a2a12;
+  color-scheme: dark;
+}
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px; line-height: 1.6; }
+.wrap { max-width: 880px; margin: 0 auto; padding-block: 48px 72px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+header { display: grid; gap: 14px; padding-bottom: 28px; border-bottom: 1px solid var(--line); }
+.eyebrow { font-family: var(--display); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+h1 { font-family: var(--display); font-size: clamp(34px, 6vw, 52px); line-height: 1.05; margin: 0; text-wrap: balance; }
+h1 em { font-family: var(--serif); font-style: italic; font-weight: 500; color: var(--accent); }
+.lede { max-width: 62ch; color: var(--muted); margin: 0; font-size: 17px; }
+.rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin-top: 8px; }
+.rule { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; min-width: 0; }
+.rule b { display: block; font-family: var(--display); font-size: 14px; margin-bottom: 4px; }
+.rule span { color: var(--muted); font-size: 14px; }
+.leg { margin-top: 48px; display: grid; gap: 6px; }
+.leg h2 { font-family: var(--display); font-size: 24px; margin: 0; }
+.leg p { margin: 0; color: var(--muted); max-width: 62ch; }
+.log { list-style: none; margin: 20px 0 0; padding: 0; display: grid; gap: 0; }
+.stop { display: grid; grid-template-columns: 76px 1fr; gap: 18px; position: relative; padding-bottom: 26px; }
+.stop::before { content: ""; position: absolute; left: 37px; top: 44px; bottom: 0; width: 2px; background: var(--line); }
+.stop:last-child::before { display: none; }
+.post { width: 76px; height: 44px; border-radius: 8px; background: var(--sage); color: #f5f5f0; display: grid; place-items: center;
+  font-family: var(--display); font-weight: 700; font-size: 18px; font-variant-numeric: tabular-nums; position: relative; z-index: 1; }
+.post small { display: block; font-size: 9px; letter-spacing: .14em; text-transform: uppercase; font-weight: 500; opacity: .85; margin-bottom: -6px; }
+.stop.done .post { background: var(--done); color: #0f2419; }
+.stop.next .post { background: var(--accent); color: #1b1206; }
+.card { min-width: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; display: grid; gap: 8px; }
+.stop.next .card { background: var(--next-bg); border-color: var(--accent); }
+.card h3 { font-family: var(--display); font-size: 19px; margin: 0; line-height: 1.25; text-wrap: balance; }
+.chip { justify-self: start; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; padding: 3px 9px; border-radius: 999px; background: var(--chip-bg); color: var(--sage); }
+.stop.done .chip { color: var(--done); }
+.stop.next .chip { background: var(--accent); color: #1b1206; }
+.card p { margin: 0; max-width: 65ch; }
+.card ul { margin: 0; padding-left: 18px; display: grid; gap: 3px; }
+.card .lbl { font-family: var(--display); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); font-weight: 700; margin-top: 4px; }
+.guard { border-left: 3px solid var(--accent); padding-left: 10px; font-size: 15px; }
+.epic-phases { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 8px; margin-top: 4px; }
+.phase { border: 1px dashed var(--line); border-radius: 8px; padding: 10px 12px; font-size: 14px; min-width: 0; }
+.phase b { display: block; font-family: var(--display); font-size: 13px; color: var(--accent); }
+footer { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+@media (max-width: 520px) {
+  .stop { grid-template-columns: 56px 1fr; gap: 12px; }
+  .post { width: 56px; font-size: 16px; }
+  .stop::before { left: 27px; }
+}
+</style>
+<style>
+/* Standalone-document wrapper: browser default margin off, no font inflation on phones. */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body { margin: 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">RV Neighbors · Product roadmap</div>
+    <h1>The road from beta to <em>3.0</em> and beyond</h1>
+    <p class="lede">RV Neighbors helps RVers see who's camped nearby, connect, message, and stay in control of how precisely they're found. This is the plan, build by build: what each one adds and the lines we won't cross.</p>
+    <div class="rules">
+      <div class="rule"><b>One headline feature per build</b><span>Each build adds one core feature plus a few fixes, so releases stay small and dependable.</span></div>
+      <div class="rule"><b>Scope locks before testing</b><span>New bugs found while testing go to the next build, unless this build caused them.</span></div>
+      <div class="rule"><b>Verified before it ships</b><span>Every build is checked on real iPhones and Android phones before testers get it.</span></div>
+      <div class="rule"><b>Quality over dates</b><span>No calendar promises. A build ships when it's ready.</span></div>
+    </div>
+  </header>
+
+  <section class="leg" aria-labelledby="leg1">
+    <div class="eyebrow">Leg 1</div>
+    <h2 id="leg1">Road to the public launch</h2>
+    <p>Safety, privacy and the features a full audience needs, ending in the 3.0 release.</p>
+  </section>
+  <ol class="log">
+    <li class="stop done">
+      <div class="post"><span><small>Build</small>19</span></div>
+      <div class="card"><span class="chip">Shipped</span>
+        <h3>Smoother typing, sturdier foundation</h3>
+        <p>Keyboard fixes across chat, sign-in, sign-up and the report sheet on both phones; full-screen neighbor list from the map; Accept and Decline on profiles; real build numbers on Android; behind-the-scenes reliability and security work.</p>
+      </div>
+    </li>
+    <li class="stop next">
+      <div class="post"><span><small>Build</small>20</span></div>
+      <div class="card"><span class="chip">Up next</span>
+        <h3>Reports reach a real person, fast</h3>
+        <p>When someone files a report, the team is emailed right away, the reporter gets a confirmation, and once a person has reviewed it the reporter hears back. App stores expect reports to be acted on within 24 hours; this closes that loop.</p>
+        <div class="lbl">First version</div>
+        <ul><li>Instant alert to the team when a report comes in</li><li>"We got your report" email to the reporter</li><li>Reviewed in the admin console, then a "a person reviewed this and is taking action" email</li><li>A daily check-in that tells us which app version each phone runs</li></ul>
+        <p class="guard">Never tells the reporter what action was taken against the other person.</p>
+      </div>
+    </li>
+    <li class="stop">
+      <div class="post"><span><small>Build</small>21</span></div>
+      <div class="card"><span class="chip">Planned</span>
+        <h3>Location privacy, rebuilt</h3>
+        <p>A clearer proximity screen. Instead of picking distances by hand, choose close, narrow or wide, and control separately <em>who</em> can see you and <em>how precisely</em>.</p>
+        <ul><li>Three simple presets</li><li>Separate controls for who sees you and how exact your location is</li><li>Privacy hardening</li></ul>
+        <p class="guard">Never shows anyone's location more precisely than a five-mile radius. Not for strangers, not for close friends.</p>
+      </div>
+    </li>
+    <li class="stop">
+      <div class="post"><span><small>Build</small>22</span></div>
+      <div class="card"><span class="chip">Planned</span>
+        <h3>Know when friends are nearby, without opening the app</h3>
+        <p>Your location updates while you travel, and you get a gentle nudge when one of your connections is in range.</p>
+        <ul><li>Watches for big moves in a battery-friendly way; your map spot moves only after two checks in a row put you 50+ miles from where you were</li><li>Nudges only about connections who aren't in stealth mode, within the radius you choose</li><li>At most 5 nudges a day, only during daytime hours</li><li>One switch turns background location off, and the rest of the app still works</li></ul>
+        <p class="guard">A nudge never says who is nearby or anything about them. Background location is never forced on.</p>
+      </div>
+    </li>
+    <li class="stop">
+      <div class="post"><span><small>Build</small>23</span></div>
+      <div class="card"><span class="chip">Planned</span>
+        <h3>Creator partnerships and a cleanup pass</h3>
+        <p>A partnership page for RV YouTube creators, showing what the app does today and where it's going, with a partner application. Plus a round of fixes and messaging safety improvements.</p>
+        <ul><li>Creator page with a pitch video and partner application</li><li>Spam protection and tidy-up rules for messages</li><li>Announcements from the RV Neighbors team</li></ul>
+      </div>
+    </li>
+    <li class="stop">
+      <div class="post"><span><small>Build</small>24</span></div>
+      <div class="card"><span class="chip">Planned</span>
+        <h3>Group messaging</h3>
+        <p>Caravans and campfire crews can coordinate in one thread instead of a separate group chat.</p>
+        <ul><li>Groups of up to 25, made from people you're already connected with</li><li>A group name; the creator adds and removes members</li><li>Anyone can leave; the group ends when its creator leaves</li></ul>
+        <p class="guard">Being in a group never connects you to the other members or opens private messages with them.</p>
+      </div>
+    </li>
+    <li class="stop">
+      <div class="post"><span><small>Build</small>25</span></div>
+      <div class="card"><span class="chip">Planned</span>
+        <h3>Free and paid plans</h3>
+        <p>A free tier and paid subscriptions, with the first ads for free users. Details are still being worked out.</p>
+        <p class="guard">An ad is never dressed up as a real RVer on the map.</p>
+      </div>
+    </li>
+    <li class="stop">
+      <div class="post"><span><small>Build</small>26</span></div>
+      <div class="card"><span class="chip">Milestone</span>
+        <h3>Public launch, version 3.0</h3>
+        <p>Everything from Builds 20 to 25 goes public after a full test pass on every flow. Our beta testers become founding members.</p>
+      </div>
+    </li>
+  </ol>
+
+  <section class="leg" aria-labelledby="leg2">
+    <div class="eyebrow">Leg 2</div>
+    <h2 id="leg2">Growing the community</h2>
+    <p>Ways to show where you've been, prove you're who you say, and gather around shared interests.</p>
+  </section>
+  <ol class="log">
+    <li class="stop">
+      <div class="post"><span><small>Build</small>27</span></div>
+      <div class="card"><span class="chip">Planned</span>
+        <h3>National Park Passport</h3>
+        <p>Every national park gets its own page and custom badge. Mark a park visited, add a photo and a short story, and note whether its RV park is worth a stay. Your visited parks show on your profile as badges, a natural conversation starter.</p>
+      </div>
+    </li>
+    <li class="stop">
+      <div class="post"><span><small>Build</small>28</span></div>
+      <div class="card"><span class="chip">Planned</span>
+        <h3>Verified members and profile badges</h3>
+        <p>An optional ID check through a trusted verification partner earns a Verified badge, so people know they're dealing with a real person. We keep only the result, never a copy of your ID.</p>
+        <ul><li>Trust badges: Verified, Verified RV Tech, Founder, Creator partner</li><li>Achievement badges earned by what you do in the app, such as visiting all 63 national parks</li></ul>
+        <p class="guard">A fun achievement badge never looks like a trust badge.</p>
+      </div>
+    </li>
+    <li class="stop">
+      <div class="post"><span><small>Build</small>29</span></div>
+      <div class="card"><span class="chip">Planned</span><h3>Hardening and fixes</h3><p>A build dedicated to reliability and polish.</p></div>
+    </li>
+    <li class="stop">
+      <div class="post"><span><small>Builds</small>30–31</span></div>
+      <div class="card"><span class="chip">Planned · two builds</span>
+        <h3>Communities</h3>
+        <p>Verified hosts, such as creators and trusted organizers, run their own invite-only communities, Facebook-group style.</p>
+        <div class="epic-phases">
+          <div class="phase"><b>Build 30</b>Verified host accounts and invite-only communities, moderated by their hosts</div>
+          <div class="phase"><b>Build 31</b>A curated feed from RV Neighbors, vetted sources and creator partners</div>
+        </div>
+        <p class="guard">Posts never reveal anyone's location unless they choose to say it. Only ID-verified hosts can run a community.</p>
+      </div>
+    </li>
+  </ol>
+
+  <section class="leg" aria-labelledby="leg3">
+    <div class="eyebrow">Leg 3</div>
+    <h2 id="leg3">Help on the road</h2>
+    <p>Two big features, each rolled out over several builds so every step is solid before the next.</p>
+  </section>
+  <ol class="log">
+    <li class="stop">
+      <div class="post"><span><small>Builds</small>32–35</span></div>
+      <div class="card"><span class="chip">Planned · four builds</span>
+        <h3>Call for Help</h3>
+        <p>When you're stuck roadside, send a help request to RVers who can actually reach you.</p>
+        <div class="epic-phases">
+          <div class="phase"><b>Build 32</b>Ask your connections for help; your pin glows on their map for an hour</div>
+          <div class="phase"><b>Build 33</b>Reach verified RVers within 50 miles, with daily limits</div>
+          <div class="phase"><b>Build 34</b>"I can help" responses and marking it resolved</div>
+          <div class="phase"><b>Build 35</b>Help categories and smarter matching</div>
+        </div>
+        <p class="guard">Not an emergency service. In an emergency, call 911.</p>
+      </div>
+    </li>
+    <li class="stop">
+      <div class="post"><span><small>Builds</small>36–39</span></div>
+      <div class="card"><span class="chip">Planned · four builds</span>
+        <h3>RV Tech Locator</h3>
+        <p>Find trustworthy RV techs and repair shops wherever you are.</p>
+        <div class="epic-phases">
+          <div class="phase"><b>Build 36</b>A curated directory with tap-to-call</div>
+          <div class="phase"><b>Build 37</b>Ratings, reviews and suggestions from RVers</div>
+          <div class="phase"><b>Build 38</b>Tech accounts with a Verified RV Tech badge</div>
+          <div class="phase"><b>Build 39</b>Request service in the app</div>
+        </div>
+      </div>
+    </li>
+    <li class="stop">
+      <div class="post"><span><small>Build</small>40</span></div>
+      <div class="card"><span class="chip">Planned</span><h3>Stabilization</h3><p>Polish and reliability across everything above.</p></div>
+    </li>
+  </ol>
+
+  <footer>Plans can change as we learn from testers. Order and scope are reviewed before each build starts.</footer>
+</div>
+</body>
+</html>

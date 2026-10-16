@@ -33,6 +33,10 @@
       "destination": "/android-beta/index.html"
     },
     {
+      "source": "/roadmap",
+      "destination": "/roadmap/index.html"
+    },
+    {
       "source": "/get-android-build",
       "destination": "https://tybihehzpnggjcfnadxd.supabase.co/functions/v1/get-android-build"
     },
