@@ -55,7 +55,7 @@
 
   <header>
     <h1>Privacy Policy</h1>
-    <p class="sub">Last updated 5 October 2026 · RV Neighbors mobile app</p>
+    <p class="sub">Last updated [RELEASE DATE] · RV Neighbors mobile app</p>
   </header>
 
   <p>RV Neighbors helps RV campers find and connect with other campers nearby. Doing that means
@@ -79,11 +79,15 @@
     <tr><td>Interests and hobbies</td><td>Shown on your profile</td></tr>
     <tr><td>Location (latitude and longitude)</td><td>To place you on the map and work out who is nearby</td></tr>
     <tr><td>Connections and connection requests</td><td>To maintain who you are connected to</td></tr>
-    <tr><td>Notification token</td><td>To deliver push notifications to your device</td></tr>
+    <tr><td>Notification token and device identifier</td><td>To deliver push notifications to the right phone</td></tr>
+    <tr><td>Device details — phone model, operating system version, app version and build, and an identifier the phone gives this app</td><td>Checked once a day when you open the app, so we know which phones and app versions are in use and can support yours</td></tr>
+    <tr><td>Messages</td><td>To deliver your conversations</td></tr>
+    <tr><td>Reports you make, and reports made about you</td><td>To review them and keep members safe (see &ldquo;Reports and removed accounts&rdquo;)</td></tr>
+    <tr><td>Error reports — the error, the screen, app version, platform and operating system version</td><td>To find and fix problems in the app. Linked to your account if you were signed in</td></tr>
     <tr><td>Your settings</td><td>Visibility radius, sharing preferences, notification choices</td></tr>
   </table>
 
-  <p>We do not collect your contacts or your browsing history. The app does not currently use
+  <p>We do not collect your phone number, your contacts or your browsing history. The app does not currently use
   advertising identifiers or track what you do in other apps. If that changes we will update this
   page and tell you in the app before it takes effect.</p>
 
@@ -137,6 +141,8 @@
     <tr><td>Supabase</td><td>Database, accounts, photo storage. All of the above is stored here.</td></tr>
     <tr><td>Expo</td><td>Delivers push notifications to your device</td></tr>
     <tr><td>Apple / Google</td><td>Map tiles are rendered by the maps service on your device</td></tr>
+    <tr><td>Resend</td><td>Sends our emails: account confirmation, support replies, and notices to our support team</td></tr>
+    <tr><td>Apple App Store and TestFlight, Google Play</td><td>Distribute the app. If you install or test through them, their own privacy policies cover what they collect</td></tr>
   </table>
 
   <p>We do not sell your personal information to data brokers. The app does not currently show
@@ -155,13 +161,49 @@
 
   <h2>Deleting your account</h2>
   <p>Go to <strong>Settings → Delete my account</strong>. This permanently removes your profile,
-  photos, location, connections, settings and notification token. It cannot be undone, and we do not
-  keep a copy.</p>
+  photos, location, connections, the messages you sent, settings, notification token and device
+  details. It cannot be
+  undone.</p>
+  <p>A few things are kept, because they are about other people's safety as well as yours:</p>
+  <ul>
+    <li><strong>Reports.</strong> A report you made, or one made about you, stays with us after either
+      account is deleted, together with the copy of the reported content and photos taken when it was
+      made. Otherwise somebody could escape a report by deleting their account.</li>
+    <li><strong>Messages to our support team.</strong> Feedback or support requests you sent us are
+      kept, together with your name and email, so we can handle your request.</li>
+    <li><strong>Error reports</strong> already sent from your phone stay, with your account no longer
+      attached.</li>
+  </ul>
+  <p>Separately, if <em>we</em> remove an account for breaking our rules, see &ldquo;Reports and
+  removed accounts&rdquo; below.</p>
+
+  <h2>Reports and removed accounts</h2>
+  <p><strong>When you report someone</strong>, we store the report, what you wrote, and a copy of
+  their profile as it looked at that moment. We also copy their profile and RV photos into private
+  storage that only our team can open, so they cannot be changed or deleted before we have looked at
+  them. Nobody else, including the person you reported, can see your report.</p>
+  <p><strong>If we remove an account</strong> for breaking our Terms, we delete the account and its
+  data. We keep one record so the same person cannot simply sign up again, and so we can review an
+  appeal fairly. That record holds:</p>
+  <ul>
+    <li>a one-way, keyed code made from the email address (not the address itself, and it cannot be
+      turned back into one);</li>
+    <li>the reason and the date;</li>
+    <li>a copy of the reports, our notes and the photo evidence that led to the decision.</li>
+  </ul>
+  <p>When somebody tries to sign up, we check their email address against these codes. The record is
+  kept until we decide to lift it. If we do, we delete it and keep only a note that it was lifted,
+  when and why. To appeal, email
+  <a href="mailto:support@rvneighborsapp.com">support@rvneighborsapp.com</a> from the address on the
+  account.</p>
 
   <h2>How long we keep things</h2>
-  <p>We keep your data while your account exists. Deleting your account removes it. Routine server
-  logs, which may contain an IP address, are retained by our hosting provider for a short period for
-  security and troubleshooting.</p>
+  <p>We keep your data while your account exists, and deleting your account removes it, except for
+  the items described under &ldquo;Deleting your account&rdquo; and &ldquo;Reports and removed
+  accounts&rdquo;. Reports and their evidence are kept for as long as we need them to deal with the
+  report, any appeal, and the safety of our members. Device details are updated each day you use the
+  app and deleted with your account. Routine server logs, which may contain an IP address, are
+  retained by our hosting provider for a short period for security and troubleshooting.</p>
 
   <h3>Messages you have cleared</h3>
   <p>Clearing a conversation removes it, and everything said in it, from your side of the app
@@ -205,7 +247,7 @@
 
   <h2>Changes to this policy</h2>
   <p>If we change what we collect or how we use it, we will update this page and change the date at
-  the top. We will announce material changes in the app before they take effect — particularly
+  the top. We will tell you about material changes before they take effect, by email or in the app — particularly
   anything involving advertising or a new company receiving your data — so that you can decide
   whether to carry on using RV Neighbors or delete your account.</p>
 
